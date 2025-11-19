@@ -2,9 +2,9 @@ package com.comp2042;
 
 public final class MoveAction {
     private final EventType eventType;
-    private final EventSource eventSource;
+    private final ActionSource eventSource;
 
-    public MoveAction(EventType eventType, EventSource eventSource) {
+    public MoveAction(EventType eventType, ActionSource eventSource) {
         this.eventType = eventType;
         this.eventSource = eventSource;
     }
@@ -13,7 +13,7 @@ public final class MoveAction {
         return eventType;
     }
 
-    public EventSource getEventSource() {
+    public ActionSource getEventSource() {
         return eventSource;
     }
 }

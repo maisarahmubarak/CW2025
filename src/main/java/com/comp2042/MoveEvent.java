@@ -7,7 +7,7 @@ package com.comp2042;
 public final class MoveEvent {
     private final MoveAction delegate;
 
-    public MoveEvent(EventType eventType, EventSource eventSource) {
+    public MoveEvent(EventType eventType, ActionSource eventSource) {
         this.delegate = new MoveAction(eventType, eventSource);
     }
 
@@ -15,7 +15,7 @@ public final class MoveEvent {
         return delegate.getEventType();
     }
 
-    public EventSource getEventSource() {
+    public ActionSource getEventSource() {
         return delegate.getEventSource();
     }
 

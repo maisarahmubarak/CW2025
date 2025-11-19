@@ -19,7 +19,7 @@ public class GameController implements InputEventListener {
         boolean canMove = board.moveBrickDown();
         ClearRow clearRow = null;
         if (!canMove) {
-            board.lockPiece();
+            board.mergeBrickToBackground();
             clearRow = board.clearRows();
             if (clearRow.getLinesRemoved() > 0) {
                 board.getScore().add(clearRow.getScoreBonus());
@@ -31,7 +31,7 @@ public class GameController implements InputEventListener {
             viewGuiController.refreshGameBackground(board.getBoardMatrix());
 
         } else {
-            if (event.getEventSource() == EventSource.USER) {
+            if (event.getEventSource() == ActionSource.USER) {
                 board.getScore().add(1);
             }
         }
