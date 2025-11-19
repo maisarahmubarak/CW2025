@@ -2,13 +2,13 @@ package com.comp2042;
 
 public interface InputEventListener {
 
-    DownData onDownEvent(MoveEvent event);
+    DownData onDownEvent(MoveAction event);
 
-    ViewData onLeftEvent(MoveEvent event);
+    ViewData onLeftEvent(MoveAction event);
 
-    ViewData onRightEvent(MoveEvent event);
+    ViewData onRightEvent(MoveAction event);
 
-    ViewData onRotateEvent(MoveEvent event);
+    ViewData onRotateEvent(MoveAction event);
 
     void createNewGame();
 }

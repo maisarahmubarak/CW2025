@@ -61,19 +61,19 @@ public class GuiController implements Initializable {
             public void handle(KeyEvent keyEvent) {
                 if (isPause.getValue() == Boolean.FALSE && isGameOver.getValue() == Boolean.FALSE) {
                     if (keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A) {
-                        refreshBrick(eventListener.onLeftEvent(new MoveEvent(EventType.LEFT, EventSource.USER)));
+                        refreshBrick(eventListener.onLeftEvent(new MoveAction(EventType.LEFT, EventSource.USER)));
                         keyEvent.consume();
                     }
                     if (keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D) {
-                        refreshBrick(eventListener.onRightEvent(new MoveEvent(EventType.RIGHT, EventSource.USER)));
+                        refreshBrick(eventListener.onRightEvent(new MoveAction(EventType.RIGHT, EventSource.USER)));
                         keyEvent.consume();
                     }
                     if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W) {
-                        refreshBrick(eventListener.onRotateEvent(new MoveEvent(EventType.ROTATE, EventSource.USER)));
+                        refreshBrick(eventListener.onRotateEvent(new MoveAction(EventType.ROTATE, EventSource.USER)));
                         keyEvent.consume();
                     }
                     if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
-                        moveDown(new MoveEvent(EventType.DOWN, EventSource.USER));
+                        moveDown(new MoveAction(EventType.DOWN, EventSource.USER));
                         keyEvent.consume();
                     }
                 }
@@ -116,7 +116,7 @@ public class GuiController implements Initializable {
 
         timeLine = new Timeline(new KeyFrame(
                 Duration.millis(400),
-                ae -> moveDown(new MoveEvent(EventType.DOWN, EventSource.THREAD))
+                ae -> moveDown(new MoveAction(EventType.DOWN, EventSource.THREAD))
         ));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
@@ -183,7 +183,7 @@ public class GuiController implements Initializable {
         rectangle.setArcWidth(9);
     }
 
-    private void moveDown(MoveEvent event) {
+    private void moveDown(MoveAction event) {
         if (isPause.getValue() == Boolean.FALSE) {
             DownData downData = eventListener.onDownEvent(event);
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {

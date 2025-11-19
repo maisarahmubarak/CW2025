@@ -15,11 +15,11 @@ public class GameController implements InputEventListener {
     }
 
     @Override
-    public DownData onDownEvent(MoveEvent event) {
+    public DownData onDownEvent(MoveAction event) {
         boolean canMove = board.moveBrickDown();
         ClearRow clearRow = null;
         if (!canMove) {
-            board.mergeBrickToBackground();
+            board.lockPiece();
             clearRow = board.clearRows();
             if (clearRow.getLinesRemoved() > 0) {
                 board.getScore().add(clearRow.getScoreBonus());
@@ -39,19 +39,19 @@ public class GameController implements InputEventListener {
     }
 
     @Override
-    public ViewData onLeftEvent(MoveEvent event) {
+    public ViewData onLeftEvent(MoveAction event) {
         board.moveBrickLeft();
         return board.getViewData();
     }
 
     @Override
-    public ViewData onRightEvent(MoveEvent event) {
+    public ViewData onRightEvent(MoveAction event) {
         board.moveBrickRight();
         return board.getViewData();
     }
 
     @Override
-    public ViewData onRotateEvent(MoveEvent event) {
+    public ViewData onRotateEvent(MoveAction event) {
         board.rotateLeftBrick();
         return board.getViewData();
     }
