@@ -9,8 +9,19 @@ public final class MoveAction {
         this.eventSource = eventSource;
     }
 
-    public ActionType getEventType() {
+    /**
+     * New name for the getter returning the action type.
+     */
+    public ActionType getActionType() {
         return eventType;
+    }
+
+    /**
+     * Deprecated compatibility getter. Use {@link #getActionType()}.
+     */
+    @Deprecated
+    public ActionType getEventType() {
+        return getActionType();
     }
 
     public ActionSource getEventSource() {

@@ -11,8 +11,19 @@ public final class MoveEvent {
         this.delegate = new MoveAction(eventType, eventSource);
     }
 
+    /**
+     * New name for the getter returning the action type.
+     */
+    public ActionType getActionType() {
+        return delegate.getActionType();
+    }
+
+    /**
+     * Deprecated compatibility getter. Use {@link #getActionType()}.
+     */
+    @Deprecated
     public ActionType getEventType() {
-        return delegate.getEventType();
+        return getActionType();
     }
 
     public ActionSource getEventSource() {
