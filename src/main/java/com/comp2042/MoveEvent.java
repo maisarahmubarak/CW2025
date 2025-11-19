@@ -7,11 +7,11 @@ package com.comp2042;
 public final class MoveEvent {
     private final MoveAction delegate;
 
-    public MoveEvent(EventType eventType, ActionSource eventSource) {
+    public MoveEvent(ActionType eventType, ActionSource eventSource) {
         this.delegate = new MoveAction(eventType, eventSource);
     }
 
-    public EventType getEventType() {
+    public ActionType getEventType() {
         return delegate.getEventType();
     }
 
