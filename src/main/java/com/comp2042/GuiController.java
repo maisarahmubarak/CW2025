@@ -41,7 +41,7 @@ public class GuiController implements Initializable {
 
     private Rectangle[][] displayMatrix;
 
-    private InputEventListener eventListener;
+    private InputActionListener eventListener;
 
     private Rectangle[][] rectangles;
 
@@ -196,7 +196,7 @@ public class GuiController implements Initializable {
         gamePanel.requestFocus();
     }
 
-    public void setEventListener(InputEventListener eventListener) {
+    public void setEventListener(InputActionListener eventListener) {
         this.eventListener = eventListener;
     }
 

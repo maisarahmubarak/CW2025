@@ -1,14 +1,10 @@
 package com.comp2042;
 
-public interface InputEventListener {
+/**
+ * Deprecated listener name kept for backward compatibility.
+ * Prefer {@link InputActionListener}.
+ */
+@Deprecated
+public interface InputEventListener extends InputActionListener {
 
-    DownData onDownEvent(MoveAction event);
-
-    ViewData onLeftEvent(MoveAction event);
-
-    ViewData onRightEvent(MoveAction event);
-
-    ViewData onRotateEvent(MoveAction event);
-
-    void createNewGame();
 }

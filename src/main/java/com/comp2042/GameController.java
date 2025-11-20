@@ -1,6 +1,6 @@
 package com.comp2042;
 
-public class GameController implements InputEventListener {
+public class GameController implements InputActionListener {
 
     private Board board = new SimpleBoard(25, 10);
 
