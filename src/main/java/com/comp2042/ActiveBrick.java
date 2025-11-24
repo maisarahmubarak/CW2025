@@ -1,23 +1,20 @@
 package com.comp2042;
 
 import com.comp2042.logic.bricks.Brick;
-import com.comp2042.logic.bricks.BrickGenerator;
-import com.comp2042.logic.bricks.RandomBrickGenerator;
-
 import java.awt.Point;
 
 /**
- * Encapsulates the active falling brick: generator, rotator and current offset.
- * Provides movement operations that consult the board matrix. Extracted from SimpleBoard.
+ * Encapsulates the active falling brick: rotator and current offset.
+ * Brick generation and preview are moved to {@link BrickPreview}.
  */
 public class ActiveBrick {
 
-    private final BrickGenerator brickGenerator;
     private final BrickRotator brickRotator;
+    private final BrickPreview preview;
     private Point currentOffset;
 
     public ActiveBrick() {
-        this.brickGenerator = new RandomBrickGenerator();
+        this.preview = new BrickPreview();
         this.brickRotator = new BrickRotator();
         this.currentOffset = new Point(0, 0);
     }
@@ -74,7 +71,7 @@ public class ActiveBrick {
     }
 
     public boolean createNewBrick(int[][] boardMatrix) {
-        Brick currentBrick = brickGenerator.getBrick();
+        Brick currentBrick = preview.consumeNext();
         brickRotator.setBrick(currentBrick);
         currentOffset = new Point(4, 1);
         return MatrixOperations.intersect(boardMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
@@ -93,6 +90,6 @@ public class ActiveBrick {
     }
 
     public int[][] getNextPreview() {
-        return brickGenerator.getNextBrick().getShapeMatrix().get(0);
+        return preview.peekNextPreview();
     }
 }
