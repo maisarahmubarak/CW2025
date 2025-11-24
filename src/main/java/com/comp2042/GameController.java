@@ -9,9 +9,8 @@ public class GameController implements InputActionListener {
     public GameController(GuiController c) {
         viewGuiController = c;
         board.createNewBrick();
-        viewGuiController.setEventListener(this);
-        viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
-        viewGuiController.bindScore(board.getScore().scoreProperty());
+    viewGuiController.setEventListener(this);
+    viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
     }
 
     @Override

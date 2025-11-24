@@ -3,7 +3,6 @@ package com.comp2042;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -198,9 +197,6 @@ public class GuiController implements Initializable {
 
     public void setEventListener(InputActionListener eventListener) {
         this.eventListener = eventListener;
-    }
-
-    public void bindScore(IntegerProperty integerProperty) {
     }
 
     public void gameOver() {
