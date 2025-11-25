@@ -55,38 +55,39 @@ public class GuiController implements Initializable {
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
         gamePanel.setFocusTraversable(true);
         gamePanel.requestFocus();
-        gamePanel.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (isPause.getValue() == Boolean.FALSE && isGameOver.getValue() == Boolean.FALSE) {
-                    if (keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A) {
-                        refreshBrick(eventListener.onLeftEvent(new MoveAction(ActionType.LEFT, ActionSource.USER)));
-                        keyEvent.consume();
-                    }
-                    if (keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D) {
-                        refreshBrick(eventListener.onRightEvent(new MoveAction(ActionType.RIGHT, ActionSource.USER)));
-                        keyEvent.consume();
-                    }
-                    if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W) {
-                        refreshBrick(eventListener.onRotateEvent(new MoveAction(ActionType.ROTATE, ActionSource.USER)));
-                        keyEvent.consume();
-                    }
-                    if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
-                        moveDown(new MoveAction(ActionType.DOWN, ActionSource.USER));
-                        keyEvent.consume();
-                    }
-                }
-                if (keyEvent.getCode() == KeyCode.N) {
-                    newGame(null);
-                }
-            }
-        });
+        gamePanel.setOnKeyPressed(new GameKeyHandler(this));
         gameOverPanel.setVisible(false);
 
         final Reflection reflection = new Reflection();
         reflection.setFraction(0.8);
         reflection.setTopOpacity(0.9);
         reflection.setTopOffset(-12);
+    }
+
+    // Moved the anonymous key handler here so key-handling logic lives in one place
+    // and can be delegated to from a separate GameKeyHandler class.
+    public void handleKeyEvent(KeyEvent keyEvent) {
+        if (isPause.getValue() == Boolean.FALSE && isGameOver.getValue() == Boolean.FALSE) {
+            if (keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A) {
+                refreshBrick(eventListener.onLeftEvent(new MoveAction(ActionType.LEFT, ActionSource.USER)));
+                keyEvent.consume();
+            }
+            if (keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D) {
+                refreshBrick(eventListener.onRightEvent(new MoveAction(ActionType.RIGHT, ActionSource.USER)));
+                keyEvent.consume();
+            }
+            if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W) {
+                refreshBrick(eventListener.onRotateEvent(new MoveAction(ActionType.ROTATE, ActionSource.USER)));
+                keyEvent.consume();
+            }
+            if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
+                moveDown(new MoveAction(ActionType.DOWN, ActionSource.USER));
+                keyEvent.consume();
+            }
+        }
+        if (keyEvent.getCode() == KeyCode.N) {
+            newGame(null);
+        }
     }
 
     public void initGameView(int[][] boardMatrix, ViewData brick) {

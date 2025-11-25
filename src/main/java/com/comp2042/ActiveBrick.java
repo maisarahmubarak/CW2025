@@ -5,16 +5,16 @@ import java.awt.Point;
 
 /**
  * Encapsulates the active falling brick: rotator and current offset.
- * Brick generation and preview are moved to {@link BrickPreview}.
+ * Brick generation and preview are moved to {@link BrickProvider}.
  */
 public class ActiveBrick {
 
     private final BrickRotator brickRotator;
-    private final BrickPreview preview;
+    private final BrickProvider preview;
     private Point currentOffset;
 
     public ActiveBrick() {
-        this.preview = new BrickPreview();
+        this.preview = new BrickProvider();
         this.brickRotator = new BrickRotator();
         this.currentOffset = new Point(0, 0);
     }
