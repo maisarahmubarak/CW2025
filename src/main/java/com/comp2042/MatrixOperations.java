@@ -1,10 +1,11 @@
 package com.comp2042;
 
+import com.comp2042.logic.bricks.BrickShape;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MatrixOperations {
 
@@ -14,25 +15,29 @@ public class MatrixOperations {
 
     }
 
-    public static boolean intersect(final int[][] matrix, final int[][] brick, int x, int y) {
-        for (int i = 0; i < brick.length; i++) {
-            for (int j = 0; j < brick[i].length; j++) {
-                int targetX = x + j;
-                int targetY = y + i;
-                if (brick[i][j] != 0 && (checkOutOfBound(matrix, targetX, targetY) || matrix[targetY][targetX] != 0)) {
-                    return true;
-                }
+    public static boolean intersect(final int[][] matrix, final BrickShape shape, int x, int y) {
+        final boolean[] conflict = {false};
+        shape.forEachCell((cellX, cellY, value) -> {
+            if (conflict[0]) {
+                return;
             }
-        }
-        return false;
+            int targetX = x + cellX;
+            int targetY = y + cellY;
+            if (checkOutOfBound(matrix, targetX, targetY) || matrix[targetY][targetX] != 0) {
+                conflict[0] = true;
+            }
+        });
+        return conflict[0];
     }
 
     private static boolean checkOutOfBound(int[][] matrix, int targetX, int targetY) {
-        boolean returnValue = true;
-        if (targetX >= 0 && targetY < matrix.length && targetX < matrix[targetY].length) {
-            returnValue = false;
+        if (targetX < 0 || targetY < 0) {
+            return true;
         }
-        return returnValue;
+        if (targetY >= matrix.length || targetX >= matrix[targetY].length) {
+            return true;
+        }
+        return false;
     }
 
     public static int[][] copy(int[][] original) {
@@ -46,17 +51,13 @@ public class MatrixOperations {
         return myInt;
     }
 
-    public static int[][] merge(int[][] filledFields, int[][] brick, int x, int y) {
+    public static int[][] merge(int[][] filledFields, BrickShape shape, int x, int y) {
         int[][] copy = copy(filledFields);
-        for (int i = 0; i < brick.length; i++) {
-            for (int j = 0; j < brick[i].length; j++) {
-                int targetX = x + j;
-                int targetY = y + i;
-                if (brick[i][j] != 0) {
-                    copy[targetY][targetX] = brick[i][j];
-                }
-            }
-        }
+        shape.forEachCell((cellX, cellY, value) -> {
+            int targetX = x + cellX;
+            int targetY = y + cellY;
+            copy[targetY][targetX] = value;
+        });
         return copy;
     }
 
@@ -91,9 +92,4 @@ public class MatrixOperations {
         int scoreBonus = 50 * clearedRows.size() * clearedRows.size();
         return new ClearRow(clearedRows.size(), tmp, scoreBonus);
     }
-
-    public static List<int[][]> deepCopyList(List<int[][]> list){
-        return list.stream().map(MatrixOperations::copy).collect(Collectors.toList());
-    }
-
 }
