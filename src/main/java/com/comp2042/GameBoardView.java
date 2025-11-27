@@ -69,8 +69,8 @@ public class GameBoardView {
 
     private void setRectangleData(int color, Rectangle rectangle) {
         rectangle.setFill(getFillColor(color));
-        rectangle.setArcHeight(9);
-        rectangle.setArcWidth(9);
+        rectangle.setArcHeight(0);
+        rectangle.setArcWidth(0);
     }
 
     private Paint getFillColor(int i) {
