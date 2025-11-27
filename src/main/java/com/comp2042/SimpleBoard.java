@@ -9,8 +9,12 @@ public class SimpleBoard implements Board {
     private final GameScore score;
 
     public SimpleBoard(int width, int height) {
+        this(width, height, new ClassicBrickFactory());
+    }
+
+    public SimpleBoard(int width, int height, BrickThemeFactory brickThemeFactory) {
         boardMatrix = new BoardMatrix(width, height);
-        activeBrick = new ActiveBrick();
+        activeBrick = new ActiveBrick(brickThemeFactory.createGenerator());
         score = new GameScore();
     }
 

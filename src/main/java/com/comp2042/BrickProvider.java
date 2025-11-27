@@ -2,7 +2,7 @@ package com.comp2042;
 
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
-import com.comp2042.logic.bricks.RandomBrickGenerator;
+import com.comp2042.logic.bricks.BrickShape;
 
 /**
  * Owns the BrickGenerator and provides a stable preview API for the UI and ActiveBrick.
@@ -13,9 +13,9 @@ public class BrickProvider {
     private final BrickGenerator generator;
     private Brick next;
 
-    public BrickProvider() {
-        this.generator = new RandomBrickGenerator();
-        this.next = generator.getBrick();
+    public BrickProvider(BrickGenerator generator) {
+        this.generator = generator;
+        this.next = this.generator.getBrick();
     }
 
     /**
@@ -30,7 +30,7 @@ public class BrickProvider {
     /**
      * Peek the preview shape for UI (first rotation matrix of the next brick).
      */
-    public int[][] peekNextPreview() {
-        return next.getShapeMatrix().get(0);
+    public BrickShape peekNextPreview() {
+        return next.getShapes().get(0);
     }
 }
