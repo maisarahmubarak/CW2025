@@ -59,6 +59,11 @@ public class GuiController implements Initializable {
     // Moved the anonymous key handler here so key-handling logic lives in one place
     // and can be delegated to from a separate GameKeyHandler class.
     public void handleKeyEvent(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.P) {
+            togglePause();
+            keyEvent.consume();
+            return;
+        }
         if (isPause.getValue() == Boolean.FALSE && isGameOver.getValue() == Boolean.FALSE) {
             if (keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A) {
                 gameBoardView.refreshBrick(eventListener.onLeftEvent(new MoveAction(ActionType.LEFT, ActionSource.USER)));
@@ -135,6 +140,20 @@ public class GuiController implements Initializable {
     }
 
     public void pauseGame(ActionEvent actionEvent) {
+        togglePause();
+    }
+
+    private void togglePause() {
+        if (isGameOver.getValue()) {
+            return;
+        }
+        boolean pauseEnabled = !isPause.getValue();
+        isPause.setValue(pauseEnabled);
+        if (pauseEnabled) {
+            gameLoop.stop();
+        } else {
+            gameLoop.play();
+        }
         gamePanel.requestFocus();
     }
 }
