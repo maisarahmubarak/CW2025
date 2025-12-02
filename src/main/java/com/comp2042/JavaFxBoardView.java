@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 public class JavaFxBoardView implements BoardView {
 
     private static final int HIDDEN_ROWS = 2;
+    private static final Color EMPTY_COLOR = Color.TRANSPARENT;
 
     private final GridPane gamePanel;
     private final GridPane brickPanel;
@@ -33,7 +34,7 @@ public class JavaFxBoardView implements BoardView {
         for (int i = 2; i < boardMatrix.length; i++) {
             for (int j = 0; j < boardMatrix[i].length; j++) {
                 Rectangle rectangle = new Rectangle(brickSize, brickSize);
-                rectangle.setFill(Color.TRANSPARENT);
+                rectangle.setFill(EMPTY_COLOR);
                 displayMatrix[i][j] = rectangle;
                 gamePanel.add(rectangle, j, i - 2);
             }
@@ -74,7 +75,7 @@ public class JavaFxBoardView implements BoardView {
         for (int i = 0; i < rectangles.length; i++) {
             for (int j = 0; j < rectangles[i].length; j++) {
                 Rectangle rectangle = new Rectangle(brickSize, brickSize);
-                rectangle.setFill(Color.TRANSPARENT);
+                rectangle.setFill(EMPTY_COLOR);
                 rectangles[i][j] = rectangle;
                 brickPanel.add(rectangle, j, i);
             }
@@ -93,7 +94,7 @@ public class JavaFxBoardView implements BoardView {
         }
         for (Rectangle[] row : rectangles) {
             for (Rectangle rectangle : row) {
-                rectangle.setFill(Color.TRANSPARENT);
+                rectangle.setFill(EMPTY_COLOR);
             }
         }
     }
