@@ -2,15 +2,20 @@ package com.comp2042;
 
 public class GameController implements InputActionListener {
 
-    private Board board = new SimpleBoard(25, 10);
+    private Board board;
 
     private final GuiController viewGuiController;
 
+    private final BrickThemeFactory brickThemeFactory;
+
     public GameController(GuiController c) {
         viewGuiController = c;
+        this.brickThemeFactory = new ClassicBrickFactory();
+        this.board = new SimpleBoard(25, 10, brickThemeFactory);
+        viewGuiController.setColorPalette(brickThemeFactory.createPalette());
         board.createNewBrick();
-    viewGuiController.setEventListener(this);
-    viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
+        viewGuiController.setEventListener(this);
+        viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
     }
 
     @Override
