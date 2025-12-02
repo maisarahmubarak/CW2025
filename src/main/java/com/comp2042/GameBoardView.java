@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 @Deprecated
 public class GameBoardView extends JavaFxBoardView {
 
-    public GameBoardView(GridPane gamePanel, GridPane brickPanel, int brickSize) {
-        super(gamePanel, brickPanel, brickSize);
+    public GameBoardView(GridPane gamePanel, GridPane brickPanel, GridPane previewPanel, int brickSize) {
+        super(gamePanel, brickPanel, previewPanel, brickSize);
     }
 }
