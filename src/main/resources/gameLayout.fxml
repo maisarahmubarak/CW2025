@@ -7,10 +7,10 @@
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
 <Pane fx:controller="com.comp2042.GuiController"
-      xmlns:fx="http://javafx.com/fxml">
-    <GridPane fx:id="brickPanel" vgap="1" hgap="1"/>
-    <GridPane fx:id="previewPanel" layoutX="320" layoutY="40" hgap="1" vgap="1"/>
-    <BorderPane styleClass="gameBoard" fx:id="gameBoard">
+            xmlns:fx="http://javafx.com/fxml" styleClass="game-root">
+        <GridPane fx:id="brickPanel" vgap="1" hgap="1" styleClass="active-brick-overlay"/>
+        <GridPane fx:id="previewPanel" layoutX="320" layoutY="40" hgap="1" vgap="1" styleClass="panel-box preview-panel"/>
+        <BorderPane styleClass="gameBoard" fx:id="gameBoard">
         <center>
             <GridPane fx:id="gamePanel" hgap="1" vgap="1" layoutY="30" layoutX="40"/>
         </center>

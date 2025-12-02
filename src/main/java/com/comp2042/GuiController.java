@@ -58,6 +58,7 @@ public class GuiController implements Initializable {
         gamePanel.setOnKeyPressed(new GameKeyHandler(this));
         gameBoardView = new GameBoardView(gamePanel, brickPanel, previewPanel, BRICK_SIZE);
         gameBoardView.setPalette(palette);
+        brickPanel.toFront();
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
 

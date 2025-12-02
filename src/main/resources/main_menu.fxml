@@ -5,8 +5,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import java.net.URL?>
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.MainMenuController"
-           styleClass="menu-root">
-    <VBox spacing="20" alignment="CENTER">
+        styleClass="menu-root">
+    <VBox spacing="20" alignment="CENTER" styleClass="menu-panel">
         <Label text="TETRIS" styleClass="menu-title"/>
         <Button text="Start" styleClass="menu-button" onAction="#onStartGame"/>
         <Button text="Tutorial" styleClass="menu-button" onAction="#onTutorial"/>
