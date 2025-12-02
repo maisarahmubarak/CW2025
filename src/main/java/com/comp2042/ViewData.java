@@ -1,21 +1,23 @@
 package com.comp2042;
 
+import com.comp2042.logic.bricks.BrickShape;
+
 public final class ViewData {
 
-    private final int[][] brickData;
+    private final BrickShape brickShape;
     private final int xPosition;
     private final int yPosition;
-    private final int[][] nextBrickData;
+    private final BrickShape nextBrickShape;
 
-    public ViewData(int[][] brickData, int xPosition, int yPosition, int[][] nextBrickData) {
-        this.brickData = brickData;
+    public ViewData(BrickShape brickShape, int xPosition, int yPosition, BrickShape nextBrickShape) {
+        this.brickShape = brickShape;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.nextBrickData = nextBrickData;
+        this.nextBrickShape = nextBrickShape;
     }
 
-    public int[][] getBrickData() {
-        return MatrixOperations.copy(brickData);
+    public BrickShape getBrickShape() {
+        return brickShape;
     }
 
     public int getxPosition() {
@@ -26,7 +28,8 @@ public final class ViewData {
         return yPosition;
     }
 
-    public int[][] getNextBrickData() {
-        return MatrixOperations.copy(nextBrickData);
+    public BrickShape getNextBrickShape() {
+        return nextBrickShape;
     }
+
 }
