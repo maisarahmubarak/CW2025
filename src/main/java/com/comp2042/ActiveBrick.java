@@ -1,6 +1,8 @@
 package com.comp2042;
 
 import com.comp2042.logic.bricks.Brick;
+import com.comp2042.logic.bricks.BrickGenerator;
+import com.comp2042.logic.bricks.BrickShape;
 import java.awt.Point;
 
 /**
@@ -13,10 +15,14 @@ public class ActiveBrick {
     private final BrickProvider preview;
     private Point currentOffset;
 
-    public ActiveBrick() {
-        this.preview = new BrickProvider();
+    public ActiveBrick(BrickGenerator generator) {
+        this.preview = new BrickProvider(generator);
         this.brickRotator = new BrickRotator();
         this.currentOffset = new Point(0, 0);
+    }
+
+    public ActiveBrick() {
+        this(new ClassicBrickFactory().createGenerator());
     }
 
     public boolean moveDown(int[][] boardMatrix) {
@@ -77,7 +83,7 @@ public class ActiveBrick {
         return MatrixOperations.intersect(boardMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 
-    public int[][] getCurrentShape() {
+    public BrickShape getCurrentShape() {
         return brickRotator.getCurrentShape();
     }
 
@@ -89,7 +95,7 @@ public class ActiveBrick {
         return (int) currentOffset.getY();
     }
 
-    public int[][] getNextPreview() {
+    public BrickShape getNextPreview() {
         return preview.peekNextPreview();
     }
 }

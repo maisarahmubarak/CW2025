@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import com.comp2042.logic.bricks.BrickShape;
+
 /**
  * Holds the board matrix and operations that mutate it (merge, clearRows, reset).
  * Extracted from SimpleBoard to improve single responsibility.
@@ -20,7 +22,7 @@ public class BoardMatrix {
         return matrix;
     }
 
-    public void merge(int[][] brick, int x, int y) {
+    public void merge(BrickShape brick, int x, int y) {
         this.matrix = MatrixOperations.merge(this.matrix, brick, x, y);
     }
 
