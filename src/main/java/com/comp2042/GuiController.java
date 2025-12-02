@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -42,6 +44,8 @@ public class GuiController implements Initializable {
     private final BooleanProperty isPause = new SimpleBooleanProperty();
 
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
+
+    private Timeline resumeCountdown;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -125,12 +129,14 @@ public class GuiController implements Initializable {
 
     public void gameOver() {
         gameLoop.stop();
+        cancelResumeCountdown();
         gameOverPanel.setVisible(true);
         isGameOver.setValue(Boolean.TRUE);
     }
 
     public void newGame(ActionEvent actionEvent) {
         gameLoop.stop();
+        cancelResumeCountdown();
         gameOverPanel.setVisible(false);
         eventListener.createNewGame();
         gamePanel.requestFocus();
@@ -147,13 +153,57 @@ public class GuiController implements Initializable {
         if (isGameOver.getValue()) {
             return;
         }
-        boolean pauseEnabled = !isPause.getValue();
-        isPause.setValue(pauseEnabled);
-        if (pauseEnabled) {
+        if (!isPause.getValue()) {
+            isPause.setValue(Boolean.TRUE);
             gameLoop.stop();
+            cancelResumeCountdown();
         } else {
-            gameLoop.play();
+            if (resumeCountdown != null) {
+                cancelResumeCountdown();
+            } else {
+                beginResumeCountdown();
+            }
         }
         gamePanel.requestFocus();
+    }
+
+    private void beginResumeCountdown() {
+        final int[] remaining = {3};
+        resumeCountdown = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> showCountdown(String.valueOf(remaining[0]--))),
+                new KeyFrame(Duration.seconds(1))
+        );
+        resumeCountdown.setCycleCount(3);
+        resumeCountdown.setOnFinished(e -> {
+            isPause.setValue(Boolean.FALSE);
+            gameLoop.play();
+            resumeCountdown = null;
+        });
+        resumeCountdown.playFromStart();
+    }
+
+    private void showCountdown(String text) {
+        NotificationPanel panel = new NotificationPanel(text);
+        centerOverlay(panel);
+        groupNotification.getChildren().add(panel);
+        panel.showScore(groupNotification.getChildren());
+    }
+
+    private void centerOverlay(NotificationPanel panel) {
+        double areaWidth = gamePanel.getBoundsInParent().getWidth();
+        double areaHeight = gamePanel.getBoundsInParent().getHeight();
+        double baseX = gamePanel.getLayoutX();
+        double baseY = gamePanel.getLayoutY();
+        double centeredX = baseX + Math.max(0, (areaWidth - panel.getMinWidth()) / 2);
+        double centeredY = baseY + Math.max(0, (areaHeight - panel.getMinHeight()) / 2);
+        panel.setLayoutX(centeredX);
+        panel.setLayoutY(centeredY);
+    }
+
+    private void cancelResumeCountdown() {
+        if (resumeCountdown != null) {
+            resumeCountdown.stop();
+            resumeCountdown = null;
+        }
     }
 }
