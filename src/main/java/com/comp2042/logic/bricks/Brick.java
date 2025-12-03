@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Brick {
 
-    List<int[][]> getShapeMatrix();
+    List<BrickShape> getShapes();
 }

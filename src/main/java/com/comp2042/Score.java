@@ -1,21 +1,24 @@
 package com.comp2042;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
+/**
+ * Deprecated wrapper kept for backward compatibility. Use {@link GameScore} instead.
+ */
+@Deprecated
 public final class Score {
 
-    private final IntegerProperty score = new SimpleIntegerProperty(0);
+    private final GameScore delegate = new GameScore();
 
     public IntegerProperty scoreProperty() {
-        return score;
+        return delegate.scoreProperty();
     }
 
     public void add(int i){
-        score.setValue(score.getValue() + i);
+        delegate.add(i);
     }
 
     public void reset() {
-        score.setValue(0);
+        delegate.reset();
     }
 }

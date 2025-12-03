@@ -1,0 +1,40 @@
+package com.comp2042;
+
+import javafx.beans.property.IntegerProperty;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+class GameScoreTest {
+
+    @Test
+    void addAccumulatesScore() {
+        GameScore gameScore = new GameScore();
+
+        gameScore.add(5);
+        gameScore.add(15);
+
+        assertEquals(20, gameScore.scoreProperty().get());
+    }
+
+    @Test
+    void resetClearsScore() {
+        GameScore gameScore = new GameScore();
+        gameScore.add(42);
+
+        gameScore.reset();
+
+        assertEquals(0, gameScore.scoreProperty().get());
+    }
+
+    @Test
+    void scorePropertyIsStableReference() {
+        GameScore gameScore = new GameScore();
+
+        IntegerProperty first = gameScore.scoreProperty();
+        IntegerProperty second = gameScore.scoreProperty();
+
+        assertSame(first, second, "scoreProperty should always return the same observable for binding");
+    }
+}

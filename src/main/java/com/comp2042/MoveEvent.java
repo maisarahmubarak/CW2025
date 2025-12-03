@@ -1,19 +1,36 @@
 package com.comp2042;
 
+/**
+ * Deprecated wrapper for compatibility. Use {@link MoveAction} instead.
+ */
+@Deprecated
 public final class MoveEvent {
-    private final EventType eventType;
-    private final EventSource eventSource;
+    private final MoveAction delegate;
 
-    public MoveEvent(EventType eventType, EventSource eventSource) {
-        this.eventType = eventType;
-        this.eventSource = eventSource;
+    public MoveEvent(ActionType eventType, ActionSource eventSource) {
+        this.delegate = new MoveAction(eventType, eventSource);
     }
 
-    public EventType getEventType() {
-        return eventType;
+    /**
+     * New name for the getter returning the action type.
+     */
+    public ActionType getActionType() {
+        return delegate.getActionType();
     }
 
-    public EventSource getEventSource() {
-        return eventSource;
+    /**
+     * Deprecated compatibility getter. Use {@link #getActionType()}.
+     */
+    @Deprecated
+    public ActionType getEventType() {
+        return getActionType();
+    }
+
+    public ActionSource getEventSource() {
+        return delegate.getEventSource();
+    }
+
+    public MoveAction toMoveAction() {
+        return delegate;
     }
 }

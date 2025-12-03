@@ -1,21 +1,25 @@
 package com.comp2042;
 
-public class GameController implements InputEventListener {
+public class GameController implements InputActionListener {
 
-    private Board board = new SimpleBoard(25, 10);
+    private Board board;
 
     private final GuiController viewGuiController;
 
+    private final BrickThemeFactory brickThemeFactory;
+
     public GameController(GuiController c) {
         viewGuiController = c;
+        this.brickThemeFactory = new ClassicBrickFactory();
+        this.board = new SimpleBoard(25, 10, brickThemeFactory);
+        viewGuiController.setColorPalette(brickThemeFactory.createPalette());
         board.createNewBrick();
         viewGuiController.setEventListener(this);
         viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
-        viewGuiController.bindScore(board.getScore().scoreProperty());
     }
 
     @Override
-    public DownData onDownEvent(MoveEvent event) {
+    public DownData onDownEvent(MoveAction event) {
         boolean canMove = board.moveBrickDown();
         ClearRow clearRow = null;
         if (!canMove) {
@@ -31,7 +35,7 @@ public class GameController implements InputEventListener {
             viewGuiController.refreshGameBackground(board.getBoardMatrix());
 
         } else {
-            if (event.getEventSource() == EventSource.USER) {
+            if (event.getEventSource() == ActionSource.USER) {
                 board.getScore().add(1);
             }
         }
@@ -39,19 +43,19 @@ public class GameController implements InputEventListener {
     }
 
     @Override
-    public ViewData onLeftEvent(MoveEvent event) {
+    public ViewData onLeftEvent(MoveAction event) {
         board.moveBrickLeft();
         return board.getViewData();
     }
 
     @Override
-    public ViewData onRightEvent(MoveEvent event) {
+    public ViewData onRightEvent(MoveAction event) {
         board.moveBrickRight();
         return board.getViewData();
     }
 
     @Override
-    public ViewData onRotateEvent(MoveEvent event) {
+    public ViewData onRotateEvent(MoveAction event) {
         board.rotateLeftBrick();
         return board.getViewData();
     }
