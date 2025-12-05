@@ -21,6 +21,10 @@
         <Label text="SCORE" styleClass="nextBrickLabel"/>
         <Label fx:id="scoreLabel" text="0" styleClass="scoreClass"/>
     </VBox>
+    <VBox fx:id="timerPanel" layoutX="90" layoutY="200" alignment="CENTER" styleClass="vbox">
+        <Label text="TIME" styleClass="nextBrickLabel"/>
+        <Label fx:id="timerLabel" text="00:00" styleClass="scoreClass"/>
+    </VBox>
     <Group fx:id="groupNotification" layoutX="240" layoutY="30">
         <VBox alignment="CENTER">
             <GameOverPanel fx:id="gameOverPanel"/>
