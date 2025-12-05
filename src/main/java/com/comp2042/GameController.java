@@ -15,6 +15,8 @@ public class GameController implements InputActionListener {
         // Container: 520px ÷ 20px/brick = 26 visible rows exactly
         this.board = new SimpleBoard(28, 10, brickThemeFactory);
         viewGuiController.setColorPalette(brickThemeFactory.createPalette());
+        // bind the GameScore to the GUI so it can display current score
+        viewGuiController.bindToScore(board.getScore());
         board.createNewBrick();
         viewGuiController.setEventListener(this);
         viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
@@ -28,7 +30,10 @@ public class GameController implements InputActionListener {
             board.mergeBrickToBackground();
             clearRow = board.clearRows();
             if (clearRow.getLinesRemoved() > 0) {
+                // Add configured bonus score for rows cleared
                 board.getScore().add(clearRow.getScoreBonus());
+                // Also increment the score per row cleared to make it apparent on each clear
+                board.getScore().add(clearRow.getLinesRemoved());
             }
             if (board.createNewBrick()) {
                 viewGuiController.gameOver();
