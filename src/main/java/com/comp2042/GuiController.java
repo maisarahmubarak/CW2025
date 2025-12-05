@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -35,6 +37,12 @@ public class GuiController implements Initializable {
 
     @FXML
     private GameOverPanel gameOverPanel;
+    
+    @FXML
+    private VBox scorePanel;
+
+    @FXML
+    private Label scoreLabel;
 
     private InputActionListener eventListener;
 
@@ -62,6 +70,13 @@ public class GuiController implements Initializable {
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
 
+    }
+
+    public void bindToScore(GameScore score) {
+        if (score == null) {
+            return;
+        }
+        scoreLabel.textProperty().bind(score.scoreProperty().asString());
     }
 
     // Moved the anonymous key handler here so key-handling logic lives in one place
