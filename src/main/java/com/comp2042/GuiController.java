@@ -44,6 +44,15 @@ public class GuiController implements Initializable {
     @FXML
     private Label scoreLabel;
 
+    @FXML
+    private VBox timerPanel;
+
+    @FXML
+    private Label timerLabel;
+
+    private Timeline timerTimeline;
+    private int elapsedSeconds = 0;
+
     private InputActionListener eventListener;
 
     private GameBoardView gameBoardView;
@@ -69,7 +78,34 @@ public class GuiController implements Initializable {
         brickPanel.toFront();
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
+        initTimer();
+    }
 
+    private void initTimer() {
+        timerTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            elapsedSeconds++;
+            updateTimerLabel();
+        }));
+        timerTimeline.setCycleCount(Timeline.INDEFINITE);
+    }
+
+    private void updateTimerLabel() {
+        int minutes = elapsedSeconds / 60;
+        int seconds = elapsedSeconds % 60;
+        timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+    }
+
+    private void startTimer() {
+        timerTimeline.play();
+    }
+
+    private void stopTimer() {
+        timerTimeline.stop();
+    }
+
+    private void resetTimer() {
+        elapsedSeconds = 0;
+        updateTimerLabel();
     }
 
     public void bindToScore(GameScore score) {
@@ -113,6 +149,8 @@ public class GuiController implements Initializable {
     public void initGameView(int[][] boardMatrix, ViewData brick) {
         gameBoardView.initGameView(boardMatrix, brick);
         gameLoop.play();
+        resetTimer();
+        startTimer();
     }
 
     public void refreshGameBackground(int[][] board) {
@@ -148,6 +186,7 @@ public class GuiController implements Initializable {
 
     public void gameOver() {
         gameLoop.stop();
+        stopTimer();
         cancelResumeCountdown();
         gameOverPanel.setVisible(true);
         isGameOver.setValue(Boolean.TRUE);
@@ -155,11 +194,14 @@ public class GuiController implements Initializable {
 
     public void newGame(ActionEvent actionEvent) {
         gameLoop.stop();
+        stopTimer();
         cancelResumeCountdown();
         gameOverPanel.setVisible(false);
         eventListener.createNewGame();
         gamePanel.requestFocus();
         gameLoop.play();
+        resetTimer();
+        startTimer();
         isPause.setValue(Boolean.FALSE);
         isGameOver.setValue(Boolean.FALSE);
     }
@@ -175,6 +217,7 @@ public class GuiController implements Initializable {
         if (!isPause.getValue()) {
             isPause.setValue(Boolean.TRUE);
             gameLoop.stop();
+            stopTimer();
             cancelResumeCountdown();
         } else {
             if (resumeCountdown != null) {
@@ -196,6 +239,7 @@ public class GuiController implements Initializable {
         resumeCountdown.setOnFinished(e -> {
             isPause.setValue(Boolean.FALSE);
             gameLoop.play();
+            startTimer();
             resumeCountdown = null;
         });
         resumeCountdown.playFromStart();
