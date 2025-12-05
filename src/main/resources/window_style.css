@@ -1,5 +1,6 @@
 .root {
-    -fx-background-image: url("background_image.png");
+    -fx-background-image: none;
+    -fx-background-color: #000612;
 }
 
 .nextBrick {
@@ -9,12 +10,15 @@
 }
 
 .gameBoard {
-    -fx-border-color: linear-gradient(#00f0ff, #0066ff);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 100% 100%, #0ff3ff, #7f00ff),
+            linear-gradient(from 0% 0% to 100% 100%, #00e6ff, #eb00ff);
     -fx-border-width: 3px;
     -fx-border-radius: 0;
-    -fx-background-color: rgba(2, 20, 40, 0.95);
-    -fx-background-insets: 0;
+    -fx-background-color: rgba(1, 6, 20, 0.9);
+    -fx-background-insets: 0, 1;
     -fx-border-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 25, 0.4, 0, 0);
 }
 
 .nextBrickLabel {
@@ -75,25 +79,29 @@
 }
 
 .game-root {
-    -fx-background-color: #030c2e;
-    -fx-background-image: none;
+    -fx-background-color:
+            linear-gradient(#020617, #000b28 40%, #0f163c 100%);
 }
 
 .active-brick-overlay {
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.25), 15, 0.2, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.45), 18, 0.3, 0, 0);
 }
 
 .preview-panel {
     -fx-pref-width: 140;
     -fx-pref-height: 140;
     -fx-padding: 10;
-    -fx-background-color: rgba(5, 12, 32, 0.85);
+    -fx-background-color: rgba(2, 7, 32, 0.85);
+    -fx-border-color: linear-gradient(#00ffe8, #7a00ff);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.35), 20, 0.2, 0, 1);
 }
 
 .menu-root {
     -fx-background-color:
-            radial-gradient(center 50% 40%, radius 70%, rgba(20, 40, 80, 0.8), rgba(2, 5, 20, 0.95)),
-            linear-gradient(#01010b 0%, #030c2e 100%);
+            radial-gradient(center 50% 40%, radius 60%, rgba(0, 255, 255, 0.4), rgba(128, 0, 255, 0.4)),
+            linear-gradient(#00000a 0%, #050a22 100%);
     -fx-padding: 40;
 }
 
