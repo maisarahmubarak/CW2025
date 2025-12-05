@@ -11,7 +11,9 @@ public class GameController implements InputActionListener {
     public GameController(GuiController c) {
         viewGuiController = c;
         this.brickThemeFactory = new ClassicBrickFactory();
-        this.board = new SimpleBoard(25, 10, brickThemeFactory);
+        // Board: 26 visible rows + 2 hidden rows = 28 total; 10 columns
+        // Container: 520px ÷ 20px/brick = 26 visible rows exactly
+        this.board = new SimpleBoard(28, 10, brickThemeFactory);
         viewGuiController.setColorPalette(brickThemeFactory.createPalette());
         board.createNewBrick();
         viewGuiController.setEventListener(this);
