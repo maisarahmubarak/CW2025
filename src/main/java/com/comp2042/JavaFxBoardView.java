@@ -1,6 +1,9 @@
 package com.comp2042;
 
 import com.comp2042.logic.bricks.BrickShape;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -35,26 +38,33 @@ public class JavaFxBoardView implements BoardView {
     @Override
     public void initGameView(int[][] boardMatrix, ViewData brick) {
         displayMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
-        for (int i = 2; i < boardMatrix.length; i++) {
+        for (int i = 0; i < boardMatrix.length; i++) {
             for (int j = 0; j < boardMatrix[i].length; j++) {
                 Rectangle rectangle = new Rectangle(brickSize, brickSize);
                 rectangle.setFill(EMPTY_COLOR);
                 displayMatrix[i][j] = rectangle;
-                gamePanel.add(rectangle, j, i - 2);
+                // Only add visible rows to the game panel (skip hidden rows 0-1)
+                if (i >= HIDDEN_ROWS) {
+                    gamePanel.add(rectangle, j, i - HIDDEN_ROWS);
+                }
             }
         }
 
         initializeBrickOverlay(brick.getBrickShape());
         paintBrickShape(brick.getBrickShape());
-        brickPanel.setLayoutX(gamePanel.getLayoutX() + brick.getxPosition() * brickPanel.getVgap() + brick.getxPosition() * brickSize);
-        brickPanel.setLayoutY(gamePanel.getLayoutY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
+        Point2D boardOrigin = getBoardOrigin();
+        double xOffset = brick.getxPosition() * (brickSize + brickPanel.getHgap());
+        brickPanel.setLayoutX(boardOrigin.getX() + xOffset);
+        brickPanel.setLayoutY(boardOrigin.getY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
         renderNextPreview(brick.getNextBrickShape());
     }
 
     @Override
     public void refreshBrick(ViewData brick) {
-        brickPanel.setLayoutX(gamePanel.getLayoutX() + brick.getxPosition() * brickPanel.getVgap() + brick.getxPosition() * brickSize);
-        brickPanel.setLayoutY(gamePanel.getLayoutY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
+        Point2D boardOrigin = getBoardOrigin();
+        double xOffset = brick.getxPosition() * (brickSize + brickPanel.getHgap());
+        brickPanel.setLayoutX(boardOrigin.getX() + xOffset);
+        brickPanel.setLayoutY(boardOrigin.getY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
         ensureOverlayMatches(brick.getBrickShape());
         paintBrickShape(brick.getBrickShape());
         renderNextPreview(brick.getNextBrickShape());
@@ -62,7 +72,7 @@ public class JavaFxBoardView implements BoardView {
 
     @Override
     public void refreshGameBackground(int[][] board) {
-        for (int i = 2; i < board.length; i++) {
+        for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 setRectangleData(board[i][j], displayMatrix[i][j]);
             }
@@ -151,5 +161,17 @@ public class JavaFxBoardView implements BoardView {
                 rectangle.setFill(EMPTY_COLOR);
             }
         }
+    }
+
+    private Point2D getBoardOrigin() {
+        Scene scene = gamePanel.getScene();
+        if (scene != null) {
+            Point2D scenePoint = gamePanel.localToScene(0, 0);
+            Node root = scene.getRoot();
+            if (root != null) {
+                return root.sceneToLocal(scenePoint);
+            }
+        }
+        return new Point2D(gamePanel.getLayoutX(), gamePanel.getLayoutY());
     }
 }

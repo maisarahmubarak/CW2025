@@ -13,6 +13,7 @@ public class ActiveBrick {
 
     private final BrickRotator brickRotator;
     private final BrickProvider preview;
+    private static final int HIDDEN_ROWS = 2;
     private Point currentOffset;
 
     public ActiveBrick(BrickGenerator generator) {
@@ -84,10 +85,10 @@ public class ActiveBrick {
         Brick currentBrick = preview.consumeNext();
         brickRotator.setBrick(currentBrick);
         // Spawn centered horizontally at top (row 0-1, hidden rows)
-        int boardWidth = boardMatrix[0].length; // 10
+        int boardWidth = boardMatrix[0].length;
         int brickWidth = brickRotator.getCurrentShape().getWidth();
         int spawnX = (boardWidth - brickWidth) / 2;
-        currentOffset = new Point(spawnX, 0);
+        currentOffset = new Point(spawnX, HIDDEN_ROWS);
         return MatrixOperations.intersect(boardMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 

@@ -22,16 +22,33 @@ public final class BrickShape implements BrickComponent {
     }
 
     public static BrickShape fromMatrix(int[][] matrix) {
-        List<BrickComponent> children = new ArrayList<>();
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int maxY = Integer.MIN_VALUE;
         for (int y = 0; y < matrix.length; y++) {
             for (int x = 0; x < matrix[y].length; x++) {
                 if (matrix[y][x] != 0) {
-                    children.add(new BrickCell(x, y, matrix[y][x]));
+                    minX = Math.min(minX, x);
+                    minY = Math.min(minY, y);
+                    maxX = Math.max(maxX, x);
+                    maxY = Math.max(maxY, y);
                 }
             }
         }
-        int width = matrix.length == 0 ? 0 : matrix[0].length;
-        int height = matrix.length;
+        if (minX == Integer.MAX_VALUE) {
+            return new BrickShape(Collections.emptyList(), 0, 0);
+        }
+        List<BrickComponent> children = new ArrayList<>();
+        for (int y = minY; y <= maxY; y++) {
+            for (int x = minX; x <= maxX; x++) {
+                if (matrix[y][x] != 0) {
+                    children.add(new BrickCell(x - minX, y - minY, matrix[y][x]));
+                }
+            }
+        }
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
         return new BrickShape(children, width, height);
     }
 
