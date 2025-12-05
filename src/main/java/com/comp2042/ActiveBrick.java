@@ -67,19 +67,27 @@ public class ActiveBrick {
     public boolean rotateLeft(int[][] boardMatrix) {
         int[][] currentMatrix = MatrixOperations.copy(boardMatrix);
         NextShapeInfo nextShape = brickRotator.getNextShape();
-        boolean conflict = MatrixOperations.intersect(currentMatrix, nextShape.getShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
-        if (conflict) {
-            return false;
-        } else {
-            brickRotator.setCurrentShape(nextShape.getPosition());
-            return true;
+        int[] horizontalOffsets = {0, 1, -1, 2, -2};
+        for (int offset : horizontalOffsets) {
+            Point candidate = new Point(currentOffset);
+            candidate.translate(offset, 0);
+            if (!MatrixOperations.intersect(currentMatrix, nextShape.getShape(), (int) candidate.getX(), (int) candidate.getY())) {
+                currentOffset = candidate;
+                brickRotator.setCurrentShape(nextShape.getPosition());
+                return true;
+            }
         }
+        return false;
     }
 
     public boolean createNewBrick(int[][] boardMatrix) {
         Brick currentBrick = preview.consumeNext();
         brickRotator.setBrick(currentBrick);
-        currentOffset = new Point(4, 1);
+        // Spawn centered horizontally at top (row 0-1, hidden rows)
+        int boardWidth = boardMatrix[0].length; // 10
+        int brickWidth = brickRotator.getCurrentShape().getWidth();
+        int spawnX = (boardWidth - brickWidth) / 2;
+        currentOffset = new Point(spawnX, 0);
         return MatrixOperations.intersect(boardMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 

@@ -18,12 +18,14 @@ public class MatrixOperations {
     public static boolean intersect(final int[][] matrix, final BrickShape shape, int x, int y) {
         final boolean[] conflict = {false};
         shape.forEachCell((cellX, cellY, value) -> {
-            if (conflict[0]) {
+            if (conflict[0] || value == 0) {
                 return;
             }
             int targetX = x + cellX;
             int targetY = y + cellY;
-            if (checkOutOfBound(matrix, targetX, targetY) || matrix[targetY][targetX] != 0) {
+            if (checkOutOfBound(matrix, targetX, targetY)) {
+                conflict[0] = true;
+            } else if (matrix[targetY][targetX] != 0) {
                 conflict[0] = true;
             }
         });
@@ -31,10 +33,12 @@ public class MatrixOperations {
     }
 
     private static boolean checkOutOfBound(int[][] matrix, int targetX, int targetY) {
-        if (targetX < 0 || targetY < 0) {
+        // Check horizontal bounds (width)
+        if (targetX < 0 || targetX >= matrix[0].length) {
             return true;
         }
-        if (targetY >= matrix.length || targetX >= matrix[targetY].length) {
+        // Check vertical bounds (height)
+        if (targetY < 0 || targetY >= matrix.length) {
             return true;
         }
         return false;
