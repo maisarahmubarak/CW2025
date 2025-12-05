@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
+import javafx.stage.Modality;
 
 public class MainMenuController {
 
@@ -44,17 +45,51 @@ public class MainMenuController {
 			return;
 		}
 		try {
-			URL location = getClass().getClassLoader().getResource("gameLayout.fxml");
-			FXMLLoader loader = new FXMLLoader(location);
-			Parent root = loader.load();
-			GuiController guiController = loader.getController();
-			Scene gameScene = new Scene(root, 700, 600);
-			primaryStage.setScene(gameScene);
-			primaryStage.centerOnScreen();
-			primaryStage.setTitle("TetrisJFX");
-			primaryStage.show();
-			new GameController(guiController);
-		} catch (IOException e) {
+			// First show a mode selection dialog
+			URL modeLocation = getClass().getClassLoader().getResource("mode_selection.fxml");
+			if (modeLocation == null) {
+				showInfo("Error", "Mode selection dialog couldn't be loaded: resource not found.");
+			} else {
+				FXMLLoader modeLoader = new FXMLLoader(modeLocation);
+				Parent modeRoot = modeLoader.load();
+				ModeSelectionController modeController = modeLoader.getController();
+				Stage modeStage = new Stage();
+				modeStage.setScene(new Scene(modeRoot));
+				modeStage.initOwner(primaryStage);
+				modeStage.initModality(Modality.APPLICATION_MODAL);
+				modeStage.setTitle("Select Mode");
+				modeStage.showAndWait();
+				GameMode selectedMode = modeController.getSelectedMode();
+				if (selectedMode == null) {
+					// user canceled, just return
+					startBlockRain();
+					return;
+				}
+				// otherwise proceed to start the game using the selected mode
+				URL location = getClass().getClassLoader().getResource("gameLayout.fxml");
+				if (location == null) {
+					showInfo("Error", "Game view couldn't be loaded: resource not found.");
+					return;
+				}
+				FXMLLoader loader = new FXMLLoader(location);
+				Parent root = loader.load();
+				GuiController guiController = loader.getController();
+				// pass the selected mode to GuiController if it supports it
+				try {
+					guiController.setGameMode(selectedMode);
+				} catch (NoSuchMethodError | RuntimeException ignored) {
+					// If controller doesn't support game mode, ignore gracefully
+				}
+				Scene gameScene = new Scene(root, 700, 600);
+				primaryStage.setScene(gameScene);
+				primaryStage.centerOnScreen();
+				primaryStage.setTitle("TetrisJFX - " + selectedMode.name());
+				primaryStage.show();
+				new GameController(guiController);
+			}
+		} catch (Exception e) {
+			// Print stack to console to aid debugging and show a user-friendly message
+			e.printStackTrace();
 			showInfo("Error", "Unable to start the game: " + e.getMessage());
 		}
 	}
@@ -62,6 +97,11 @@ public class MainMenuController {
 	@FXML
 	private void onTutorial() {
 		showInfo("Tutorial", "Use Left/Right to move, Up to rotate, Down to drop faster, N for new game, P to pause.");
+	}
+
+	@FXML
+	private void onModes() {
+		showInfo("Modes", "Mode selection coming soon—choose Classic/Speed/Danger when available.");
 	}
 
 	@FXML
