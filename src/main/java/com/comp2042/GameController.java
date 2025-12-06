@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import javafx.util.Duration;
+
 public class GameController implements InputActionListener {
 
     private Board board;
@@ -7,8 +9,14 @@ public class GameController implements InputActionListener {
     private final GuiController viewGuiController;
 
     private final BrickThemeFactory brickThemeFactory;
+    private final GameMode gameMode;
 
     public GameController(GuiController c) {
+        this(c, GameMode.CLASSIC);
+    }
+
+    public GameController(GuiController c, GameMode mode) {
+        this.gameMode = mode == null ? GameMode.CLASSIC : mode;
         viewGuiController = c;
         this.brickThemeFactory = new ClassicBrickFactory();
         // Board: 26 visible rows + 2 hidden rows = 28 total; 10 columns
@@ -20,6 +28,23 @@ public class GameController implements InputActionListener {
         board.createNewBrick();
         viewGuiController.setEventListener(this);
         viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
+        // Apply mode-specific initial board state
+        if (gameMode.getGarbageRows() > 0) {
+            board.addGarbageLines(gameMode.getGarbageRows());
+            viewGuiController.refreshGameBackground(board.getBoardMatrix());
+        }
+
+        if (gameMode == GameMode.SPEED) {
+            board.getScore().scoreProperty().addListener((obs, oldVal, newVal) -> {
+                int oldLevel = oldVal.intValue() / 100;
+                int newLevel = newVal.intValue() / 100;
+                if (newLevel > oldLevel) {
+                    double newMillis = 400.0 * Math.pow(0.9, newLevel);
+                    if (newMillis < 50) newMillis = 50;
+                    viewGuiController.setGameSpeed(Duration.millis(newMillis));
+                }
+            });
+        }
     }
 
     @Override
@@ -36,6 +61,12 @@ public class GameController implements InputActionListener {
                 board.getScore().add(clearRow.getLinesRemoved());
             }
             if (board.createNewBrick()) {
+                // show final score on the Game Over screen
+                try {
+                    int finalScore = board.getScore().scoreProperty().get();
+                    viewGuiController.setFinalScore(finalScore);
+                } catch (Exception ignored) {
+                }
                 viewGuiController.gameOver();
             }
 

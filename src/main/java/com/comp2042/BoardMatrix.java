@@ -35,4 +35,25 @@ public class BoardMatrix {
     public void reset() {
         this.matrix = new int[width][height];
     }
+
+    public void addGarbageLines(int lines) {
+        if (lines <= 0) {
+            return;
+        }
+        for (int i = 0; i < lines; i++) {
+            // push everything up by 1 row (remove top row) and create a garbage row at bottom
+            int[][] newMatrix = new int[width][height];
+            for (int x = 0; x < width; x++) {
+                for (int y = 1; y < height; y++) {
+                    newMatrix[x][y - 1] = matrix[x][y];
+                }
+            }
+            // bottom row filled with color code 1, leaving one random hole
+            int hole = (int) (Math.random() * width);
+            for (int x = 0; x < width; x++) {
+                newMatrix[x][height - 1] = (x == hole) ? 0 : 1;
+            }
+            matrix = newMatrix;
+        }
+    }
 }
