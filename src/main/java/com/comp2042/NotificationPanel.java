@@ -2,6 +2,9 @@ package com.comp2042;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,5 +53,23 @@ public class NotificationPanel extends BorderPane {
             }
         });
         transition.play();
+    }
+
+    public void animateCountdown(ObservableList<Node> list) {
+        this.setScaleX(0.8);
+        this.setScaleY(0.8);
+        this.setOpacity(1.0);
+
+        ScaleTransition st = new ScaleTransition(Duration.millis(150), this);
+        st.setFromX(0.8);
+        st.setFromY(0.8);
+        st.setToX(1.0);
+        st.setToY(1.0);
+
+        PauseTransition pause = new PauseTransition(Duration.millis(850));
+        pause.setOnFinished(e -> list.remove(this));
+
+        SequentialTransition seq = new SequentialTransition(st, pause);
+        seq.play();
     }
 }

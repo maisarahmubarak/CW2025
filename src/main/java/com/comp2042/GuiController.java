@@ -593,7 +593,7 @@ public class GuiController implements Initializable {
         NotificationPanel panel = new NotificationPanel(text);
         centerOverlay(panel);
         groupNotification.getChildren().add(panel);
-        panel.showScore(groupNotification.getChildren());
+        panel.animateCountdown(groupNotification.getChildren());
     }
 
     private void centerOverlay(NotificationPanel panel) {
