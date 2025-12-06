@@ -13,6 +13,25 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Load bundled PressStart2P font before loading FXML so label styles can pick it up.
+        // Prefer the resources/fonts/ location (created), fall back to root if not present.
+        try {
+            java.io.InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/PressStart2P-Regular.ttf");
+            if (fontStream == null) {
+                // fallback to the root of resources
+                fontStream = getClass().getClassLoader().getResourceAsStream("PressStart2P-Regular.ttf");
+            }
+            if (fontStream != null) {
+                javafx.scene.text.Font loaded = javafx.scene.text.Font.loadFont(fontStream, 12);
+                if (loaded == null) {
+                    System.err.println("Warning: Press Start 2P font failed to load from resources");
+                }
+            } else {
+                System.err.println("Warning: PressStart2P-Regular.ttf not found in resources/fonts or root");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         URL location = getClass().getClassLoader().getResource("main_menu.fxml");
         ResourceBundle resources = null;

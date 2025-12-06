@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,14 +24,34 @@ public class MainMenuController {
 	private Pane animationLayer;
 
 	@FXML
+	private Label titleLabel;
+
+	@FXML
 	private void initialize() {
 		// Ensure 'Press Start 2P' is available in this app by loading the bundled TTF file.
 		try {
-			java.net.URL fontUrl = getClass().getClassLoader().getResource("PressStart2P-Regular.ttf");
-			if (fontUrl != null) {
-				javafx.scene.text.Font.loadFont(fontUrl.toExternalForm(), 10);
+			java.io.InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/PressStart2P-Regular.ttf");
+			if (fontStream == null) {
+				fontStream = getClass().getClassLoader().getResourceAsStream("PressStart2P-Regular.ttf");
 			}
-		} catch (Exception ignored) {
+			if (fontStream != null) {
+				javafx.scene.text.Font.loadFont(fontStream, 12);
+			}
+		} catch (Exception ignored) {}
+
+		// Ensure the title label uses the new style (if not properly applied)
+		if (titleLabel != null) {
+			titleLabel.getStyleClass().removeIf(c -> c.equals("Press Start 2P"));
+			if (!titleLabel.getStyleClass().contains("menu-title")) {
+				titleLabel.getStyleClass().add("menu-title");
+			}
+			// Programmatic fallback: set font directly to avoid character blocks if CSS fails
+			try {
+				javafx.scene.text.Font custom = javafx.scene.text.Font.font("Press Start 2P", 110);
+				if (custom != null) {
+					titleLabel.setFont(custom);
+				}
+			} catch (Exception ignored) {}
 		}
 	}
 
