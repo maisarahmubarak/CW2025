@@ -12,7 +12,10 @@
     <?import javafx.scene.layout.VBox?>
     <AnchorPane fx:id="contentPane">
         <GridPane fx:id="brickPanel" vgap="1" hgap="1" styleClass="active-brick-overlay"/>
-        <GridPane fx:id="previewPanel" layoutX="520" layoutY="90" hgap="1" vgap="1" styleClass="panel-box preview-panel"/>
+    <VBox layoutX="520" layoutY="90" prefWidth="140" alignment="CENTER" styleClass="vbox">
+        <Label text="NEXT" styleClass="nextBrickLabel"/>
+        <GridPane fx:id="previewPanel" hgap="1" vgap="1" styleClass="preview-panel"/>
+    </VBox>
         <BorderPane styleClass="gameBoard" fx:id="gameBoard" layoutX="240" layoutY="30" prefWidth="215" prefHeight="520">
         <center>
             <StackPane fx:id="boardStack" BorderPane.alignment="TOP_LEFT">

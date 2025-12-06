@@ -22,7 +22,7 @@
 }
 
 .nextBrickLabel {
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-padding: 20px 0 0 0;
     -fx-font-size: 16px;
     -fx-text-fill: yellow;
@@ -38,7 +38,7 @@
     -fx-background-radius: 9, 8, 5, 4, 3;
     -fx-padding: 8;
     /*-fx-font-family: "Helvetica";*/
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
@@ -66,7 +66,7 @@
 }
 
 .gameOverStyle {
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 56px; /* reduced to fit board while maintaining size */
     -fx-font-weight: bold;
     -fx-text-fill: linear-gradient(#00f0ff, #7a00ff);
@@ -75,7 +75,7 @@
 }
 
 .scoreClass{
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 38;
     -fx-fill: yellow;
     -fx-text-fill: yellow;
@@ -95,11 +95,15 @@
     /* accommodate three 4x4 preview grids stacked vertically (4 rows each) */
     -fx-pref-height: 220;
     -fx-padding: 10;
-    -fx-background-color: rgba(2, 7, 32, 0.85);
-    -fx-border-color: linear-gradient(#00ffe8, #7a00ff);
-    -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.35), 20, 0.2, 0, 1);
+    -fx-background-color: rgba(1, 6, 20, 0.9);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 100% 100%, #0ff3ff, #7f00ff),
+            linear-gradient(from 0% 0% to 100% 100%, #00e6ff, #eb00ff);
+    -fx-border-width: 3px;
+    -fx-border-radius: 0;
+    -fx-background-insets: 0, 1;
+    -fx-border-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 25, 0.4, 0, 0);
 }
 
 .menu-root {
@@ -121,11 +125,21 @@
 }
 
 .menu-title {
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-text-fill: linear-gradient(#f9ff7a, #ff68f0);
     -fx-font-size: 72;
     -fx-letter-spacing: 6px;
     -fx-effect: dropshadow(gaussian, rgba(255, 0, 255, 0.7), 18, 0.4, 0, 0);
+}
+
+.big-menu-title {
+    -fx-font-size: 220; /* very large title */
+    -fx-letter-spacing: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ffffff, #ffde59);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.45), 30, 0.4, 0, 3), dropshadow(gaussian, rgba(255, 0, 255, 0.9), 22, 0.3, 0, 0);
+    -fx-padding: 10 0 20 0;
+    -fx-opacity: 1.0;
 }
 
 .menu-button {
@@ -140,7 +154,7 @@
     -fx-border-color: rgba(255,255,255,0.35);
     -fx-border-width: 2px;
     -fx-text-fill: #f8f8ff;
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 22;
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.6), 15, 0.3, 0, 0);
     -fx-cursor: hand;
@@ -167,30 +181,28 @@
     -fx-background-radius: 8;
     -fx-padding: 8 12 8 12;
     -fx-text-fill: #000000;
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 14px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 6, 0.5, 0, 2);
 }
 
 .game-over-overlay {
     /* dark semi-transparent full-screen overlay color */
-    -fx-fill: rgba(0, 0, 0, 0.7);
-        -fx-fill: rgba(0, 0, 0, 0.65);
-    }
+    -fx-fill: rgba(0, 0, 0, 0.65);
+}
 
-    .pauseLabel {
-        -fx-font-family: "Let's go Digital";
-        -fx-font-size: 36px;
-        -fx-text-fill: linear-gradient(#ffffff, #f9ff7a);
-        -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.9), 20, 0.4, 0, 0);
-    }
+.pauseLabel {
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 36px;
+    -fx-text-fill: linear-gradient(#ffffff, #f9ff7a);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.9), 20, 0.4, 0, 0);
 }
 
 .finalScoreBox {
     -fx-background-color: rgba(0,0,0,0.45);
     -fx-background-radius: 12;
     -fx-padding: 8 16 8 16;
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 26px;
     -fx-text-fill: linear-gradient(#f9ff7a, #ff68f0);
     -fx-font-weight: bold;
