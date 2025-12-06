@@ -1,6 +1,7 @@
 package com.comp2042;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.PauseTransition;
 import javafx.animation.FadeTransition;
@@ -27,6 +28,7 @@ import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ParallelTransition;
+import javafx.application.Platform;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -195,11 +197,11 @@ public class GuiController implements Initializable {
         gameOverScoreLabel.getStyleClass().add("finalScoreBox");
 
         gameOverRestartButton = new javafx.scene.control.Button("Restart");
-        gameOverRestartButton.getStyleClass().addAll("menu-button", "restart-button");
+        gameOverRestartButton.getStyleClass().addAll("menu-button", "restart-button", "game-over-button");
         gameOverRestartButton.setOnAction(e -> newGame(null));
 
         gameOverMainMenuButton = new javafx.scene.control.Button("Main Menu");
-        gameOverMainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button");
+        gameOverMainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button", "game-over-button");
         gameOverMainMenuButton.setOnAction(e -> { if (onReturnToMainMenu != null) onReturnToMainMenu.run(); });
 
         HBox buttons = new HBox(12, gameOverRestartButton, gameOverMainMenuButton);
@@ -471,6 +473,23 @@ public class GuiController implements Initializable {
         JavaFxBoardView jfxView = (JavaFxBoardView) gameBoardView;
 
         int[] rows = clearRow.getClearedRows();
+        // visual-only: small vertical shake on the board for multi-row clears (2 or more rows)
+        if (clearRow.getLinesRemoved() >= 2 && boardStack != null) {
+            // make a small amplitude based on lines removed: 2 -> 6px, 3 -> 8px, 4 -> 10px
+            final double amplitude = 6.0 + Math.max(0, clearRow.getLinesRemoved() - 2) * 2.0;
+            Platform.runLater(() -> {
+                // Keyframe timeline creates a quick vertical shake (up / down / settle)
+                Timeline shake = new Timeline(
+                        new KeyFrame(Duration.ZERO, new KeyValue(boardStack.translateYProperty(), 0)),
+                        new KeyFrame(Duration.millis(40), new KeyValue(boardStack.translateYProperty(), -amplitude)),
+                        new KeyFrame(Duration.millis(80), new KeyValue(boardStack.translateYProperty(), amplitude)),
+                        new KeyFrame(Duration.millis(120), new KeyValue(boardStack.translateYProperty(), -amplitude / 2.0)),
+                        new KeyFrame(Duration.millis(160), new KeyValue(boardStack.translateYProperty(), 0))
+                );
+                shake.setCycleCount(1);
+                shake.play();
+            });
+        }
         System.out.println("Animating cleared rows: " + rows.length + " rows");
         for (int r : rows) {
             for (int c = 0; c < prevMatrix[0].length; c++) {
@@ -509,20 +528,21 @@ public class GuiController implements Initializable {
                 }
 
                 // animation: fall a longer amount and fade out with a slight stagger + horizontal spread and rotation
-                TranslateTransition tt = new TranslateTransition(Duration.millis(700), rect);
+                // shorten the durations and delays to make the clear animation quicker while preserving visuals
+                TranslateTransition tt = new TranslateTransition(Duration.millis(350), rect);
                 tt.setByY(BRICK_SIZE * 2.0); // longer fall
                 // small horizontal spread: random lateral byX to spread the falling bricks slightly
                 double spreadPx = (dangerRandom.nextDouble() - 0.5) * BRICK_SIZE * 1.2; // ±12px range
                 tt.setByX(spreadPx);
-                FadeTransition ft = new FadeTransition(Duration.millis(680), rect);
+                FadeTransition ft = new FadeTransition(Duration.millis(320), rect);
                 ft.setFromValue(1.0);
                 ft.setToValue(0.0);
-                long baseDelay = 80;
-                long stagger = (c * 28) + (r % 3) * 12; // lateral + small row-based offset
+                long baseDelay = 40; // reduced base delay
+                long stagger = (c * 14) + (r % 3) * 6; // lateral + small row-based offset (reduced)
                 ft.setDelay(Duration.millis(baseDelay + stagger));
                 tt.setDelay(Duration.millis(baseDelay + stagger));
                 // Add a gentle rotation so pieces twist as they fall
-                RotateTransition rt = new RotateTransition(Duration.millis(700), rect);
+                RotateTransition rt = new RotateTransition(Duration.millis(350), rect);
                 rt.setByAngle((dangerRandom.nextDouble() - 0.5) * 36.0); // -18 .. +18 deg
                 rt.setDelay(Duration.millis(baseDelay + stagger));
                 ParallelTransition pt = new ParallelTransition(tt, ft, rt);
@@ -889,6 +909,8 @@ public class GuiController implements Initializable {
         if (isPause.getValue() || isGameOver.getValue()) return;
         javafx.scene.control.Label bubble = new javafx.scene.control.Label(message);
         bubble.getStyleClass().add("control-warning");
+        bubble.setWrapText(true);
+        bubble.setMaxWidth(180); // Fit within game panel without spilling to side panels
         
         groupNotification.getChildren().add(bubble);
         bubble.applyCss();
