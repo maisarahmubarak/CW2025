@@ -14,6 +14,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -42,6 +46,10 @@ public class GuiController implements Initializable {
 
     @FXML
     private GameOverPanel gameOverPanel;
+    @FXML
+    private BorderPane gameBoard;
+    @FXML
+    private javafx.scene.layout.Pane rootPane;
     private Runnable onReturnToMainMenu;
     
     @FXML
@@ -100,6 +108,12 @@ public class GuiController implements Initializable {
     private static final double DANGER_CONTROL_MAX_SEC = 18.0; // max delay between flips
     private static final double DANGER_CONTROL_DURATION_SEC = 3.5; // how long flip lasts
 
+    // Pause overlay UI
+    private StackPane pauseOverlay;
+    private javafx.scene.control.Label pauseLabel;
+    private javafx.scene.control.Button pauseResumeButton;
+    private javafx.scene.control.Button pauseMainMenuButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
@@ -111,9 +125,68 @@ public class GuiController implements Initializable {
         brickPanel.toFront();
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
+        createPauseOverlay();
         // Wire the GameOver buttons so they call GUI-level handlers
         wireGameOverButtons();
         initTimer();
+    }
+
+    private void createPauseOverlay() {
+        pauseOverlay = new StackPane();
+        pauseOverlay.setVisible(false);
+        pauseOverlay.setPickOnBounds(true);
+
+        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle();
+        rect.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.65));
+        // bind rectangle to the full window rootPane (so it covers whole game window)
+        if (rootPane != null) {
+            rect.widthProperty().bind(rootPane.widthProperty());
+            rect.heightProperty().bind(rootPane.heightProperty());
+        } else if (gameBoard != null) {
+            // fallback to board area
+            rect.widthProperty().bind(gameBoard.widthProperty());
+            rect.heightProperty().bind(gameBoard.heightProperty());
+        } else {
+            rect.setWidth(215);
+            rect.setHeight(520);
+        }
+        rect.getStyleClass().add("pause-overlay");
+
+        VBox content = new VBox(16);
+        content.setAlignment(javafx.geometry.Pos.CENTER);
+        pauseLabel = new javafx.scene.control.Label("PAUSED");
+        pauseLabel.getStyleClass().add("pauseLabel");
+        pauseResumeButton = new javafx.scene.control.Button("Resume");
+        pauseResumeButton.getStyleClass().add("menu-button");
+        pauseResumeButton.setOnAction(e -> togglePause());
+        pauseMainMenuButton = new javafx.scene.control.Button("Main Menu");
+        pauseMainMenuButton.getStyleClass().add("menu-button");
+        pauseMainMenuButton.setOnAction(e -> {
+            // Navigate back to main menu via registered callback if available
+            if (onReturnToMainMenu != null) {
+                onReturnToMainMenu.run();
+            }
+        });
+        HBox buttons = new HBox(12, pauseResumeButton, pauseMainMenuButton);
+        buttons.setAlignment(javafx.geometry.Pos.CENTER);
+        content.getChildren().addAll(pauseLabel, buttons);
+        pauseOverlay.getChildren().addAll(rect, content);
+        // Add overlay to rootPane so it covers the whole window; fallback to groupNotification
+        if (rootPane != null) {
+            rootPane.getChildren().add(pauseOverlay);
+        } else if (groupNotification != null) {
+            groupNotification.getChildren().add(pauseOverlay);
+        }
+    }
+
+    private void showPauseOverlay() {
+        if (pauseOverlay == null) return;
+        pauseOverlay.setVisible(true);
+    }
+
+    private void hidePauseOverlay() {
+        if (pauseOverlay == null) return;
+        pauseOverlay.setVisible(false);
     }
 
     private void initTimer() {
@@ -264,6 +337,7 @@ public class GuiController implements Initializable {
         stopDangerFlashTimer();
         stopDangerBoostTimer();
         stopDangerControlTimer();
+        hidePauseOverlay();
         gameOverPanel.setVisible(true);
         isGameOver.setValue(Boolean.TRUE);
     }
@@ -286,6 +360,7 @@ public class GuiController implements Initializable {
         resetTimer();
         startTimer();
         isPause.setValue(Boolean.FALSE);
+        hidePauseOverlay();
         isGameOver.setValue(Boolean.FALSE);
     }
 
@@ -302,12 +377,14 @@ public class GuiController implements Initializable {
             gameLoop.stop();
             stopTimer();
             cancelResumeCountdown();
+            showPauseOverlay();
         } else {
             if (resumeCountdown != null) {
                 cancelResumeCountdown();
             } else {
                 beginResumeCountdown();
             }
+            hidePauseOverlay();
         }
         gamePanel.requestFocus();
     }

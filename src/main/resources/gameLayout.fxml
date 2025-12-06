@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<Pane fx:controller="com.comp2042.GuiController"
+<Pane fx:id="rootPane" fx:controller="com.comp2042.GuiController"
       xmlns:fx="http://javafx.com/fxml" styleClass="game-root"
       prefWidth="700" prefHeight="600">
     <?import javafx.scene.control.Label?>
