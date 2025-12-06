@@ -209,8 +209,9 @@
 }
 
 .cancel-button {
-    -fx-background-color: #607d8b; /* Blue Grey */
-    -fx-effect: dropshadow(gaussian, rgba(96, 125, 139, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+    -fx-background-color: #ff0000; /* Red */
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
 }
 
 .restart-button {
