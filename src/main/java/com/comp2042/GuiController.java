@@ -152,6 +152,17 @@ public class GuiController implements Initializable {
             groupNotification.prefHeightProperty().bind(rootPane.heightProperty());
         }
         initTimer();
+        applyBrightness();
+    }
+
+    private void applyBrightness() {
+        if (rootPane != null) {
+             double sliderVal = GameSettings.getBrightness();
+             double colorAdjustVal = sliderVal - 1.0; 
+             javafx.scene.effect.ColorAdjust adjust = new javafx.scene.effect.ColorAdjust();
+             adjust.setBrightness(colorAdjustVal);
+             rootPane.setEffect(adjust);
+        }
     }
 
     private void createGameOverOverlay() {

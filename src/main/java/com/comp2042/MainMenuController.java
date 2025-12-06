@@ -53,6 +53,24 @@ public class MainMenuController {
 				}
 			} catch (Exception ignored) {}
 		}
+		
+		if (animationLayer != null) {
+			animationLayer.sceneProperty().addListener((obs, oldScene, newScene) -> {
+				if (newScene != null) {
+					applyBrightness();
+				}
+			});
+		}
+	}
+
+	private void applyBrightness() {
+		if (animationLayer != null && animationLayer.getScene() != null) {
+			double sliderVal = GameSettings.getBrightness();
+			double colorAdjustVal = sliderVal - 1.0;
+			javafx.scene.effect.ColorAdjust adjust = new javafx.scene.effect.ColorAdjust();
+			adjust.setBrightness(colorAdjustVal);
+			animationLayer.getScene().getRoot().setEffect(adjust);
+		}
 	}
 
 	void setPrimaryStage(Stage stage) {
@@ -129,7 +147,47 @@ public class MainMenuController {
 
 	@FXML
 	private void onSettings() {
-		showInfo("Settings", "Settings panel coming soon.");
+		if (primaryStage == null) {
+			return;
+		}
+		try {
+			URL settingsLocation = getClass().getClassLoader().getResource("settings.fxml");
+			if (settingsLocation == null) {
+				showInfo("Error", "Settings panel couldn't be loaded: resource not found.");
+				return;
+			}
+			FXMLLoader settingsLoader = new FXMLLoader(settingsLocation);
+			Parent settingsRoot = settingsLoader.load();
+			SettingsController settingsController = settingsLoader.getController();
+
+			// use overlay in same primary Stage
+			if (animationLayer == null) {
+				showInfo("Error", "Animation layer missing.");
+				return;
+			}
+
+			// Add semi-transparent dim to block the menu and focus the modal
+			javafx.scene.shape.Rectangle dim = new javafx.scene.shape.Rectangle();
+			dim.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.55));
+			dim.widthProperty().bind(animationLayer.widthProperty());
+			dim.heightProperty().bind(animationLayer.heightProperty());
+			StackPane overlay = new StackPane(dim, settingsRoot);
+			overlay.setPrefSize(animationLayer.getPrefWidth(), animationLayer.getPrefHeight());
+			overlay.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+			overlay.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+
+			StackPane.setAlignment(settingsRoot, Pos.CENTER);
+			animationLayer.getChildren().add(overlay);
+
+			settingsController.setParentOverlay(animationLayer);
+			settingsController.setOnBack(() -> {
+				animationLayer.getChildren().remove(overlay);
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			showInfo("Error", "Unable to open settings: " + e.getMessage());
+		}
 	}
 
 	private void showInfo(String title, String message) {
