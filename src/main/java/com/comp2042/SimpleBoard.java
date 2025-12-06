@@ -77,4 +77,9 @@ public class SimpleBoard implements Board {
         score.reset();
         createNewBrick();
     }
+
+    @Override
+    public void addGarbageLines(int lines) {
+        boardMatrix.addGarbageLines(lines);
+    }
 }
