@@ -24,6 +24,14 @@ public class MainMenuController {
 
 	@FXML
 	private void initialize() {
+		// Ensure 'Press Start 2P' is available in this app by loading the bundled TTF file.
+		try {
+			java.net.URL fontUrl = getClass().getClassLoader().getResource("PressStart2P-Regular.ttf");
+			if (fontUrl != null) {
+				javafx.scene.text.Font.loadFont(fontUrl.toExternalForm(), 10);
+			}
+		} catch (Exception ignored) {
+		}
 	}
 
 	void setPrimaryStage(Stage stage) {

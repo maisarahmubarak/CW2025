@@ -8,7 +8,8 @@
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.MainMenuController"
     styleClass="menu-root" prefWidth="700" prefHeight="600">
     <VBox spacing="20" alignment="CENTER" styleClass="menu-panel">
-        <Label text="TETRIS" styleClass="menu-title"/>
+         <Label fx:id="titleLabel" text="TETRIS" styleClass="menu-title big-menu-title"
+             style="-fx-font-family: 'Press Start 2P'; -fx-font-size: 150px; -fx-font-weight: bold; -fx-text-fill: linear-gradient(#ffffff,#ffde59); -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.5), 40, 0.45, 0, 5); -fx-opacity: 1;"/>
         <Button text="Start" styleClass="menu-button" onAction="#onStartGame"/>
         <Button text="Tutorial" styleClass="menu-button" onAction="#onTutorial"/>
         <Button text="Settings" styleClass="menu-button" onAction="#onSettings"/>
