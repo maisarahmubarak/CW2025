@@ -53,8 +53,18 @@ public class GameController implements InputActionListener {
         ClearRow clearRow = null;
         if (!canMove) {
             board.mergeBrickToBackground();
+            int[][] previousMatrix = MatrixOperations.copy(board.getBoardMatrix());
             clearRow = board.clearRows();
             if (clearRow.getLinesRemoved() > 0) {
+                try {
+                    System.out.println("GameController: detected clearedRows: " + java.util.Arrays.toString(clearRow.getClearedRows()));
+                } catch (Exception ignored) {
+                }
+                // Trigger visual animation showing cleared row blocks fall and vanish
+                try {
+                    viewGuiController.animateClearedRows(previousMatrix, clearRow);
+                } catch (Exception ignored) {
+                }
                 // Add configured bonus score for rows cleared
                 board.getScore().add(clearRow.getScoreBonus());
                 // Also increment the score per row cleared to make it apparent on each clear

@@ -196,4 +196,17 @@ public class JavaFxBoardView implements BoardView {
         }
         return new Point2D(gamePanel.getLayoutX(), gamePanel.getLayoutY());
     }
+
+    /**
+     * Returns the position of the top-left corner of the cell (column, row) in Scene coordinates.
+     * Row indexing is the same as the internal matrix (includes hidden rows), so caller must
+     * account for HIDDEN_ROWS when placing visuals that only show visible rows.
+     */
+    public Point2D getCellScenePosition(int column, int row) {
+        // Convert grid (column, row) into scene coordinates using the visible board origin
+        javafx.geometry.Point2D sceneOrigin = gamePanel.localToScene(0, 0);
+        double x = sceneOrigin.getX() + column * (brickSize + gamePanel.getHgap());
+        double y = sceneOrigin.getY() + (row - HIDDEN_ROWS) * brickSize;
+        return new Point2D(x, y);
+    }
 }

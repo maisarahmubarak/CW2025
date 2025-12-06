@@ -24,6 +24,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -425,6 +427,76 @@ public class GuiController implements Initializable {
             gameOverPanel.setVisible(true);
         }
         isGameOver.setValue(Boolean.TRUE);
+    }
+
+    /**
+     * Visual-only animation: turn cleared row blocks into falling and vanishing rectangles.
+     * This does not alter game state; it only animates an overlay based on the previous board snapshot.
+     */
+    public void animateClearedRows(int[][] prevMatrix, ClearRow clearRow) {
+        if (prevMatrix == null || clearRow == null || clearRow.getLinesRemoved() <= 0) return;
+        if (boardStack == null) return;
+        if (!(gameBoardView instanceof JavaFxBoardView)) return;
+        JavaFxBoardView jfxView = (JavaFxBoardView) gameBoardView;
+
+        int[] rows = clearRow.getClearedRows();
+        System.out.println("Animating cleared rows: " + rows.length + " rows");
+        for (int r : rows) {
+            for (int c = 0; c < prevMatrix[0].length; c++) {
+                int color = prevMatrix[r][c];
+                if (color == 0) continue;
+                Rectangle rect = new Rectangle(BRICK_SIZE, BRICK_SIZE);
+                rect.setFill(palette.colorFor(color));
+                rect.setArcHeight(0);
+                rect.setArcWidth(0);
+                rect.setMouseTransparent(true);
+                // compute position inside boardStack
+                javafx.geometry.Point2D scenePoint = jfxView.getCellScenePosition(c, r);
+                javafx.geometry.Point2D local;
+                if (groupNotification != null) {
+                    local = groupNotification.sceneToLocal(scenePoint);
+                    // skip cells above visible region (hidden rows)
+                    if (local.getY() < -8) {
+                        continue;
+                    }
+                    // Position the rect absolutely within groupNotification so it's above everything
+                    rect.setLayoutX(local.getX());
+                    rect.setLayoutY(local.getY());
+                    groupNotification.getChildren().add(rect);
+                } else if (boardStack != null) {
+                    local = boardStack.sceneToLocal(scenePoint);
+                    if (local.getY() < -8) {
+                        continue;
+                    }
+                    StackPane.setAlignment(rect, javafx.geometry.Pos.TOP_LEFT);
+                    rect.setTranslateX(local.getX());
+                    rect.setTranslateY(local.getY());
+                    boardStack.getChildren().add(rect);
+                } else {
+                    // no place to draw overlay; skip
+                    continue;
+                }
+
+                // animation: fall a short amount and fade out with a slight stagger
+                TranslateTransition tt = new TranslateTransition(Duration.millis(600), rect);
+                tt.setByY(BRICK_SIZE * 1.5);
+                FadeTransition ft = new FadeTransition(Duration.millis(680), rect);
+                ft.setFromValue(1.0);
+                ft.setToValue(0.0);
+                long baseDelay = 80;
+                long stagger = (c * 28) + (r % 3) * 12; // lateral + small row-based offset
+                ft.setDelay(Duration.millis(baseDelay + stagger));
+                tt.setDelay(Duration.millis(baseDelay + stagger));
+                ParallelTransition pt = new ParallelTransition(tt, ft);
+                pt.setOnFinished(ev -> {
+                    try {
+                        boardStack.getChildren().remove(rect);
+                    } catch (Exception ignored) {
+                    }
+                });
+                pt.play();
+            }
+        }
     }
 
     public void setOnReturnToMainMenu(Runnable r) {
