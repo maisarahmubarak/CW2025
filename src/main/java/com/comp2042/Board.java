@@ -27,4 +27,6 @@ public interface Board {
     GameScore getScore();
 
     void newGame();
+    
+    void addGarbageLines(int lines);
 }

@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class JavaFxBoardView implements BoardView {
 
-    private static final int HIDDEN_ROWS = 2;
+    private static final int HIDDEN_ROWS = 1;
     private static final Color EMPTY_COLOR = Color.TRANSPARENT;
     private static final int PREVIEW_GRID_SIZE = 4;
 
