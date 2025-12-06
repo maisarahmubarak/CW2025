@@ -12,7 +12,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +36,7 @@ public class GuiController implements Initializable {
     private GridPane gamePanel;
 
     @FXML
-    private Group groupNotification;
+    private AnchorPane groupNotification;
 
     @FXML
     private GridPane brickPanel;
@@ -114,6 +114,13 @@ public class GuiController implements Initializable {
     private javafx.scene.control.Button pauseResumeButton;
     private javafx.scene.control.Button pauseMainMenuButton;
 
+    // Game over overlay UI (mirror of pause overlay)
+    private StackPane gameOverOverlay;
+    private javafx.scene.control.Label gameOverTitleLabel;
+    private javafx.scene.control.Label gameOverScoreLabel;
+    private javafx.scene.control.Button gameOverRestartButton;
+    private javafx.scene.control.Button gameOverMainMenuButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
@@ -126,9 +133,66 @@ public class GuiController implements Initializable {
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
         createPauseOverlay();
+        createGameOverOverlay();
         // Wire the GameOver buttons so they call GUI-level handlers
         wireGameOverButtons();
+        // Ensure that the overlay anchor pane fills the whole window, so overlays are fullscreen
+        if (groupNotification != null && rootPane != null) {
+            groupNotification.prefWidthProperty().bind(rootPane.widthProperty());
+            groupNotification.prefHeightProperty().bind(rootPane.heightProperty());
+        }
         initTimer();
+    }
+
+    private void createGameOverOverlay() {
+        gameOverOverlay = new StackPane();
+        gameOverOverlay.setVisible(false);
+        gameOverOverlay.setPickOnBounds(true);
+
+        Rectangle rect = new Rectangle();
+        rect.setFill(Color.rgb(0, 0, 0, 0.65));
+        if (rootPane != null) {
+            rect.widthProperty().bind(rootPane.widthProperty());
+            rect.heightProperty().bind(rootPane.heightProperty());
+        } else if (gameBoard != null) {
+            rect.widthProperty().bind(gameBoard.widthProperty());
+            rect.heightProperty().bind(gameBoard.heightProperty());
+        } else {
+            rect.setWidth(215);
+            rect.setHeight(520);
+        }
+        rect.getStyleClass().add("game-over-overlay");
+
+        VBox content = new VBox(16);
+        content.setAlignment(javafx.geometry.Pos.CENTER);
+
+        gameOverTitleLabel = new javafx.scene.control.Label("GAME OVER");
+        gameOverTitleLabel.getStyleClass().add("gameOverStyle");
+        gameOverTitleLabel.setWrapText(true);
+
+        gameOverScoreLabel = new javafx.scene.control.Label("SCORE: 0");
+        gameOverScoreLabel.getStyleClass().add("finalScoreBox");
+
+        gameOverRestartButton = new javafx.scene.control.Button("Restart");
+        gameOverRestartButton.getStyleClass().add("menu-button");
+        gameOverRestartButton.setOnAction(e -> newGame(null));
+
+        gameOverMainMenuButton = new javafx.scene.control.Button("Main Menu");
+        gameOverMainMenuButton.getStyleClass().add("menu-button");
+        gameOverMainMenuButton.setOnAction(e -> { if (onReturnToMainMenu != null) onReturnToMainMenu.run(); });
+
+        HBox buttons = new HBox(12, gameOverRestartButton, gameOverMainMenuButton);
+        buttons.setAlignment(javafx.geometry.Pos.CENTER);
+
+        content.getChildren().addAll(gameOverTitleLabel, gameOverScoreLabel, buttons);
+        gameOverOverlay.getChildren().addAll(rect, content);
+
+        // Add overlay to rootPane so it covers the whole window; fallback to groupNotification
+        if (rootPane != null) {
+            rootPane.getChildren().add(gameOverOverlay);
+        } else if (groupNotification != null) {
+            groupNotification.getChildren().add(gameOverOverlay);
+        }
     }
 
     private void createPauseOverlay() {
@@ -311,6 +375,9 @@ public class GuiController implements Initializable {
             if (gameOverPanel != null) {
                 gameOverPanel.setFinalScore(score);
             }
+            if (gameOverScoreLabel != null) {
+                gameOverScoreLabel.setText(String.format("SCORE: %d", score));
+            }
         } catch (Exception ignored) {
         }
     }
@@ -328,6 +395,14 @@ public class GuiController implements Initializable {
                 onReturnToMainMenu.run();
             }
         });
+
+        // Also wire our new overlay buttons (if present) to the same actions
+        if (gameOverRestartButton != null) {
+            gameOverRestartButton.setOnAction(e -> newGame(null));
+        }
+        if (gameOverMainMenuButton != null) {
+            gameOverMainMenuButton.setOnAction(e -> { if (onReturnToMainMenu != null) onReturnToMainMenu.run(); });
+        }
     }
 
     public void gameOver() {
@@ -338,7 +413,15 @@ public class GuiController implements Initializable {
         stopDangerBoostTimer();
         stopDangerControlTimer();
         hidePauseOverlay();
-        gameOverPanel.setVisible(true);
+        if (gameOverOverlay != null) {
+            gameOverOverlay.setVisible(true);
+            // Set final score for overlay
+            if (gameOverScoreLabel != null && gameLoop != null) {
+                // The score is set earlier by the caller in the pipeline, but also ensure to set to current game's score
+            }
+        } else {
+            gameOverPanel.setVisible(true);
+        }
         isGameOver.setValue(Boolean.TRUE);
     }
 
@@ -353,6 +436,7 @@ public class GuiController implements Initializable {
         stopDangerFlashTimer();
         stopDangerBoostTimer();
         stopDangerControlTimer();
+        if (gameOverOverlay != null) gameOverOverlay.setVisible(false);
         gameOverPanel.setVisible(false);
         eventListener.createNewGame();
         gamePanel.requestFocus();

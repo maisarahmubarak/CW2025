@@ -92,7 +92,8 @@
 
 .preview-panel {
     -fx-pref-width: 140;
-    -fx-pref-height: 140;
+    /* accommodate three 4x4 preview grids stacked vertically (4 rows each) */
+    -fx-pref-height: 220;
     -fx-padding: 10;
     -fx-background-color: rgba(2, 7, 32, 0.85);
     -fx-border-color: linear-gradient(#00ffe8, #7a00ff);

@@ -57,8 +57,10 @@ public class GameOverPanel extends BorderPane {
         HBox buttons = new HBox(12, restartButton, mainMenuButton);
         buttons.setAlignment(Pos.CENTER);
 
+        // Keep previous behavior: use fixed sizes and no dynamic font scaling
         content.getChildren().addAll(gameOverLabel, finalScoreLabel, buttons);
         root.getChildren().addAll(overlay, content);
+        // overlay is already bound; use fixed container size for GameOverPanel
         setCenter(root);
     }
 
