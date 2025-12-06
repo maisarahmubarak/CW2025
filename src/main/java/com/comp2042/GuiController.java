@@ -34,6 +34,8 @@ public class GuiController implements Initializable {
 
     @FXML
     private GridPane gamePanel;
+    @FXML
+    private StackPane boardStack;
 
     @FXML
     private AnchorPane groupNotification;
@@ -552,10 +554,20 @@ public class GuiController implements Initializable {
             dangerFlashOverlay.setFill(Color.WHITE);
             dangerFlashOverlay.setOpacity(0);
             dangerFlashOverlay.setMouseTransparent(true);
+            // Keep overlay sized to the actual playfield (gamePanel) like the previous layout
+            // so it doesn't affect other UI layout. We still add it to boardStack so it is visually
+            // confined to the board while keeping the same size and location as before.
             dangerFlashOverlay.widthProperty().bind(gamePanel.widthProperty());
             dangerFlashOverlay.heightProperty().bind(gamePanel.heightProperty());
         }
-        if (!groupNotification.getChildren().contains(dangerFlashOverlay)) {
+        if (boardStack != null) {
+            if (!boardStack.getChildren().contains(dangerFlashOverlay)) {
+                boardStack.getChildren().add(dangerFlashOverlay);
+                // ensure overlay doesn't change layout; align top-left
+                javafx.geometry.Pos pos = javafx.geometry.Pos.TOP_LEFT;
+                javafx.scene.layout.StackPane.setAlignment(dangerFlashOverlay, pos);
+            }
+        } else if (!groupNotification.getChildren().contains(dangerFlashOverlay)) {
             groupNotification.getChildren().add(dangerFlashOverlay);
         }
         scheduleNextDangerFlash();
@@ -583,8 +595,12 @@ public class GuiController implements Initializable {
             dangerFlashTimer.stop();
             dangerFlashTimer = null;
         }
-        if (dangerFlashOverlay != null && groupNotification.getChildren().contains(dangerFlashOverlay)) {
-            groupNotification.getChildren().remove(dangerFlashOverlay);
+        if (dangerFlashOverlay != null) {
+            if (boardStack != null && boardStack.getChildren().contains(dangerFlashOverlay)) {
+                boardStack.getChildren().remove(dangerFlashOverlay);
+            } else if (groupNotification != null && groupNotification.getChildren().contains(dangerFlashOverlay)) {
+                groupNotification.getChildren().remove(dangerFlashOverlay);
+            }
         }
     }
 
