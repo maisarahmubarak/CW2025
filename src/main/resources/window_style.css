@@ -1,4 +1,4 @@
-.root {
+﻿.root {
     -fx-background-image: none;
     -fx-background-color: #000612;
 }
@@ -67,8 +67,11 @@
 
 .gameOverStyle {
     -fx-font-family: "Let's go Digital";
-    -fx-font-size: 48;
-    -fx-background-color: red;
+    -fx-font-size: 56px; /* reduced to fit board while maintaining size */
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#00f0ff, #7a00ff);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.9), 30, 0.4, 0, 0), dropshadow(gaussian, rgba(127, 0, 255, 0.85), 8, 0.5, 0, 0);
+    -fx-background-color: transparent;
 }
 
 .scoreClass{
@@ -156,4 +159,30 @@
             linear-gradient(#00c0ff, #0066ff);
     -fx-translate-y: 1px;
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.3), 8, 0.2, 0, 0);
+}
+
+.control-warning {
+    -fx-background-color: rgba(255,255,255,0.94);
+    -fx-background-radius: 8;
+    -fx-padding: 8 12 8 12;
+    -fx-text-fill: #000000;
+    -fx-font-family: "Let's go Digital";
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 6, 0.5, 0, 2);
+}
+
+.game-over-overlay {
+    /* dark semi-transparent full-screen overlay color */
+    -fx-fill: rgba(0, 0, 0, 0.7);
+}
+
+.finalScoreBox {
+    -fx-background-color: rgba(0,0,0,0.45);
+    -fx-background-radius: 12;
+    -fx-padding: 8 16 8 16;
+    -fx-font-family: "Let's go Digital";
+    -fx-font-size: 26px;
+    -fx-text-fill: linear-gradient(#f9ff7a, #ff68f0);
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.2), 8, 0.3, 0, 0);
 }
