@@ -242,18 +242,19 @@ public class GuiController implements Initializable {
         pauseLabel = new javafx.scene.control.Label("PAUSED");
         pauseLabel.getStyleClass().add("pauseLabel");
         pauseResumeButton = new javafx.scene.control.Button("Resume");
-        pauseResumeButton.getStyleClass().addAll("menu-button", "resume-button");
+        pauseResumeButton.getStyleClass().addAll("menu-button", "resume-button", "pause-button");
         pauseResumeButton.setOnAction(e -> togglePause());
         pauseMainMenuButton = new javafx.scene.control.Button("Main Menu");
-        pauseMainMenuButton.getStyleClass().addAll("menu-button", "quit-button");
+        pauseMainMenuButton.getStyleClass().addAll("menu-button", "quit-button", "pause-button");
         pauseMainMenuButton.setOnAction(e -> {
             // Navigate back to main menu via registered callback if available
             if (onReturnToMainMenu != null) {
                 onReturnToMainMenu.run();
             }
         });
-        HBox buttons = new HBox(12, pauseResumeButton, pauseMainMenuButton);
+        HBox buttons = new HBox(20, pauseResumeButton, pauseMainMenuButton);
         buttons.setAlignment(javafx.geometry.Pos.CENTER);
+        buttons.setPadding(new javafx.geometry.Insets(0, 20, 0, 20));
         content.getChildren().addAll(pauseLabel, buttons);
         pauseOverlay.getChildren().addAll(rect, content);
         // Add overlay to rootPane so it covers the whole window; fallback to groupNotification
@@ -816,7 +817,7 @@ public class GuiController implements Initializable {
             }
             // Before the actual flip, show a warning and then activate flip briefly
             if (!isPause.getValue() && !isGameOver.getValue()) {
-                showControlWarning("Controls Flipped!");
+                showControlWarning("CONTROLS SWITCHED!");
                 if (dangerControlActivateTimer != null) {
                     dangerControlActivateTimer.stop();
                     dangerControlActivateTimer = null;
@@ -888,21 +889,26 @@ public class GuiController implements Initializable {
         if (isPause.getValue() || isGameOver.getValue()) return;
         javafx.scene.control.Label bubble = new javafx.scene.control.Label(message);
         bubble.getStyleClass().add("control-warning");
-        bubble.setMinWidth(160);
-        bubble.setMinHeight(36);
-        // position near top center of gamePanel
-        double areaWidth = gamePanel.getBoundsInParent().getWidth();
-        double baseX = gamePanel.getLayoutX();
-        double baseY = gamePanel.getLayoutY();
-        double centeredX = baseX + Math.max(0, (areaWidth - bubble.getMinWidth()) / 2);
-        double y = baseY + 18;
-        bubble.setLayoutX(centeredX);
-        bubble.setLayoutY(y);
+        
         groupNotification.getChildren().add(bubble);
-        FadeTransition ft = new FadeTransition(Duration.millis(650), bubble);
+        bubble.applyCss();
+        bubble.layout();
+
+        if (gamePanel != null) {
+            javafx.geometry.Bounds boundsInScene = gamePanel.localToScene(gamePanel.getBoundsInLocal());
+            double centerX = boundsInScene.getMinX() + boundsInScene.getWidth() / 2;
+            double centerY = boundsInScene.getMinY() + boundsInScene.getHeight() / 2;
+            
+            javafx.geometry.Point2D centerInParent = groupNotification.sceneToLocal(centerX, centerY);
+            
+            bubble.setLayoutX(centerInParent.getX() - bubble.getWidth() / 2);
+            bubble.setLayoutY(centerInParent.getY() - bubble.getHeight() / 2);
+        }
+
+        FadeTransition ft = new FadeTransition(Duration.millis(500), bubble);
         ft.setFromValue(1.0);
         ft.setToValue(0.0);
-        ft.setDelay(Duration.millis(700));
+        ft.setDelay(Duration.millis(1500));
         ft.setOnFinished(e -> groupNotification.getChildren().remove(bubble));
         ft.play();
     }
