@@ -57,6 +57,10 @@ public class GuiController implements Initializable {
     private BorderPane gameBoard;
     @FXML
     private javafx.scene.layout.Pane rootPane;
+    @FXML
+    private AnchorPane contentPane;
+    
+    private NeonGridBackground neonGridBackground;
     private Runnable onReturnToMainMenu;
     
     @FXML
@@ -136,6 +140,10 @@ public class GuiController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
+        
+        // Initialize the 80s neon grid animated background
+        initNeonGridBackground();
+        
         gamePanel.setFocusTraversable(true);
         gamePanel.requestFocus();
         gamePanel.setOnKeyPressed(new GameKeyHandler(this));
@@ -165,6 +173,30 @@ public class GuiController implements Initializable {
              adjust.setBrightness(colorAdjustVal);
              rootPane.setEffect(adjust);
         }
+    }
+
+    /**
+     * Initializes the animated 80s-style neon grid background.
+     * The background is added behind all other UI elements and starts animating.
+     */
+    private void initNeonGridBackground() {
+        if (rootPane == null) {
+            return;
+        }
+        
+        neonGridBackground = new NeonGridBackground();
+        
+        // Bind the background size to the root pane
+        neonGridBackground.prefWidthProperty().bind(rootPane.widthProperty());
+        neonGridBackground.prefHeightProperty().bind(rootPane.heightProperty());
+        
+        // Insert the background at position 0 so it's behind everything else
+        if (rootPane instanceof StackPane) {
+            ((StackPane) rootPane).getChildren().add(0, neonGridBackground);
+        }
+        
+        // Start the animation
+        neonGridBackground.start();
     }
 
     private void createGameOverOverlay() {
