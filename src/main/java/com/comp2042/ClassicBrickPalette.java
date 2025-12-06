@@ -13,20 +13,20 @@ public class ClassicBrickPalette implements BrickColorPalette {
         switch (brickId) {
             case 0:
                 return Color.TRANSPARENT;
-            case 1:
-                return Color.AQUA;
-            case 2:
-                return Color.BLUEVIOLET;
-            case 3:
-                return Color.DARKGREEN;
-            case 4:
-                return Color.YELLOW;
-            case 5:
-                return Color.RED;
-            case 6:
-                return Color.BEIGE;
-            case 7:
-                return Color.BURLYWOOD;
+            case 1: // I
+                return Color.web("#00E5FF");
+            case 2: // J
+                return Color.web("#004CFF");
+            case 3: // L
+                return Color.web("#FF9100");
+            case 4: // O
+                return Color.web("#F9FF00");
+            case 5: // S
+                return Color.web("#76FF03");
+            case 6: // T
+                return Color.web("#C400FF");
+            case 7: // Z
+                return Color.web("#FF1744");
             default:
                 return Color.WHITE;
         }
