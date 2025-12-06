@@ -18,7 +18,8 @@ class BrickProviderTest {
     void consumeNextAdvancesPreviewQueue() {
         Brick first = TestBrick.ofValue(1);
         Brick second = TestBrick.ofValue(2);
-        BrickGenerator generator = new QueueBrickGenerator(first, second);
+        Brick third = TestBrick.ofValue(3);
+        BrickGenerator generator = new QueueBrickGenerator(first, second, third);
         BrickProvider provider = new BrickProvider(generator);
 
         assertEquals(1, provider.peekNextPreview().toMatrix()[0][0]);
@@ -33,7 +34,8 @@ class BrickProviderTest {
     void peekDoesNotConsumeNextBrick() {
         Brick first = TestBrick.ofValue(7);
         Brick second = TestBrick.ofValue(8);
-        BrickGenerator generator = new QueueBrickGenerator(first, second);
+        Brick third = TestBrick.ofValue(9);
+        BrickGenerator generator = new QueueBrickGenerator(first, second, third);
         BrickProvider provider = new BrickProvider(generator);
 
         BrickShape peek1 = provider.peekNextPreview();

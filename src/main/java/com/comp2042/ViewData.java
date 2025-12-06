@@ -1,19 +1,20 @@
 package com.comp2042;
 
 import com.comp2042.logic.bricks.BrickShape;
+import java.util.List;
 
 public final class ViewData {
 
     private final BrickShape brickShape;
     private final int xPosition;
     private final int yPosition;
-    private final BrickShape nextBrickShape;
+    private final List<BrickShape> nextBrickShapes;
 
-    public ViewData(BrickShape brickShape, int xPosition, int yPosition, BrickShape nextBrickShape) {
+    public ViewData(BrickShape brickShape, int xPosition, int yPosition, List<BrickShape> nextBrickShapes) {
         this.brickShape = brickShape;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.nextBrickShape = nextBrickShape;
+        this.nextBrickShapes = nextBrickShapes;
     }
 
     public BrickShape getBrickShape() {
@@ -28,8 +29,8 @@ public final class ViewData {
         return yPosition;
     }
 
-    public BrickShape getNextBrickShape() {
-        return nextBrickShape;
+    public List<BrickShape> getNextBrickShapes() {
+        return nextBrickShapes;
     }
 
 }

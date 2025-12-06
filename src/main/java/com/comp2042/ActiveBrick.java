@@ -107,4 +107,8 @@ public class ActiveBrick {
     public BrickShape getNextPreview() {
         return preview.peekNextPreview();
     }
+
+    public java.util.List<BrickShape> getNextPreviews(int count) {
+        return preview.peekNextPreviews(count);
+    }
 }

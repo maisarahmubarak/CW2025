@@ -51,7 +51,7 @@ public class SimpleBoard implements Board {
 
     @Override
     public ViewData getViewData() {
-        return new ViewData(activeBrick.getCurrentShape(), activeBrick.getOffsetX(), activeBrick.getOffsetY(), activeBrick.getNextPreview());
+        return new ViewData(activeBrick.getCurrentShape(), activeBrick.getOffsetX(), activeBrick.getOffsetY(), activeBrick.getNextPreviews(3));
     }
 
     @Override

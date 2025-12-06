@@ -17,6 +17,7 @@ public class JavaFxBoardView implements BoardView {
     private static final int HIDDEN_ROWS = 1;
     private static final Color EMPTY_COLOR = Color.TRANSPARENT;
     private static final int PREVIEW_GRID_SIZE = 4;
+    private static final int PREVIEW_COUNT = 3;
 
     private final GridPane gamePanel;
     private final GridPane brickPanel;
@@ -25,7 +26,7 @@ public class JavaFxBoardView implements BoardView {
 
     private Rectangle[][] displayMatrix;
     private Rectangle[][] rectangles;
-    private Rectangle[][] previewRectangles;
+    private Rectangle[][][] previewRectangles;
     private BrickColorPalette palette = new ClassicBrickPalette();
 
     public JavaFxBoardView(GridPane gamePanel, GridPane brickPanel, GridPane previewPanel, int brickSize) {
@@ -56,7 +57,7 @@ public class JavaFxBoardView implements BoardView {
         double xOffset = brick.getxPosition() * (brickSize + brickPanel.getHgap());
         brickPanel.setLayoutX(boardOrigin.getX() + xOffset);
         brickPanel.setLayoutY(boardOrigin.getY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
-        renderNextPreview(brick.getNextBrickShape());
+        renderNextPreviewList(brick.getNextBrickShapes());
     }
 
     @Override
@@ -67,7 +68,7 @@ public class JavaFxBoardView implements BoardView {
         brickPanel.setLayoutY(boardOrigin.getY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
         ensureOverlayMatches(brick.getBrickShape());
         paintBrickShape(brick.getBrickShape());
-        renderNextPreview(brick.getNextBrickShape());
+        renderNextPreviewList(brick.getNextBrickShapes());
     }
 
     @Override
@@ -116,38 +117,46 @@ public class JavaFxBoardView implements BoardView {
         }
     }
 
-    private void renderNextPreview(BrickShape nextShape) {
+    private void renderNextPreviewList(java.util.List<BrickShape> nextShapes) {
         if (previewPanel == null) {
             return;
         }
         ensurePreviewGrid();
         clearRectangles(previewRectangles);
-        if (nextShape == null) {
+        if (nextShapes == null || nextShapes.isEmpty()) {
             return;
         }
-        int offsetX = Math.max(0, (PREVIEW_GRID_SIZE - nextShape.getWidth()) / 2);
-        int offsetY = Math.max(0, (PREVIEW_GRID_SIZE - nextShape.getHeight()) / 2);
-        nextShape.forEachCell((x, y, value) -> {
-            int targetX = x + offsetX;
-            int targetY = y + offsetY;
-            if (targetX >= 0 && targetX < PREVIEW_GRID_SIZE && targetY >= 0 && targetY < PREVIEW_GRID_SIZE) {
-                setRectangleData(value, previewRectangles[targetY][targetX]);
-            }
-        });
+        for (int k = 0; k < Math.min(nextShapes.size(), PREVIEW_COUNT); k++) {
+            BrickShape nextShape = nextShapes.get(k);
+            if (nextShape == null) continue;
+            int offsetX = Math.max(0, (PREVIEW_GRID_SIZE - nextShape.getWidth()) / 2);
+            int offsetY = Math.max(0, (PREVIEW_GRID_SIZE - nextShape.getHeight()) / 2);
+            final int previewIndex = k;
+            nextShape.forEachCell((x, y, value) -> {
+                int targetX = x + offsetX;
+                int targetY = y + offsetY;
+                if (targetX >= 0 && targetX < PREVIEW_GRID_SIZE && targetY >= 0 && targetY < PREVIEW_GRID_SIZE) {
+                    setRectangleData(value, previewRectangles[previewIndex][targetY][targetX]);
+                }
+            });
+        }
     }
 
     private void ensurePreviewGrid() {
         if (previewRectangles != null) {
             return;
         }
-        previewRectangles = new Rectangle[PREVIEW_GRID_SIZE][PREVIEW_GRID_SIZE];
+        previewRectangles = new Rectangle[PREVIEW_COUNT][PREVIEW_GRID_SIZE][PREVIEW_GRID_SIZE];
         previewPanel.getChildren().clear();
-        for (int i = 0; i < PREVIEW_GRID_SIZE; i++) {
-            for (int j = 0; j < PREVIEW_GRID_SIZE; j++) {
-                Rectangle rectangle = new Rectangle(brickSize, brickSize);
-                rectangle.setFill(EMPTY_COLOR);
-                previewRectangles[i][j] = rectangle;
-                previewPanel.add(rectangle, j, i);
+        for (int k = 0; k < PREVIEW_COUNT; k++) {
+            for (int i = 0; i < PREVIEW_GRID_SIZE; i++) {
+                for (int j = 0; j < PREVIEW_GRID_SIZE; j++) {
+                    Rectangle rectangle = new Rectangle(brickSize, brickSize);
+                    rectangle.setFill(EMPTY_COLOR);
+                    previewRectangles[k][i][j] = rectangle;
+                    // Row = i + k*PREVIEW_GRID_SIZE, Column = j
+                    previewPanel.add(rectangle, j, i + k * PREVIEW_GRID_SIZE);
+                }
             }
         }
     }
@@ -159,6 +168,19 @@ public class JavaFxBoardView implements BoardView {
         for (Rectangle[] row : matrix) {
             for (Rectangle rectangle : row) {
                 rectangle.setFill(EMPTY_COLOR);
+            }
+        }
+    }
+
+    private void clearRectangles(Rectangle[][][] matrices) {
+        if (matrices == null) {
+            return;
+        }
+        for (Rectangle[][] matrix : matrices) {
+            for (Rectangle[] row : matrix) {
+                for (Rectangle rectangle : row) {
+                    rectangle.setFill(EMPTY_COLOR);
+                }
             }
         }
     }
