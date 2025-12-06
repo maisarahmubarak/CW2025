@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.ParallelTransition;
 
 import java.net.URL;
@@ -477,9 +478,12 @@ public class GuiController implements Initializable {
                     continue;
                 }
 
-                // animation: fall a short amount and fade out with a slight stagger
-                TranslateTransition tt = new TranslateTransition(Duration.millis(600), rect);
-                tt.setByY(BRICK_SIZE * 1.5);
+                // animation: fall a longer amount and fade out with a slight stagger + horizontal spread and rotation
+                TranslateTransition tt = new TranslateTransition(Duration.millis(700), rect);
+                tt.setByY(BRICK_SIZE * 2.0); // longer fall
+                // small horizontal spread: random lateral byX to spread the falling bricks slightly
+                double spreadPx = (dangerRandom.nextDouble() - 0.5) * BRICK_SIZE * 1.2; // ±12px range
+                tt.setByX(spreadPx);
                 FadeTransition ft = new FadeTransition(Duration.millis(680), rect);
                 ft.setFromValue(1.0);
                 ft.setToValue(0.0);
@@ -487,7 +491,11 @@ public class GuiController implements Initializable {
                 long stagger = (c * 28) + (r % 3) * 12; // lateral + small row-based offset
                 ft.setDelay(Duration.millis(baseDelay + stagger));
                 tt.setDelay(Duration.millis(baseDelay + stagger));
-                ParallelTransition pt = new ParallelTransition(tt, ft);
+                // Add a gentle rotation so pieces twist as they fall
+                RotateTransition rt = new RotateTransition(Duration.millis(700), rect);
+                rt.setByAngle((dangerRandom.nextDouble() - 0.5) * 36.0); // -18 .. +18 deg
+                rt.setDelay(Duration.millis(baseDelay + stagger));
+                ParallelTransition pt = new ParallelTransition(tt, ft, rt);
                 pt.setOnFinished(ev -> {
                     try {
                         boardStack.getChildren().remove(rect);

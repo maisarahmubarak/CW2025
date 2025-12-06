@@ -20,11 +20,11 @@
             </StackPane>
         </center>
     </BorderPane>
-    <VBox fx:id="scorePanel" layoutX="90" layoutY="90" alignment="CENTER" styleClass="vbox">
+    <VBox fx:id="scorePanel" layoutX="50" layoutY="90" prefWidth="140" alignment="CENTER" styleClass="vbox">
         <Label text="SCORE" styleClass="nextBrickLabel"/>
         <Label fx:id="scoreLabel" text="0" styleClass="scoreClass"/>
     </VBox>
-    <VBox fx:id="timerPanel" layoutX="90" layoutY="200" alignment="CENTER" styleClass="vbox">
+    <VBox fx:id="timerPanel" layoutX="50" layoutY="200" prefWidth="140" alignment="CENTER" styleClass="vbox">
         <Label text="TIME" styleClass="nextBrickLabel"/>
         <Label fx:id="timerLabel" text="00:00" styleClass="scoreClass"/>
     </VBox>
