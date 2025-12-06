@@ -5,6 +5,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.geometry.Pos;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -26,7 +30,6 @@ public class JavaFxBoardView implements BoardView {
 
     private Rectangle[][] displayMatrix;
     private Rectangle[][] rectangles;
-    private Rectangle[][][] previewRectangles;
     private BrickColorPalette palette = new ClassicBrickPalette();
 
     public JavaFxBoardView(GridPane gamePanel, GridPane brickPanel, GridPane previewPanel, int brickSize) {
@@ -121,43 +124,39 @@ public class JavaFxBoardView implements BoardView {
         if (previewPanel == null) {
             return;
         }
-        ensurePreviewGrid();
-        clearRectangles(previewRectangles);
+        previewPanel.getChildren().clear();
+        previewPanel.setAlignment(Pos.CENTER);
+
         if (nextShapes == null || nextShapes.isEmpty()) {
             return;
         }
+
         for (int k = 0; k < Math.min(nextShapes.size(), PREVIEW_COUNT); k++) {
             BrickShape nextShape = nextShapes.get(k);
             if (nextShape == null) continue;
-            int offsetX = Math.max(0, (PREVIEW_GRID_SIZE - nextShape.getWidth()) / 2);
-            int offsetY = Math.max(0, (PREVIEW_GRID_SIZE - nextShape.getHeight()) / 2);
-            final int previewIndex = k;
-            nextShape.forEachCell((x, y, value) -> {
-                int targetX = x + offsetX;
-                int targetY = y + offsetY;
-                if (targetX >= 0 && targetX < PREVIEW_GRID_SIZE && targetY >= 0 && targetY < PREVIEW_GRID_SIZE) {
-                    setRectangleData(value, previewRectangles[previewIndex][targetY][targetX]);
-                }
-            });
-        }
-    }
 
-    private void ensurePreviewGrid() {
-        if (previewRectangles != null) {
-            return;
-        }
-        previewRectangles = new Rectangle[PREVIEW_COUNT][PREVIEW_GRID_SIZE][PREVIEW_GRID_SIZE];
-        previewPanel.getChildren().clear();
-        for (int k = 0; k < PREVIEW_COUNT; k++) {
-            for (int i = 0; i < PREVIEW_GRID_SIZE; i++) {
-                for (int j = 0; j < PREVIEW_GRID_SIZE; j++) {
-                    Rectangle rectangle = new Rectangle(brickSize, brickSize);
-                    rectangle.setFill(EMPTY_COLOR);
-                    previewRectangles[k][i][j] = rectangle;
-                    // Row = i + k*PREVIEW_GRID_SIZE, Column = j
-                    previewPanel.add(rectangle, j, i + k * PREVIEW_GRID_SIZE);
-                }
-            }
+            // Create a container for this shape
+            GridPane shapeContainer = new GridPane();
+            shapeContainer.setHgap(1);
+            shapeContainer.setVgap(1);
+            shapeContainer.setAlignment(Pos.CENTER);
+
+            nextShape.forEachCell((x, y, value) -> {
+                Rectangle rectangle = new Rectangle(brickSize, brickSize);
+                rectangle.setFill(palette.colorFor(value));
+                rectangle.setArcHeight(0);
+                rectangle.setArcWidth(0);
+                shapeContainer.add(rectangle, x, y);
+            });
+
+            // Wrap in a StackPane to ensure centering within the slot
+            StackPane slot = new StackPane(shapeContainer);
+            slot.setPrefSize(brickSize * 4, brickSize * 4);
+            slot.setAlignment(Pos.CENTER);
+
+            previewPanel.add(slot, 0, k);
+            GridPane.setHalignment(slot, HPos.CENTER);
+            GridPane.setValignment(slot, VPos.CENTER);
         }
     }
 
@@ -168,19 +167,6 @@ public class JavaFxBoardView implements BoardView {
         for (Rectangle[] row : matrix) {
             for (Rectangle rectangle : row) {
                 rectangle.setFill(EMPTY_COLOR);
-            }
-        }
-    }
-
-    private void clearRectangles(Rectangle[][][] matrices) {
-        if (matrices == null) {
-            return;
-        }
-        for (Rectangle[][] matrix : matrices) {
-            for (Rectangle[] row : matrix) {
-                for (Rectangle rectangle : row) {
-                    rectangle.setFill(EMPTY_COLOR);
-                }
             }
         }
     }
