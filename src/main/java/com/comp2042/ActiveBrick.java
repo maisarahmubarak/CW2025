@@ -13,7 +13,7 @@ public class ActiveBrick {
 
     private final BrickRotator brickRotator;
     private final BrickProvider preview;
-    private static final int HIDDEN_ROWS = 2;
+    private static final int HIDDEN_ROWS = 1;
     private Point currentOffset;
 
     public ActiveBrick(BrickGenerator generator) {
