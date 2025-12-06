@@ -24,6 +24,11 @@ public class MainMenuController {
 	private Pane animationLayer;
 
 	@FXML
+	private Pane particleLayer;
+
+	private RetroParticleBackground particleBackground;
+
+	@FXML
 	private Label titleLabel;
 
 	@FXML
@@ -61,6 +66,9 @@ public class MainMenuController {
 				}
 			});
 		}
+		
+		// Initialize the retro particle background
+		initParticleBackground();
 	}
 
 	private void applyBrightness() {
@@ -71,6 +79,31 @@ public class MainMenuController {
 			adjust.setBrightness(colorAdjustVal);
 			animationLayer.getScene().getRoot().setEffect(adjust);
 		}
+	}
+
+	/**
+	 * Initializes the retro particle background with floating glowing particles.
+	 * The particles are added to the particleLayer which sits behind all menu UI elements.
+	 */
+	private void initParticleBackground() {
+		if (particleLayer == null) {
+			return;
+		}
+		
+		particleBackground = new RetroParticleBackground();
+		
+		// Bind the background size to the particle layer using min/max constraints
+		// instead of prefWidth/Height bindings to avoid conflicts
+		particleBackground.minWidthProperty().bind(particleLayer.widthProperty());
+		particleBackground.maxWidthProperty().bind(particleLayer.widthProperty());
+		particleBackground.minHeightProperty().bind(particleLayer.heightProperty());
+		particleBackground.maxHeightProperty().bind(particleLayer.heightProperty());
+		
+		// Add to the particle layer
+		particleLayer.getChildren().add(particleBackground);
+		
+		// Start the particle animation
+		particleBackground.start();
 	}
 
 	void setPrimaryStage(Stage stage) {
