@@ -64,6 +64,11 @@ public class GuiController implements Initializable {
     private Label scoreLabel;
 
     @FXML
+    private Label highScoreLabel;
+
+    private static int highScore = 0;
+
+    @FXML
     private VBox timerPanel;
 
     @FXML
@@ -179,11 +184,11 @@ public class GuiController implements Initializable {
         gameOverScoreLabel.getStyleClass().add("finalScoreBox");
 
         gameOverRestartButton = new javafx.scene.control.Button("Restart");
-        gameOverRestartButton.getStyleClass().add("menu-button");
+        gameOverRestartButton.getStyleClass().addAll("menu-button", "restart-button");
         gameOverRestartButton.setOnAction(e -> newGame(null));
 
         gameOverMainMenuButton = new javafx.scene.control.Button("Main Menu");
-        gameOverMainMenuButton.getStyleClass().add("menu-button");
+        gameOverMainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button");
         gameOverMainMenuButton.setOnAction(e -> { if (onReturnToMainMenu != null) onReturnToMainMenu.run(); });
 
         HBox buttons = new HBox(12, gameOverRestartButton, gameOverMainMenuButton);
@@ -226,10 +231,10 @@ public class GuiController implements Initializable {
         pauseLabel = new javafx.scene.control.Label("PAUSED");
         pauseLabel.getStyleClass().add("pauseLabel");
         pauseResumeButton = new javafx.scene.control.Button("Resume");
-        pauseResumeButton.getStyleClass().add("menu-button");
+        pauseResumeButton.getStyleClass().addAll("menu-button", "resume-button");
         pauseResumeButton.setOnAction(e -> togglePause());
         pauseMainMenuButton = new javafx.scene.control.Button("Main Menu");
-        pauseMainMenuButton.getStyleClass().add("menu-button");
+        pauseMainMenuButton.getStyleClass().addAll("menu-button", "quit-button");
         pauseMainMenuButton.setOnAction(e -> {
             // Navigate back to main menu via registered callback if available
             if (onReturnToMainMenu != null) {
@@ -290,6 +295,19 @@ public class GuiController implements Initializable {
             return;
         }
         scoreLabel.textProperty().bind(score.scoreProperty().asString());
+        score.scoreProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal.intValue() > highScore) {
+                highScore = newVal.intValue();
+                updateHighScoreLabel();
+            }
+        });
+        updateHighScoreLabel();
+    }
+
+    private void updateHighScoreLabel() {
+        if (highScoreLabel != null) {
+            highScoreLabel.setText(String.valueOf(highScore));
+        }
     }
 
     // Moved the anonymous key handler here so key-handling logic lives in one place
@@ -579,14 +597,16 @@ public class GuiController implements Initializable {
     }
 
     private void centerOverlay(NotificationPanel panel) {
-        double areaWidth = gamePanel.getBoundsInParent().getWidth();
-        double areaHeight = gamePanel.getBoundsInParent().getHeight();
-        double baseX = gamePanel.getLayoutX();
-        double baseY = gamePanel.getLayoutY();
-        double centeredX = baseX + Math.max(0, (areaWidth - panel.getMinWidth()) / 2);
-        double centeredY = baseY + Math.max(0, (areaHeight - panel.getMinHeight()) / 2);
-        panel.setLayoutX(centeredX);
-        panel.setLayoutY(centeredY);
+        if (gamePanel == null || groupNotification == null) return;
+
+        javafx.geometry.Bounds boundsInScene = gamePanel.localToScene(gamePanel.getBoundsInLocal());
+        double centerX = boundsInScene.getMinX() + boundsInScene.getWidth() / 2;
+        double centerY = boundsInScene.getMinY() + boundsInScene.getHeight() / 2;
+
+        javafx.geometry.Point2D centerInParent = groupNotification.sceneToLocal(centerX, centerY);
+
+        panel.setLayoutX(centerInParent.getX() - panel.getMinWidth() / 2);
+        panel.setLayoutY(centerInParent.getY() - panel.getMinHeight() / 2);
     }
 
     private void cancelResumeCountdown() {
