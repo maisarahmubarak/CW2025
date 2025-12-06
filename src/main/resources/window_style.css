@@ -270,6 +270,12 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.9), 20, 0.4, 0, 0);
 }
 
+.pause-button {
+    -fx-pref-width: 220;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15 10 15;
+}
+
 .finalScoreBox {
     -fx-background-color: rgba(0,0,0,0.45);
     -fx-background-radius: 12;
