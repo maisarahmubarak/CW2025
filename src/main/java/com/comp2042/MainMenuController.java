@@ -140,7 +140,47 @@ public class MainMenuController {
 
 	@FXML
 	private void onTutorial() {
-		showInfo("Tutorial", "Use Left/Right to move, Up to rotate, Down to drop faster, N for new game, P to pause.");
+		if (primaryStage == null) {
+			return;
+		}
+		try {
+			URL tutorialLocation = getClass().getClassLoader().getResource("tutorial.fxml");
+			if (tutorialLocation == null) {
+				showInfo("Error", "Tutorial panel couldn't be loaded: resource not found.");
+				return;
+			}
+			FXMLLoader tutorialLoader = new FXMLLoader(tutorialLocation);
+			Parent tutorialRoot = tutorialLoader.load();
+			TutorialController tutorialController = tutorialLoader.getController();
+
+			// use overlay in same primary Stage
+			if (animationLayer == null) {
+				showInfo("Error", "Animation layer missing.");
+				return;
+			}
+
+			// Add semi-transparent dim to block the menu and focus the modal
+			javafx.scene.shape.Rectangle dim = new javafx.scene.shape.Rectangle();
+			dim.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.55));
+			dim.widthProperty().bind(animationLayer.widthProperty());
+			dim.heightProperty().bind(animationLayer.heightProperty());
+			StackPane overlay = new StackPane(dim, tutorialRoot);
+			overlay.setPrefSize(animationLayer.getPrefWidth(), animationLayer.getPrefHeight());
+			overlay.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+			overlay.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+
+			StackPane.setAlignment(tutorialRoot, Pos.CENTER);
+			animationLayer.getChildren().add(overlay);
+
+			tutorialController.setParentOverlay(animationLayer);
+			tutorialController.setOnBack(() -> {
+				animationLayer.getChildren().remove(overlay);
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			showInfo("Error", "Unable to open tutorial: " + e.getMessage());
+		}
 	}
 
 	private GameMode selectedMode = GameMode.CLASSIC;

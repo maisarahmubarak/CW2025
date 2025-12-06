@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.TutorialController" styleClass="menu-root" prefWidth="500" prefHeight="450">
+    <VBox spacing="20" alignment="CENTER" styleClass="menu-panel" StackPane.alignment="CENTER">
+        <Label text="TUTORIAL" styleClass="mode-selection-title"/>
+        
+        <Label text="CONTROLS" styleClass="settings-label"/>
+
+        <GridPane alignment="CENTER" hgap="15" vgap="15">
+             <!-- Up / Rotate -->
+             <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                 <Label text="W / ↑" styleClass="key-cap"/>
+                 <Label text="Rotate" styleClass="key-label"/>
+             </VBox>
+             
+             <!-- Left / Move Left -->
+             <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                 <Label text="A / ←" styleClass="key-cap"/>
+                 <Label text="Left" styleClass="key-label"/>
+             </VBox>
+
+             <!-- Down / Drop -->
+             <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                 <Label text="S / ↓" styleClass="key-cap"/>
+                 <Label text="Drop" styleClass="key-label"/>
+             </VBox>
+
+             <!-- Right / Move Right -->
+             <VBox alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                 <Label text="D / →" styleClass="key-cap"/>
+                 <Label text="Right" styleClass="key-label"/>
+             </VBox>
+        </GridPane>
+
+        <HBox spacing="30" alignment="CENTER">
+             <VBox alignment="CENTER">
+                 <Label text="P" styleClass="key-cap"/>
+                 <Label text="Pause" styleClass="key-label"/>
+             </VBox>
+             <VBox alignment="CENTER">
+                 <Label text="N" styleClass="key-cap"/>
+                 <Label text="New Game" styleClass="key-label"/>
+             </VBox>
+        </HBox>
+
+        <HBox spacing="12" alignment="CENTER" style="-fx-padding: 20 0 0 0;">
+            <Button text="Back" onAction="#onBack" styleClass="menu-button, cancel-button"/>
+        </HBox>
+    </VBox>
+    <stylesheets>
+        <URL value="@window_style.css"/>
+    </stylesheets>
+</StackPane>

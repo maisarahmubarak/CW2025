@@ -332,3 +332,25 @@
     -fx-translate-y: 1px;
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.3), 5, 0.2, 0, 0);
 }
+
+.key-cap {
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 12px;
+    -fx-padding: 12 18 12 18;
+    -fx-background-radius: 8;
+    -fx-border-color: #666;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,255,255,0.3), 8, 0, 0, 0), inner-shadow(gaussian, rgba(255,255,255,0.2), 5, 0, 0, 0);
+    -fx-min-width: 80;
+    -fx-alignment: center;
+}
+
+.key-label {
+    -fx-text-fill: #aaa;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 10px;
+    -fx-padding: 8 0 0 0;
+}
