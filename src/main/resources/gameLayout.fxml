@@ -12,7 +12,7 @@
     <?import javafx.scene.layout.VBox?>
     <AnchorPane fx:id="contentPane">
         <GridPane fx:id="brickPanel" vgap="1" hgap="1" styleClass="active-brick-overlay"/>
-    <VBox layoutX="520" layoutY="90" prefWidth="140" alignment="CENTER" styleClass="vbox">
+    <VBox layoutX="520" layoutY="30" prefWidth="140" alignment="CENTER" styleClass="vbox">
         <Label text="NEXT" styleClass="nextBrickLabel"/>
         <GridPane fx:id="previewPanel" hgap="1" vgap="1" styleClass="preview-panel"/>
     </VBox>
@@ -23,19 +23,19 @@
             </StackPane>
         </center>
     </BorderPane>
-    <VBox layoutX="50" layoutY="30" prefWidth="140" alignment="CENTER" spacing="5">
-        <Label text="HIGHSCORE" styleClass="nextBrickLabel"/>
+    <VBox layoutX="25" layoutY="30" prefWidth="190" alignment="CENTER" spacing="5">
+        <Label text="HIGH SCORE" styleClass="nextBrickLabel"/>
         <VBox styleClass="info-panel" alignment="CENTER">
             <Label fx:id="highScoreLabel" text="0" styleClass="scoreClass"/>
         </VBox>
     </VBox>
-    <VBox layoutX="50" layoutY="140" prefWidth="140" alignment="CENTER" spacing="5">
+    <VBox layoutX="25" layoutY="140" prefWidth="190" alignment="CENTER" spacing="5">
         <Label text="SCORE" styleClass="nextBrickLabel"/>
         <VBox styleClass="info-panel" alignment="CENTER">
             <Label fx:id="scoreLabel" text="0" styleClass="scoreClass"/>
         </VBox>
     </VBox>
-    <VBox layoutX="50" layoutY="250" prefWidth="140" alignment="CENTER" spacing="5">
+    <VBox layoutX="25" layoutY="250" prefWidth="190" alignment="CENTER" spacing="5">
         <Label text="TIME" styleClass="nextBrickLabel"/>
         <VBox styleClass="info-panel" alignment="CENTER">
             <Label fx:id="timerLabel" text="00:00" styleClass="scoreClass"/>
