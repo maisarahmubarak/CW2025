@@ -39,7 +39,10 @@ public class GameController implements InputActionListener {
                 int oldLevel = oldVal.intValue() / 100;
                 int newLevel = newVal.intValue() / 100;
                 if (newLevel > oldLevel) {
-                    double newMillis = 400.0 * Math.pow(0.9, newLevel);
+                    // Use the mode's base drop interval rather than a hard-coded 400ms so
+                    // SPEED mode remains based on its configured base drop interval.
+                    double baseMs = gameMode.getDropIntervalMs();
+                    double newMillis = baseMs * Math.pow(0.9, newLevel);
                     if (newMillis < 50) newMillis = 50;
                     viewGuiController.setGameSpeed(Duration.millis(newMillis));
                 }

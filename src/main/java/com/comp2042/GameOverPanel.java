@@ -49,10 +49,10 @@ public class GameOverPanel extends BorderPane {
 
         // Buttons - restart and back to main menu
         restartButton = new Button("Restart");
-        restartButton.getStyleClass().add("menu-button");
+        restartButton.getStyleClass().addAll("menu-button", "restart-button");
         restartButton.setOnAction(e -> { if (onRestart != null) onRestart.run(); });
         mainMenuButton = new Button("Main Menu");
-        mainMenuButton.getStyleClass().add("menu-button");
+        mainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button");
         mainMenuButton.setOnAction(e -> { if (onMainMenu != null) onMainMenu.run(); });
         HBox buttons = new HBox(12, restartButton, mainMenuButton);
         buttons.setAlignment(Pos.CENTER);
