@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.ModeSelectionController" styleClass="menu-root" prefWidth="400" prefHeight="200">
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.ui.menu.ModeSelectionController" styleClass="menu-root" prefWidth="400" prefHeight="200">
     <VBox spacing="12" alignment="CENTER" styleClass="menu-panel" StackPane.alignment="CENTER">
         <Label fx:id="titleLabel" text="Select Mode" styleClass="mode-selection-title"/>
         <HBox spacing="20" alignment="CENTER">
