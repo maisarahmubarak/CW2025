@@ -4,6 +4,7 @@ import com.comp2042.input.ActionSource;
 import com.comp2042.input.ActionType;
 import com.comp2042.input.InputActionListener;
 import com.comp2042.input.MoveAction;
+import com.comp2042.ui.state.GameLifecycleController;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -17,7 +18,7 @@ import javafx.scene.input.KeyEvent;
  */
 public class GameInputController {
     
-    private GameStateController gameStateController;
+    private GameLifecycleController gameLifecycleController;
     private GameBoardView gameBoardView;
     private InputActionListener eventListener;
     private Runnable moveDownCallback;
@@ -25,26 +26,26 @@ public class GameInputController {
     /**
      * Constructor for GameInputController.
      * 
-     * @param gameStateController The game state controller for state checks and game control actions
+     * @param gameLifecycleController The game lifecycle controller for state checks and game control actions
      * @param gameBoardView The game board view for updating the display after actions
      * @param eventListener The input action listener for handling movement events
      * @param moveDownCallback The callback for triggering soft drop (DOWN key)
      */
-    public GameInputController(GameStateController gameStateController, 
+    public GameInputController(GameLifecycleController gameLifecycleController, 
                                GameBoardView gameBoardView,
                                InputActionListener eventListener,
                                Runnable moveDownCallback) {
-        this.gameStateController = gameStateController;
+        this.gameLifecycleController = gameLifecycleController;
         this.gameBoardView = gameBoardView;
         this.eventListener = eventListener;
         this.moveDownCallback = moveDownCallback;
     }
     
     /**
-     * Sets the game state controller.
+     * Sets the game lifecycle controller.
      */
-    public void setGameStateController(GameStateController gameStateController) {
-        this.gameStateController = gameStateController;
+    public void setGameLifecycleController(GameLifecycleController gameLifecycleController) {
+        this.gameLifecycleController = gameLifecycleController;
     }
     
     /**
@@ -84,18 +85,18 @@ public class GameInputController {
     public void handleKeyEvent(KeyEvent keyEvent) {
         // Handle pause toggle (P key) - always available
         if (keyEvent.getCode() == KeyCode.P) {
-            gameStateController.togglePause();
+            gameLifecycleController.togglePause();
             keyEvent.consume();
             return;
         }
         
         // Handle movement and rotation - only when game is active (not paused or game over)
-        if (gameStateController.isPauseProperty().getValue() == Boolean.FALSE 
-                && gameStateController.isGameOverProperty().getValue() == Boolean.FALSE) {
+        if (gameLifecycleController.isPauseProperty().getValue() == Boolean.FALSE 
+                && gameLifecycleController.isGameOverProperty().getValue() == Boolean.FALSE) {
             
             // Handle LEFT movement (or RIGHT if controls are flipped)
             if (keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A) {
-                if (gameStateController.isControlsFlipped()) {
+                if (gameLifecycleController.isControlsFlipped()) {
                     // Controls are flipped - LEFT key moves RIGHT
                     gameBoardView.refreshBrick(
                         eventListener.onRightEvent(new MoveAction(ActionType.RIGHT, ActionSource.USER))
@@ -111,7 +112,7 @@ public class GameInputController {
             
             // Handle RIGHT movement (or LEFT if controls are flipped)
             if (keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D) {
-                if (gameStateController.isControlsFlipped()) {
+                if (gameLifecycleController.isControlsFlipped()) {
                     // Controls are flipped - RIGHT key moves LEFT
                     gameBoardView.refreshBrick(
                         eventListener.onLeftEvent(new MoveAction(ActionType.LEFT, ActionSource.USER))
@@ -144,7 +145,7 @@ public class GameInputController {
         
         // Handle NEW GAME (N key) - always available
         if (keyEvent.getCode() == KeyCode.N) {
-            gameStateController.newGame(null);
+            gameLifecycleController.newGame(null);
         }
     }
 }

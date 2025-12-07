@@ -8,6 +8,7 @@ import com.comp2042.ui.effects.RetroParticleBackground;
 import com.comp2042.ui.overlay.GameOverPanel;
 import com.comp2042.ui.overlay.NotificationPanel;
 import com.comp2042.ui.effects.TitleRevealAnimator;
+import com.comp2042.ui.state.GameLifecycleController;
 import com.comp2042.input.ActionSource;
 import com.comp2042.input.ActionType;
 import com.comp2042.input.GameKeyHandler;
@@ -102,7 +103,7 @@ public class GuiController implements Initializable {
     private Timeline timerTimeline;
     private int elapsedSeconds = 0;
 
-    private GameStateController gameStateController;
+    private GameLifecycleController gameLifecycleController;
     private GameInputController gameInputController;
     private ScoreUiController scoreUiController;
     private BoardAnimationController boardAnimationController;
@@ -157,18 +158,18 @@ public class GuiController implements Initializable {
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
         
-        // Initialize GameStateController
-        gameStateController = new GameStateController(gamePanel, groupNotification, gameOverPanel, rootPane, boardStack, timerLabel);
-        gameStateController.setGameBoardView(gameBoardView);
-        gameStateController.setGameLoop(gameLoop);
-        gameStateController.setGameOverSound(gameOverSound);
-        gameStateController.setMoveDownCallback(() -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
-        gameStateController.initializeOverlays();
-        gameStateController.initializeTimer();
+        // Initialize GameLifecycleController
+        gameLifecycleController = new GameLifecycleController(gamePanel, groupNotification, gameOverPanel, rootPane, boardStack, timerLabel);
+        gameLifecycleController.setGameBoardView(gameBoardView);
+        gameLifecycleController.setGameLoop(gameLoop);
+        gameLifecycleController.setGameOverSound(gameOverSound);
+        gameLifecycleController.setMoveDownCallback(() -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
+        gameLifecycleController.initializeOverlays();
+        gameLifecycleController.initializeTimer();
         
         // Initialize GameInputController
         gameInputController = new GameInputController(
-            gameStateController,
+            gameLifecycleController,
             gameBoardView,
             eventListener,
             () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.USER))
@@ -220,7 +221,7 @@ public class GuiController implements Initializable {
     }
 
     public void initGameView(int[][] boardMatrix, ViewData brick) {
-        gameStateController.initGameView(boardMatrix, brick);
+        gameLifecycleController.initGameView(boardMatrix, brick);
     }
 
     public void refreshGameBackground(int[][] board) {
@@ -228,8 +229,8 @@ public class GuiController implements Initializable {
     }
 
     public void setGameSpeed(Duration duration) {
-        if (gameStateController != null && gameStateController.getGameLoop() != null) {
-            gameStateController.getGameLoop().updateInterval(duration);
+        if (gameLifecycleController != null && gameLifecycleController.getGameLoop() != null) {
+            gameLifecycleController.getGameLoop().updateInterval(duration);
         }
     }
 
@@ -244,7 +245,7 @@ public class GuiController implements Initializable {
     }
 
     private void moveDown(MoveAction event) {
-        if (gameStateController.isPauseProperty().getValue() == Boolean.FALSE) {
+        if (gameLifecycleController.isPauseProperty().getValue() == Boolean.FALSE) {
             DownData downData = eventListener.onDownEvent(event);
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
                 NotificationPanel notificationPanel = new NotificationPanel("+" + downData.getClearRow().getScoreBonus());
@@ -258,8 +259,8 @@ public class GuiController implements Initializable {
 
     public void setEventListener(InputActionListener eventListener) {
         this.eventListener = eventListener;
-        if (gameStateController != null) {
-            gameStateController.setEventListener(eventListener);
+        if (gameLifecycleController != null) {
+            gameLifecycleController.setEventListener(eventListener);
         }
         if (gameInputController != null) {
             gameInputController.setEventListener(eventListener);
@@ -267,13 +268,13 @@ public class GuiController implements Initializable {
     }
 
     public void setFinalScore(int score) {
-        gameStateController.setFinalScore(score);
+        gameLifecycleController.setFinalScore(score);
     }
 
 
 
     public void gameOver() {
-        gameStateController.gameOver();
+        gameLifecycleController.gameOver();
     }
 
     /**
@@ -291,15 +292,15 @@ public class GuiController implements Initializable {
     }
 
     public void setOnReturnToMainMenu(Runnable r) {
-        gameStateController.setOnReturnToMainMenu(r);
+        gameLifecycleController.setOnReturnToMainMenu(r);
     }
 
     public void newGame(ActionEvent actionEvent) {
-        gameStateController.newGame(actionEvent);
+        gameLifecycleController.newGame(actionEvent);
     }
 
     public void pauseGame(ActionEvent actionEvent) {
-        gameStateController.pauseGame(actionEvent);
+        gameLifecycleController.pauseGame(actionEvent);
     }
 
 
@@ -309,9 +310,9 @@ public class GuiController implements Initializable {
      * Recreates the underlying game loop with the new interval.
      */
     public void setGameMode(GameMode mode) {
-        gameStateController.setGameMode(mode);
+        gameLifecycleController.setGameMode(mode);
         // Update local reference to gameLoop
-        gameLoop = gameStateController.getGameLoop();
+        gameLoop = gameLifecycleController.getGameLoop();
     }
 
 
