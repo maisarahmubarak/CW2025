@@ -1,8 +1,8 @@
 package com.comp2042.ui.menu;
 
-import com.comp2042.GameOverPanel;
 import com.comp2042.NeonGridBackground;
 import com.comp2042.RetroParticleBackground;
+import com.comp2042.ui.overlay.GameOverPanel;
 import com.comp2042.TitleRevealAnimator;
 import com.comp2042.logic.game.GameMode;
 import com.comp2042.logic.game.GameSettings;

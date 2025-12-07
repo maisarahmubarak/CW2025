@@ -2,10 +2,10 @@ package com.comp2042.ui;
 
 import com.comp2042.BrickColorPalette;
 import com.comp2042.ClassicBrickPalette;
-import com.comp2042.GameOverPanel;
 import com.comp2042.NeonGridBackground;
-import com.comp2042.NotificationPanel;
 import com.comp2042.RetroParticleBackground;
+import com.comp2042.ui.overlay.GameOverPanel;
+import com.comp2042.ui.overlay.NotificationPanel;
 import com.comp2042.TitleRevealAnimator;
 import com.comp2042.input.ActionSource;
 import com.comp2042.input.ActionType;
