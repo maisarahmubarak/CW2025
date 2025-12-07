@@ -6,7 +6,7 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.effect.Glow;
 import javafx.util.Duration;
 
@@ -18,9 +18,9 @@ import java.util.Random;
  */
 public class RetroParticleBackground extends Pane {
 
-    private static final int PARTICLE_COUNT = 50;
-    private static final double MIN_PARTICLE_SIZE = 1.5;
-    private static final double MAX_PARTICLE_SIZE = 4.0;
+    private static final int PARTICLE_COUNT = 150;
+    private static final double MIN_PARTICLE_SIZE = 2.0;
+    private static final double MAX_PARTICLE_SIZE = 5.0;
     private static final double MIN_DURATION_SEC = 8.0;
     private static final double MAX_DURATION_SEC = 16.0;
 
@@ -99,9 +99,9 @@ public class RetroParticleBackground extends Pane {
             return;
         }
 
-        // Create particle
+        // Create particle (Square for pixel look)
         double size = MIN_PARTICLE_SIZE + random.nextDouble() * (MAX_PARTICLE_SIZE - MIN_PARTICLE_SIZE);
-        Circle particle = new Circle(size);
+        Rectangle particle = new Rectangle(size, size);
 
         // Random neon color
         Color color = particleColors[random.nextInt(particleColors.length)];
@@ -113,7 +113,7 @@ public class RetroParticleBackground extends Pane {
 
         // Random X position
         double startX = random.nextDouble() * width;
-        particle.setCenterX(startX);
+        particle.setX(startX);
 
         // Determine if particle moves up or down
         boolean movesUp = random.nextBoolean();
@@ -127,7 +127,7 @@ public class RetroParticleBackground extends Pane {
             // For continuous spawning, start from edge
             startY = movesUp ? height + size : -size;
         }
-        particle.setCenterY(startY);
+        particle.setY(startY);
 
         // Calculate travel distance and end position
         double endY = movesUp ? -size : height + size;

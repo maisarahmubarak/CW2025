@@ -129,12 +129,8 @@
 }
 
 .menu-panel {
-    -fx-background-color: rgba(4, 12, 32, 0.85);
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
-    -fx-border-color: linear-gradient(#00f0ff, #0066ff);
-    -fx-border-width: 3px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 20, 0.3, 0, 0);
+    /* Background set to transparent so particle animations show through. */
+    -fx-background-color: transparent;
     -fx-padding: 30;
     -fx-spacing: 24;
 }
@@ -293,13 +289,19 @@
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.2), 8, 0.3, 0, 0);
 }
 
+.game-over-btn {
+    -fx-pref-width: 220;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15 10 15;
+}
+
 .mode-selection-title {
     -fx-font-family: "Press Start 2P";
     -fx-text-fill: linear-gradient(#ffea00, #ff4500);
     -fx-font-size: 30;
     -fx-letter-spacing: 2px;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(255, 69, 0, 0.7), 10, 0.4, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(255, 69, 0, 0.7), 18, 0.4, 0, 0);
     -fx-padding: 6 0 18 0;
 }
 

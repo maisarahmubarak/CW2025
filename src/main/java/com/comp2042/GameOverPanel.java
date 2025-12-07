@@ -1,6 +1,7 @@
 package com.comp2042;
 
 import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -49,13 +50,14 @@ public class GameOverPanel extends BorderPane {
 
         // Buttons - restart and back to main menu
         restartButton = new Button("Restart");
-        restartButton.getStyleClass().addAll("menu-button", "restart-button");
+        restartButton.getStyleClass().addAll("menu-button", "restart-button", "game-over-btn");
         restartButton.setOnAction(e -> { if (onRestart != null) onRestart.run(); });
         mainMenuButton = new Button("Main Menu");
-        mainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button");
+        mainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button", "game-over-btn");
         mainMenuButton.setOnAction(e -> { if (onMainMenu != null) onMainMenu.run(); });
-        HBox buttons = new HBox(12, restartButton, mainMenuButton);
+        VBox buttons = new VBox(12, restartButton, mainMenuButton);
         buttons.setAlignment(Pos.CENTER);
+        buttons.setPadding(new Insets(0, 10, 0, 10)); // Add spacing so buttons don't touch edges
 
         // Keep previous behavior: use fixed sizes and no dynamic font scaling
         content.getChildren().addAll(gameOverLabel, finalScoreLabel, buttons);

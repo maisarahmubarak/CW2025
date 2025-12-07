@@ -37,3 +37,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+highscore.dat
+
+highscore.dat
+
+src/main/resources/Tetris_Theme.wav
