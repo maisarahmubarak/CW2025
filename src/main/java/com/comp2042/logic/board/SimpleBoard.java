@@ -1,12 +1,10 @@
 package com.comp2042.logic.board;
 
-import com.comp2042.ActiveBrick;
 import com.comp2042.BrickThemeFactory;
 import com.comp2042.ClassicBrickFactory;
-import com.comp2042.GameScore;
-import com.comp2042.ViewData;
-
-// imports reduced after SRP refactor
+import com.comp2042.logic.game.ActiveBrick;
+import com.comp2042.logic.game.GameScore;
+import com.comp2042.logic.game.ViewData;
 
 public class SimpleBoard implements Board {
 
@@ -29,15 +27,14 @@ public class SimpleBoard implements Board {
         return activeBrick.moveDown(boardMatrix.getBoardMatrix());
     }
 
-
     @Override
     public boolean moveBrickLeft() {
         return activeBrick.moveLeft(boardMatrix.getBoardMatrix());
     }
 
     @Override
-    public boolean moveBrickRight() {
-        return activeBrick.moveRight(boardMatrix.getBoardMatrix());
+    public void moveBrickRight() {
+        activeBrick.moveRight(boardMatrix.getBoardMatrix());
     }
 
     @Override
@@ -68,14 +65,12 @@ public class SimpleBoard implements Board {
     @Override
     public ClearRow clearRows() {
         return boardMatrix.clearRows();
-
     }
 
     @Override
     public GameScore getScore() {
         return score;
     }
-
 
     @Override
     public void newGame() {
