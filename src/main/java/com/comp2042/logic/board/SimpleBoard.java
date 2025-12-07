@@ -11,6 +11,7 @@ public class SimpleBoard implements Board {
     private final ActiveBrick activeBrick;
     private final BoardMatrix boardMatrix;
     private final GameScore score;
+    private boolean gameOver;
 
     public SimpleBoard(int width, int height) {
         this(width, height, new ClassicBrickFactory());
@@ -20,6 +21,11 @@ public class SimpleBoard implements Board {
         boardMatrix = new BoardMatrix(width, height);
         activeBrick = new ActiveBrick(brickThemeFactory.createGenerator());
         score = new GameScore();
+        gameOver = false;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     @Override
@@ -44,7 +50,11 @@ public class SimpleBoard implements Board {
 
     @Override
     public boolean createNewBrick() {
-        return activeBrick.createNewBrick(boardMatrix.getBoardMatrix());
+        boolean collision = activeBrick.createNewBrick(boardMatrix.getBoardMatrix());
+        if (collision) {
+            gameOver = true;
+        }
+        return collision;
     }
 
     @Override
@@ -76,6 +86,7 @@ public class SimpleBoard implements Board {
     public void newGame() {
         boardMatrix.reset();
         score.reset();
+        gameOver = false;
         createNewBrick();
     }
 
