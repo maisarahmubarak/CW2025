@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import com.comp2042.logic.board.ClearRow;
+import com.comp2042.logic.board.MatrixOperations;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;

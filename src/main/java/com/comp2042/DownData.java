@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.board.ClearRow;
 public final class DownData {
     private final ClearRow clearRow;
     private final ViewData viewData;

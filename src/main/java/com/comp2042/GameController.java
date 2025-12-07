@@ -1,5 +1,9 @@
 package com.comp2042;
 
+import com.comp2042.logic.board.Board;
+import com.comp2042.logic.board.ClearRow;
+import com.comp2042.logic.board.MatrixOperations;
+import com.comp2042.logic.board.SimpleBoard;
 import javafx.util.Duration;
 
 public class GameController implements InputActionListener {

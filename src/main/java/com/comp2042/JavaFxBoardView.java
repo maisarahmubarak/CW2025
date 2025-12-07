@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.board.BoardView;
 import com.comp2042.logic.bricks.BrickShape;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;

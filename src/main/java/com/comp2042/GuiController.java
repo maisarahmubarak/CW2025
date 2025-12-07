@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.board.ClearRow;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
