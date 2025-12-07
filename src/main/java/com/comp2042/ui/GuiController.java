@@ -107,6 +107,7 @@ public class GuiController implements Initializable {
     private int elapsedSeconds = 0;
 
     private GameStateController gameStateController;
+    private GameInputController gameInputController;
     private InputActionListener eventListener;
     private GameBoardView gameBoardView;
     private GameLoop gameLoop;
@@ -154,6 +155,14 @@ public class GuiController implements Initializable {
         gameStateController.setMoveDownCallback(() -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameStateController.initializeOverlays();
         gameStateController.initializeTimer();
+        
+        // Initialize GameInputController
+        gameInputController = new GameInputController(
+            gameStateController,
+            gameBoardView,
+            eventListener,
+            () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.USER))
+        );
         
         // Ensure that the overlay anchor pane fills the whole window, so overlays are fullscreen
         if (groupNotification != null && rootPane != null) {
@@ -244,40 +253,13 @@ public class GuiController implements Initializable {
 
     // Moved the anonymous key handler here so key-handling logic lives in one place
     // and can be delegated to from a separate GameKeyHandler class.
+    /**
+     * Handles keyboard input events by delegating to GameInputController.
+     * All key mappings and input logic are now managed by GameInputController.
+     */
     public void handleKeyEvent(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.P) {
-            gameStateController.togglePause();
-            keyEvent.consume();
-            return;
-        }
-        if (gameStateController.isPauseProperty().getValue() == Boolean.FALSE && gameStateController.isGameOverProperty().getValue() == Boolean.FALSE) {
-            if (keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A) {
-                if (gameStateController.isControlsFlipped()) {
-                    gameBoardView.refreshBrick(eventListener.onRightEvent(new MoveAction(ActionType.RIGHT, ActionSource.USER)));
-                } else {
-                    gameBoardView.refreshBrick(eventListener.onLeftEvent(new MoveAction(ActionType.LEFT, ActionSource.USER)));
-                }
-                keyEvent.consume();
-            }
-            if (keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D) {
-                if (gameStateController.isControlsFlipped()) {
-                    gameBoardView.refreshBrick(eventListener.onLeftEvent(new MoveAction(ActionType.LEFT, ActionSource.USER)));
-                } else {
-                    gameBoardView.refreshBrick(eventListener.onRightEvent(new MoveAction(ActionType.RIGHT, ActionSource.USER)));
-                }
-                keyEvent.consume();
-            }
-            if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W) {
-                gameBoardView.refreshBrick(eventListener.onRotateEvent(new MoveAction(ActionType.ROTATE, ActionSource.USER)));
-                keyEvent.consume();
-            }
-            if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
-                moveDown(new MoveAction(ActionType.DOWN, ActionSource.USER));
-                keyEvent.consume();
-            }
-        }
-        if (keyEvent.getCode() == KeyCode.N) {
-            gameStateController.newGame(null);
+        if (gameInputController != null) {
+            gameInputController.handleKeyEvent(keyEvent);
         }
     }
 
@@ -322,6 +304,9 @@ public class GuiController implements Initializable {
         this.eventListener = eventListener;
         if (gameStateController != null) {
             gameStateController.setEventListener(eventListener);
+        }
+        if (gameInputController != null) {
+            gameInputController.setEventListener(eventListener);
         }
     }
 
