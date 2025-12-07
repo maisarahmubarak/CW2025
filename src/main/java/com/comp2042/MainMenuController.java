@@ -2,6 +2,9 @@ package com.comp2042;
 
 import com.comp2042.logic.game.GameMode;
 import com.comp2042.logic.game.GameSettings;
+import com.comp2042.ui.GameController;
+import com.comp2042.ui.GuiController;
+import com.comp2042.ui.SettingsController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -163,7 +166,7 @@ public class MainMenuController {
 		particleBackground.start();
 	}
 
-	void setPrimaryStage(Stage stage) {
+	public void setPrimaryStage(Stage stage) {
 		this.primaryStage = stage;
 	}
 

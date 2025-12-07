@@ -1,6 +1,6 @@
 package com.comp2042.input;
 
-import com.comp2042.GuiController;
+import com.comp2042.ui.GuiController;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 

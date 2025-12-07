@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.SettingsController" styleClass="menu-root" prefWidth="400" prefHeight="300">
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comp2042.ui.SettingsController" styleClass="menu-root" prefWidth="400" prefHeight="300">
     <VBox spacing="20" alignment="CENTER" styleClass="menu-panel" StackPane.alignment="CENTER">
         <Label text="SETTINGS" styleClass="mode-selection-title"/>
         
