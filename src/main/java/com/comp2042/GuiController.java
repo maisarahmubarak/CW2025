@@ -129,6 +129,7 @@ public class GuiController implements Initializable {
     private javafx.scene.control.Label pauseLabel;
     private javafx.scene.control.Button pauseResumeButton;
     private javafx.scene.control.Button pauseMainMenuButton;
+    private javafx.scene.control.Button pauseRestartButton;
 
     // Game over overlay UI (mirror of pause overlay)
     private StackPane gameOverOverlay;
@@ -278,15 +279,31 @@ public class GuiController implements Initializable {
         pauseResumeButton = new javafx.scene.control.Button("Resume");
         pauseResumeButton.getStyleClass().addAll("menu-button", "resume-button", "pause-button");
         pauseResumeButton.setOnAction(e -> togglePause());
+        pauseResumeButton.setPrefWidth(180);
+        pauseResumeButton.setMinWidth(180);
+        pauseResumeButton.setMaxWidth(180);
+        pauseResumeButton.setPrefHeight(48);
+        pauseRestartButton = new javafx.scene.control.Button("Restart");
+        pauseRestartButton.getStyleClass().addAll("menu-button", "restart-button", "pause-button");
+        pauseRestartButton.setPrefWidth(180);
+        pauseRestartButton.setMinWidth(180);
+        pauseRestartButton.setMaxWidth(180);
+        pauseRestartButton.setPrefHeight(48);
+        pauseRestartButton.setOnAction(e -> newGame(null));
+
         pauseMainMenuButton = new javafx.scene.control.Button("Main Menu");
         pauseMainMenuButton.getStyleClass().addAll("menu-button", "quit-button", "pause-button");
+        pauseMainMenuButton.setPrefWidth(180);
+        pauseMainMenuButton.setMinWidth(180);
+        pauseMainMenuButton.setMaxWidth(180);
+        pauseMainMenuButton.setPrefHeight(48);
         pauseMainMenuButton.setOnAction(e -> {
             // Navigate back to main menu via registered callback if available
             if (onReturnToMainMenu != null) {
                 onReturnToMainMenu.run();
             }
         });
-        HBox buttons = new HBox(20, pauseResumeButton, pauseMainMenuButton);
+        HBox buttons = new HBox(20, pauseResumeButton, pauseRestartButton, pauseMainMenuButton);
         buttons.setAlignment(javafx.geometry.Pos.CENTER);
         buttons.setPadding(new javafx.geometry.Insets(0, 20, 0, 20));
         content.getChildren().addAll(pauseLabel, buttons);
