@@ -4,6 +4,7 @@ import com.comp2042.logic.board.MatrixOperations;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.BrickShape;
+import com.comp2042.logic.game.NextShapeInfo;
 import java.awt.Point;
 
 /**

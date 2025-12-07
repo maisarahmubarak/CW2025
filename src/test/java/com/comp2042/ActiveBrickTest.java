@@ -3,6 +3,7 @@ package com.comp2042;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.BrickShape;
+import com.comp2042.logic.game.ActiveBrick;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;

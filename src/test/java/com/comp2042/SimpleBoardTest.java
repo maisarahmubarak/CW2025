@@ -4,6 +4,7 @@ import com.comp2042.logic.board.SimpleBoard;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.BrickShape;
+import com.comp2042.logic.game.ViewData;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

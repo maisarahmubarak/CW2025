@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.game.GameScore;
 import javafx.beans.property.IntegerProperty;
 import org.junit.jupiter.api.Test;
 

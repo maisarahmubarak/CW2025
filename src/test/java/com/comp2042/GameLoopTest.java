@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.game.GameLoop;
 import javafx.application.Platform;
 import javafx.util.Duration;
 import org.junit.jupiter.api.BeforeAll;
