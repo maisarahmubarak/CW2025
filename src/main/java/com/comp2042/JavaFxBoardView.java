@@ -30,7 +30,9 @@ public class JavaFxBoardView implements BoardView {
 
     private Rectangle[][] displayMatrix;
     private Rectangle[][] rectangles;
+    private Rectangle[][] overlayMatrix;
     private BrickColorPalette palette = new ClassicBrickPalette();
+    private static final double COLUMN_HIGHLIGHT_ALPHA = 0.06; // faint overlay alpha
 
     public JavaFxBoardView(GridPane gamePanel, GridPane brickPanel, GridPane previewPanel, int brickSize) {
         this.gamePanel = gamePanel;
@@ -42,6 +44,7 @@ public class JavaFxBoardView implements BoardView {
     @Override
     public void initGameView(int[][] boardMatrix, ViewData brick) {
         displayMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
+        overlayMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
         for (int i = 0; i < boardMatrix.length; i++) {
             for (int j = 0; j < boardMatrix[i].length; j++) {
                 Rectangle rectangle = new Rectangle(brickSize, brickSize);
@@ -51,11 +54,20 @@ public class JavaFxBoardView implements BoardView {
                 if (i >= HIDDEN_ROWS) {
                     gamePanel.add(rectangle, j, i - HIDDEN_ROWS);
                 }
+                // Create an overlay rectangle that can be used to highlight the column
+                Rectangle overlay = new Rectangle(brickSize, brickSize);
+                overlay.setFill(EMPTY_COLOR);
+                overlay.setMouseTransparent(true);
+                overlayMatrix[i][j] = overlay;
+                if (i >= HIDDEN_ROWS) {
+                    gamePanel.add(overlay, j, i - HIDDEN_ROWS);
+                }
             }
         }
 
         initializeBrickOverlay(brick.getBrickShape());
         paintBrickShape(brick.getBrickShape());
+        updateHighlightForBrick(brick);
         Point2D boardOrigin = getBoardOrigin();
         double xOffset = brick.getxPosition() * (brickSize + brickPanel.getHgap());
         brickPanel.setLayoutX(boardOrigin.getX() + xOffset);
@@ -71,6 +83,7 @@ public class JavaFxBoardView implements BoardView {
         brickPanel.setLayoutY(boardOrigin.getY() + (brick.getyPosition() - HIDDEN_ROWS) * brickSize);
         ensureOverlayMatches(brick.getBrickShape());
         paintBrickShape(brick.getBrickShape());
+        updateHighlightForBrick(brick);
         renderNextPreviewList(brick.getNextBrickShapes());
     }
 
@@ -111,6 +124,70 @@ public class JavaFxBoardView implements BoardView {
     private void paintBrickShape(BrickShape shape) {
         clearRectangles(rectangles);
         shape.forEachCell((x, y, value) -> setRectangleData(value, rectangles[y][x]));
+    }
+
+    /**
+     * Update the column highlight overlay to match the active brick's horizontal position.
+     * Highlights every column that contains any cell of the active brick shape in the
+     * active brick's current x position.
+     */
+    private void updateHighlightForBrick(ViewData brick) {
+        if (overlayMatrix == null) {
+            return;
+        }
+        int rows = overlayMatrix.length;
+        int cols = overlayMatrix[0].length;
+        // Determine which columns are covered by the active brick
+        java.util.Set<Integer> columns = new java.util.HashSet<>();
+        int[] highlightValue = new int[] { -1 };
+        BrickShape shape = brick.getBrickShape();
+        if (shape == null) {
+            // remove any highlights
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < cols; c++) {
+                    overlayMatrix[r][c].setFill(EMPTY_COLOR);
+                }
+            }
+            return;
+        }
+        shape.forEachCell((shapeX, shapeY, value) -> {
+            if (value > 0) {
+                int boardCol = brick.getxPosition() + shapeX;
+                if (boardCol >= 0 && boardCol < cols) {
+                    columns.add(boardCol);
+                }
+                // capture the first brick color value to use for the highlight derivation
+                if (highlightValue[0] == -1) {
+                    highlightValue[0] = value;
+                }
+            }
+        });
+
+        // Determine highlight color derived from the brick color, fallback to white with alpha
+        Color highlightColor = null;
+        if (highlightValue[0] != -1) {
+            javafx.scene.paint.Paint basePaint = palette.colorFor(highlightValue[0]);
+            if (basePaint instanceof Color) {
+                Color base = (Color) basePaint;
+                highlightColor = new Color(base.getRed(), base.getGreen(), base.getBlue(), COLUMN_HIGHLIGHT_ALPHA);
+            }
+        }
+        if (highlightColor == null) {
+            highlightColor = new Color(1.0, 1.0, 1.0, COLUMN_HIGHLIGHT_ALPHA);
+        }
+
+        // Apply highlight to columns in the visible grid (with HIDDEN_ROWS offset for visible rows)
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                Rectangle overlay = overlayMatrix[r][c];
+                if (overlay == null) continue;
+                if (columns.contains(c)) {
+                    overlay.setFill(highlightColor);
+                } else {
+                    overlay.setFill(EMPTY_COLOR);
+                }
+            }
+        }
     }
 
     @Override
