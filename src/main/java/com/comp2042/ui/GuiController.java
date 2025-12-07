@@ -2,6 +2,7 @@ package com.comp2042.ui;
 
 import com.comp2042.BrickColorPalette;
 import com.comp2042.ClassicBrickPalette;
+import com.comp2042.ui.effects.BoardAnimationController;
 import com.comp2042.ui.effects.NeonGridBackground;
 import com.comp2042.ui.effects.RetroParticleBackground;
 import com.comp2042.ui.overlay.GameOverPanel;
@@ -106,13 +107,12 @@ public class GuiController implements Initializable {
     private GameStateController gameStateController;
     private GameInputController gameInputController;
     private ScoreUiController scoreUiController;
+    private BoardAnimationController boardAnimationController;
     private InputActionListener eventListener;
     private GameBoardView gameBoardView;
     private GameLoop gameLoop;
     private BrickColorPalette palette = new ClassicBrickPalette();
-    private Random dangerRandom = new Random(); // Used for visual animation effects
 
-    private AudioClip rowClearSound;
     private AudioClip gameOverSound;
 
     @Override
@@ -127,11 +127,18 @@ public class GuiController implements Initializable {
         try {
             URL rowClearUrl = getClass().getClassLoader().getResource("Tetris_RowClear.wav");
             if (rowClearUrl == null) rowClearUrl = getClass().getClassLoader().getResource("sounds/Tetris_RowClear.wav");
+            AudioClip rowClearSound = null;
             if (rowClearUrl != null) rowClearSound = new AudioClip(rowClearUrl.toExternalForm());
 
             URL gameOverUrl = getClass().getClassLoader().getResource("Tetris_GameOver.wav");
             if (gameOverUrl == null) gameOverUrl = getClass().getClassLoader().getResource("sounds/Tetris_GameOver.wav");
             if (gameOverUrl != null) gameOverSound = new AudioClip(gameOverUrl.toExternalForm());
+            
+            // Initialize BoardAnimationController with row clear sound
+            boardAnimationController = new BoardAnimationController(boardStack, groupNotification, gameBoardView, palette);
+            if (rowClearSound != null) {
+                boardAnimationController.setRowClearSound(rowClearSound);
+            }
         } catch (Exception e) {
             System.err.println("Could not load sounds: " + e.getMessage());
         }
@@ -290,104 +297,16 @@ public class GuiController implements Initializable {
     }
 
     /**
+     * Animates cleared rows by delegating to BoardAnimationController.
      * Visual-only animation: turn cleared row blocks into falling and vanishing rectangles.
      * This does not alter game state; it only animates an overlay based on the previous board snapshot.
+     * 
+     * @param prevMatrix The board matrix before rows were cleared
+     * @param clearRow Information about which rows were cleared
      */
     public void animateClearedRows(int[][] prevMatrix, ClearRow clearRow) {
-        if (prevMatrix == null || clearRow == null || clearRow.getLinesRemoved() <= 0) return;
-        
-        // Play sound effect
-        if (rowClearSound != null) {
-            rowClearSound.setVolume(GameSettings.getVolume() / 100.0);
-            rowClearSound.play();
-        }
-
-        if (boardStack == null) return;
-        if (!(gameBoardView instanceof JavaFxBoardView)) return;
-        JavaFxBoardView jfxView = (JavaFxBoardView) gameBoardView;
-
-        int[] rows = clearRow.getClearedRows();
-        // visual-only: small vertical shake on the board for multi-row clears (2 or more rows)
-        if (clearRow.getLinesRemoved() >= 2 && boardStack != null) {
-            // make a small amplitude based on lines removed: 2 -> 6px, 3 -> 8px, 4 -> 10px
-            final double amplitude = 6.0 + Math.max(0, clearRow.getLinesRemoved() - 2) * 2.0;
-            Platform.runLater(() -> {
-                // Keyframe timeline creates a quick vertical shake (up / down / settle)
-                Timeline shake = new Timeline(
-                        new KeyFrame(Duration.ZERO, new KeyValue(boardStack.translateYProperty(), 0)),
-                        new KeyFrame(Duration.millis(40), new KeyValue(boardStack.translateYProperty(), -amplitude)),
-                        new KeyFrame(Duration.millis(80), new KeyValue(boardStack.translateYProperty(), amplitude)),
-                        new KeyFrame(Duration.millis(120), new KeyValue(boardStack.translateYProperty(), -amplitude / 2.0)),
-                        new KeyFrame(Duration.millis(160), new KeyValue(boardStack.translateYProperty(), 0))
-                );
-                shake.setCycleCount(1);
-                shake.play();
-            });
-        }
-        System.out.println("Animating cleared rows: " + rows.length + " rows");
-        for (int r : rows) {
-            for (int c = 0; c < prevMatrix[0].length; c++) {
-                int color = prevMatrix[r][c];
-                if (color == 0) continue;
-                Rectangle rect = new Rectangle(BRICK_SIZE, BRICK_SIZE);
-                rect.setFill(palette.colorFor(color));
-                rect.setArcHeight(0);
-                rect.setArcWidth(0);
-                rect.setMouseTransparent(true);
-                // compute position inside boardStack
-                javafx.geometry.Point2D scenePoint = jfxView.getCellScenePosition(c, r);
-                javafx.geometry.Point2D local;
-                if (groupNotification != null) {
-                    local = groupNotification.sceneToLocal(scenePoint);
-                    // skip cells above visible region (hidden rows)
-                    if (local.getY() < -8) {
-                        continue;
-                    }
-                    // Position the rect absolutely within groupNotification so it's above everything
-                    rect.setLayoutX(local.getX());
-                    rect.setLayoutY(local.getY());
-                    groupNotification.getChildren().add(rect);
-                } else if (boardStack != null) {
-                    local = boardStack.sceneToLocal(scenePoint);
-                    if (local.getY() < -8) {
-                        continue;
-                    }
-                    StackPane.setAlignment(rect, javafx.geometry.Pos.TOP_LEFT);
-                    rect.setTranslateX(local.getX());
-                    rect.setTranslateY(local.getY());
-                    boardStack.getChildren().add(rect);
-                } else {
-                    // no place to draw overlay; skip
-                    continue;
-                }
-
-                // animation: fall a longer amount and fade out with a slight stagger + horizontal spread and rotation
-                // shorten the durations and delays to make the clear animation quicker while preserving visuals
-                TranslateTransition tt = new TranslateTransition(Duration.millis(350), rect);
-                tt.setByY(BRICK_SIZE * 2.0); // longer fall
-                // small horizontal spread: random lateral byX to spread the falling bricks slightly
-                double spreadPx = (dangerRandom.nextDouble() - 0.5) * BRICK_SIZE * 1.2; // ±12px range
-                tt.setByX(spreadPx);
-                FadeTransition ft = new FadeTransition(Duration.millis(320), rect);
-                ft.setFromValue(1.0);
-                ft.setToValue(0.0);
-                long baseDelay = 40; // reduced base delay
-                long stagger = (c * 14) + (r % 3) * 6; // lateral + small row-based offset (reduced)
-                ft.setDelay(Duration.millis(baseDelay + stagger));
-                tt.setDelay(Duration.millis(baseDelay + stagger));
-                // Add a gentle rotation so pieces twist as they fall
-                RotateTransition rt = new RotateTransition(Duration.millis(350), rect);
-                rt.setByAngle((dangerRandom.nextDouble() - 0.5) * 36.0); // -18 .. +18 deg
-                rt.setDelay(Duration.millis(baseDelay + stagger));
-                ParallelTransition pt = new ParallelTransition(tt, ft, rt);
-                pt.setOnFinished(ev -> {
-                    try {
-                        boardStack.getChildren().remove(rect);
-                    } catch (Exception ignored) {
-                    }
-                });
-                pt.play();
-            }
+        if (boardAnimationController != null) {
+            boardAnimationController.animateClearedRows(prevMatrix, clearRow);
         }
     }
 
