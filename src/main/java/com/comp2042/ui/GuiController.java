@@ -94,9 +94,6 @@ public class GuiController implements Initializable {
     @FXML
     private Label highScoreLabel;
 
-    private static int highScore = 0;
-    private static final String HIGH_SCORE_FILE = "highscore.dat";
-
     @FXML
     private VBox timerPanel;
 
@@ -108,6 +105,7 @@ public class GuiController implements Initializable {
 
     private GameStateController gameStateController;
     private GameInputController gameInputController;
+    private ScoreUiController scoreUiController;
     private InputActionListener eventListener;
     private GameBoardView gameBoardView;
     private GameLoop gameLoop;
@@ -119,7 +117,10 @@ public class GuiController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadHighScore();
+        // Initialize ScoreUiController
+        scoreUiController = new ScoreUiController(scoreLabel, highScoreLabel);
+        scoreUiController.initialize();
+        
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
         
         // Load sounds
@@ -208,46 +209,14 @@ public class GuiController implements Initializable {
 
 
 
+    /**
+     * Binds the score display to the game score by delegating to ScoreUiController.
+     * 
+     * @param score The GameScore object to bind to
+     */
     public void bindToScore(GameScore score) {
-        if (score == null) {
-            return;
-        }
-        scoreLabel.textProperty().bind(score.scoreProperty().asString());
-        score.scoreProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal.intValue() > highScore) {
-                highScore = newVal.intValue();
-                updateHighScoreLabel();
-                saveHighScore();
-            }
-        });
-        updateHighScoreLabel();
-    }
-
-    private void updateHighScoreLabel() {
-        if (highScoreLabel != null) {
-            highScoreLabel.setText(String.valueOf(highScore));
-        }
-    }
-
-    private void loadHighScore() {
-        File file = new File(HIGH_SCORE_FILE);
-        if (file.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line = reader.readLine();
-                if (line != null) {
-                    highScore = Integer.parseInt(line.trim());
-                }
-            } catch (IOException | NumberFormatException e) {
-                System.err.println("Failed to load high score: " + e.getMessage());
-            }
-        }
-    }
-
-    private void saveHighScore() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGH_SCORE_FILE))) {
-            writer.write(String.valueOf(highScore));
-        } catch (IOException e) {
-            System.err.println("Failed to save high score: " + e.getMessage());
+        if (scoreUiController != null) {
+            scoreUiController.bindToScore(score);
         }
     }
 
