@@ -1,7 +1,7 @@
 package com.comp2042.logic.board;
 
-import com.comp2042.GameScore;
-import com.comp2042.ViewData;
+import com.comp2042.logic.game.GameScore;
+import com.comp2042.logic.game.ViewData;
 
 public interface Board {
 
@@ -9,7 +9,7 @@ public interface Board {
 
     boolean moveBrickLeft();
 
-    boolean moveBrickRight();
+    void moveBrickRight();
 
     boolean rotateLeftBrick();
 
@@ -19,10 +19,6 @@ public interface Board {
 
     ViewData getViewData();
 
-    /**
-     * Merge (lock) the current piece into the board matrix (merge the active piece into the
-     * background).
-     */
     void mergeBrickToBackground();
 
     ClearRow clearRows();
@@ -30,6 +26,6 @@ public interface Board {
     GameScore getScore();
 
     void newGame();
-    
+
     void addGarbageLines(int lines);
 }

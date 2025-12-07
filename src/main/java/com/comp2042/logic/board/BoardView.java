@@ -1,7 +1,7 @@
 package com.comp2042.logic.board;
 
 import com.comp2042.BrickColorPalette;
-import com.comp2042.ViewData;
+import com.comp2042.logic.game.ViewData;
 
 /**
  * Abstraction for rendering the board and active/next bricks.
