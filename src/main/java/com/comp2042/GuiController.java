@@ -28,6 +28,10 @@ import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ParallelTransition;
+import javafx.scene.media.AudioClip;
+import java.io.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 
 import java.net.URL;
@@ -73,6 +77,7 @@ public class GuiController implements Initializable {
     private Label highScoreLabel;
 
     private static int highScore = 0;
+    private static final String HIGH_SCORE_FILE = "highscore.dat";
 
     @FXML
     private VBox timerPanel;
@@ -138,10 +143,27 @@ public class GuiController implements Initializable {
     private javafx.scene.control.Button gameOverRestartButton;
     private javafx.scene.control.Button gameOverMainMenuButton;
 
+    private AudioClip rowClearSound;
+    private AudioClip gameOverSound;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadHighScore();
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
         
+        // Load sounds
+        try {
+            URL rowClearUrl = getClass().getClassLoader().getResource("Tetris_RowClear.wav");
+            if (rowClearUrl == null) rowClearUrl = getClass().getClassLoader().getResource("sounds/Tetris_RowClear.wav");
+            if (rowClearUrl != null) rowClearSound = new AudioClip(rowClearUrl.toExternalForm());
+
+            URL gameOverUrl = getClass().getClassLoader().getResource("Tetris_GameOver.wav");
+            if (gameOverUrl == null) gameOverUrl = getClass().getClassLoader().getResource("sounds/Tetris_GameOver.wav");
+            if (gameOverUrl != null) gameOverSound = new AudioClip(gameOverUrl.toExternalForm());
+        } catch (Exception e) {
+            System.err.println("Could not load sounds: " + e.getMessage());
+        }
+
         // Initialize the 80s neon grid animated background
         initNeonGridBackground();
         
@@ -230,15 +252,24 @@ public class GuiController implements Initializable {
         gameOverScoreLabel.getStyleClass().add("finalScoreBox");
 
         gameOverRestartButton = new javafx.scene.control.Button("Restart");
-        gameOverRestartButton.getStyleClass().addAll("menu-button", "restart-button", "game-over-button");
+        gameOverRestartButton.getStyleClass().addAll("menu-button", "restart-button", "pause-button");
+        gameOverRestartButton.setPrefWidth(180);
+        gameOverRestartButton.setMinWidth(180);
+        gameOverRestartButton.setMaxWidth(180);
+        gameOverRestartButton.setPrefHeight(48);
         gameOverRestartButton.setOnAction(e -> newGame(null));
 
         gameOverMainMenuButton = new javafx.scene.control.Button("Main Menu");
-        gameOverMainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button", "game-over-button");
+        gameOverMainMenuButton.getStyleClass().addAll("menu-button", "main-menu-button", "pause-button");
+        gameOverMainMenuButton.setPrefWidth(180);
+        gameOverMainMenuButton.setMinWidth(180);
+        gameOverMainMenuButton.setMaxWidth(180);
+        gameOverMainMenuButton.setPrefHeight(48);
         gameOverMainMenuButton.setOnAction(e -> { if (onReturnToMainMenu != null) onReturnToMainMenu.run(); });
 
-        HBox buttons = new HBox(12, gameOverRestartButton, gameOverMainMenuButton);
+        HBox buttons = new HBox(20, gameOverRestartButton, gameOverMainMenuButton);
         buttons.setAlignment(javafx.geometry.Pos.CENTER);
+        buttons.setPadding(new javafx.geometry.Insets(0, 20, 0, 20));
 
         content.getChildren().addAll(gameOverTitleLabel, gameOverScoreLabel, buttons);
         gameOverOverlay.getChildren().addAll(rect, content);
@@ -362,6 +393,7 @@ public class GuiController implements Initializable {
             if (newVal.intValue() > highScore) {
                 highScore = newVal.intValue();
                 updateHighScoreLabel();
+                saveHighScore();
             }
         });
         updateHighScoreLabel();
@@ -370,6 +402,28 @@ public class GuiController implements Initializable {
     private void updateHighScoreLabel() {
         if (highScoreLabel != null) {
             highScoreLabel.setText(String.valueOf(highScore));
+        }
+    }
+
+    private void loadHighScore() {
+        File file = new File(HIGH_SCORE_FILE);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line = reader.readLine();
+                if (line != null) {
+                    highScore = Integer.parseInt(line.trim());
+                }
+            } catch (IOException | NumberFormatException e) {
+                System.err.println("Failed to load high score: " + e.getMessage());
+            }
+        }
+    }
+
+    private void saveHighScore() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGH_SCORE_FILE))) {
+            writer.write(String.valueOf(highScore));
+        } catch (IOException e) {
+            System.err.println("Failed to save high score: " + e.getMessage());
         }
     }
 
@@ -499,6 +553,13 @@ public class GuiController implements Initializable {
         stopDangerBoostTimer();
         stopDangerControlTimer();
         hidePauseOverlay();
+        
+        // Play game over sound
+        if (gameOverSound != null) {
+            gameOverSound.setVolume(GameSettings.getVolume() / 100.0);
+            gameOverSound.play();
+        }
+
         if (gameOverOverlay != null) {
             gameOverOverlay.setVisible(true);
             // Set final score for overlay
@@ -517,6 +578,13 @@ public class GuiController implements Initializable {
      */
     public void animateClearedRows(int[][] prevMatrix, ClearRow clearRow) {
         if (prevMatrix == null || clearRow == null || clearRow.getLinesRemoved() <= 0) return;
+        
+        // Play sound effect
+        if (rowClearSound != null) {
+            rowClearSound.setVolume(GameSettings.getVolume() / 100.0);
+            rowClearSound.play();
+        }
+
         if (boardStack == null) return;
         if (!(gameBoardView instanceof JavaFxBoardView)) return;
         JavaFxBoardView jfxView = (JavaFxBoardView) gameBoardView;
@@ -886,7 +954,7 @@ public class GuiController implements Initializable {
             }
             // Before the actual flip, show a warning and then activate flip briefly
             if (!isPause.getValue() && !isGameOver.getValue()) {
-                showControlWarning("CONTROLS SWITCHED!");
+                showControlWarning("CONTROLS\nSWITCHED!");
                 if (dangerControlActivateTimer != null) {
                     dangerControlActivateTimer.stop();
                     dangerControlActivateTimer = null;
@@ -959,7 +1027,7 @@ public class GuiController implements Initializable {
         javafx.scene.control.Label bubble = new javafx.scene.control.Label(message);
         bubble.getStyleClass().add("control-warning");
         bubble.setWrapText(true);
-        bubble.setMaxWidth(180); // Fit within game panel without spilling to side panels
+        bubble.setMaxWidth(300); // Increased to fit "CONTROLS SWITCHED!" on two lines
         
         groupNotification.getChildren().add(bubble);
         bubble.applyCss();

@@ -17,10 +17,13 @@ import javafx.scene.layout.StackPane;
 import static com.comp2042.TitleRevealAnimator.startOnce;
 import javafx.scene.layout.Region;
 import javafx.geometry.Pos;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class MainMenuController {
 
 	private Stage primaryStage;
+	private MediaPlayer mediaPlayer;
 
 	@FXML
 	private Pane animationLayer;
@@ -79,6 +82,40 @@ public class MainMenuController {
 		if (titleLabel != null) {
 			// Delay to allow CSS and layout to apply; use reusable animator
 			javafx.application.Platform.runLater(() -> startOnce(titleLabel));
+		}
+
+		// Start background music
+		playBackgroundMusic();
+	}
+
+	private void playBackgroundMusic() {
+		try {
+			// Try to find the music file (Tetris_Theme.wav)
+			URL musicResource = getClass().getClassLoader().getResource("Tetris_Theme.wav");
+			if (musicResource == null) {
+				// Fallback: try looking in music/ folder if user moves it there
+				musicResource = getClass().getClassLoader().getResource("music/Tetris-Theme.wav");
+			}
+			
+			if (musicResource != null) {
+				Media sound = new Media(musicResource.toURI().toString());
+				mediaPlayer = new MediaPlayer(sound);
+				mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+				
+				// Bind volume to GameSettings (0-100 scale -> 0.0-1.0 scale)
+				mediaPlayer.setVolume(GameSettings.getVolume() / 100.0);
+				GameSettings.volumeProperty().addListener((obs, oldVal, newVal) -> {
+					if (mediaPlayer != null) {
+						mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
+					}
+				});
+				
+				mediaPlayer.play();
+			} else {
+				System.out.println("Background music file not found.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -293,6 +330,10 @@ public class MainMenuController {
 	}
 
 	private void startGameWithMode(GameMode selectedMode) {
+		// Stop music before starting game
+		if (mediaPlayer != null) {
+			mediaPlayer.stop();
+		}
 		try {
 			URL location = getClass().getClassLoader().getResource("gameLayout.fxml");
 			if (location == null) {
