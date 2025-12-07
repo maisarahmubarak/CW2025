@@ -2,6 +2,7 @@ package com.comp2042;
 
 import com.comp2042.logic.board.BoardView;
 import com.comp2042.logic.bricks.BrickShape;
+import com.comp2042.logic.game.ViewData;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;

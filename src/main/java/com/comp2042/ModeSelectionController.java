@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.game.GameMode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

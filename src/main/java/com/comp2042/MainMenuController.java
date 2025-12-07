@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import com.comp2042.logic.game.GameMode;
+import com.comp2042.logic.game.GameSettings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

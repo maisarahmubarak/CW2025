@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.logic.game.GameSettings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.ColorAdjust;

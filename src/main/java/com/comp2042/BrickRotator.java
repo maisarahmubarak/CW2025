@@ -2,6 +2,7 @@ package com.comp2042;
 
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickShape;
+import com.comp2042.logic.game.NextShapeInfo;
 
 public class BrickRotator {
 

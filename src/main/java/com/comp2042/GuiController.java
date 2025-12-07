@@ -1,6 +1,12 @@
 package com.comp2042;
 
 import com.comp2042.logic.board.ClearRow;
+import com.comp2042.logic.game.DownData;
+import com.comp2042.logic.game.GameLoop;
+import com.comp2042.logic.game.GameMode;
+import com.comp2042.logic.game.GameScore;
+import com.comp2042.logic.game.GameSettings;
+import com.comp2042.logic.game.ViewData;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
