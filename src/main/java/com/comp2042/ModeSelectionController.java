@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 public class ModeSelectionController {
 
     @FXML
+    private Label titleLabel;
+    @FXML
     private Label modeDescription;
 
     @FXML
@@ -24,7 +26,10 @@ public class ModeSelectionController {
     @FXML
     private void initialize() {
         btnCancel.setOnAction(e -> onCancel());
-        modeDescription.setText("Select a mode to start the game.");
+        // no default text is shown; the description will be set dynamically if needed
+        modeDescription.setText("");
+        // Play the title reveal animation when the dialog is shown
+        javafx.application.Platform.runLater(() -> TitleRevealAnimator.startOnce(titleLabel));
     }
 
     @FXML

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
+// animation imports moved to TitleRevealAnimator
+import static com.comp2042.TitleRevealAnimator.startOnce;
 import javafx.scene.layout.Region;
 import javafx.geometry.Pos;
 
@@ -30,6 +32,9 @@ public class MainMenuController {
 
 	@FXML
 	private Label titleLabel;
+
+	// Animation state
+	// Title reveal animation uses TitleRevealAnimator; no per-controller RNG required here
 
 	@FXML
 	private void initialize() {
@@ -69,7 +74,20 @@ public class MainMenuController {
 		
 		// Initialize the retro particle background
 		initParticleBackground();
+
+		// Start the title reveal/flicker animation when the scene is ready
+		if (titleLabel != null) {
+			// Delay to allow CSS and layout to apply; use reusable animator
+			javafx.application.Platform.runLater(() -> startOnce(titleLabel));
+		}
 	}
+
+	/**
+	 * Starts a one-time 'power-on' pixel-style reveal animation.
+	 * Reveals the title in steps: "" → T → TE → TET → ... with ~100ms between steps.
+	 * Adds a subtle random flicker frame before some steps.
+	 */
+	// MainMenuController now uses TitleRevealAnimator; no local animation code here.
 
 	private void applyBrightness() {
 		if (animationLayer != null && animationLayer.getScene() != null) {
