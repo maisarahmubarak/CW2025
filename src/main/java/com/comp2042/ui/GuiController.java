@@ -122,6 +122,14 @@ public class GuiController implements Initializable {
         
         Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toExternalForm(), 38);
         
+        gamePanel.setFocusTraversable(true);
+        gamePanel.requestFocus();
+        gamePanel.setOnKeyPressed(new GameKeyHandler(this));
+        
+        // Create gameBoardView FIRST before initializing BoardAnimationController
+        gameBoardView = new GameBoardView(gamePanel, brickPanel, previewPanel, BRICK_SIZE);
+        gameBoardView.setPalette(palette);
+        
         // Load sounds
         try {
             URL rowClearUrl = getClass().getClassLoader().getResource("Tetris_RowClear.wav");
@@ -133,7 +141,7 @@ public class GuiController implements Initializable {
             if (gameOverUrl == null) gameOverUrl = getClass().getClassLoader().getResource("sounds/Tetris_GameOver.wav");
             if (gameOverUrl != null) gameOverSound = new AudioClip(gameOverUrl.toExternalForm());
             
-            // Initialize BoardAnimationController with row clear sound
+            // Initialize BoardAnimationController with row clear sound (NOW gameBoardView is available)
             boardAnimationController = new BoardAnimationController(boardStack, groupNotification, gameBoardView, palette);
             if (rowClearSound != null) {
                 boardAnimationController.setRowClearSound(rowClearSound);
@@ -145,12 +153,6 @@ public class GuiController implements Initializable {
         // Initialize BackgroundEffectController
         backgroundEffectController = new BackgroundEffectController(rootPane);
         backgroundEffectController.initialize();
-        
-        gamePanel.setFocusTraversable(true);
-        gamePanel.requestFocus();
-        gamePanel.setOnKeyPressed(new GameKeyHandler(this));
-        gameBoardView = new GameBoardView(gamePanel, brickPanel, previewPanel, BRICK_SIZE);
-        gameBoardView.setPalette(palette);
         brickPanel.toFront();
         gameLoop = new GameLoop(Duration.millis(400), () -> moveDown(new MoveAction(ActionType.DOWN, ActionSource.THREAD)));
         gameOverPanel.setVisible(false);
