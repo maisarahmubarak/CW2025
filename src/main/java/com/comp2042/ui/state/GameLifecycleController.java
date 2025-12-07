@@ -103,10 +103,8 @@ public class GameLifecycleController {
     private static final double DANGER_CONTROL_MAX_SEC = 18.0;
     private static final double DANGER_CONTROL_DURATION_SEC = 3.5;
     
-    // Timer management
-    private Timeline timerTimeline;
-    private int elapsedSeconds = 0;
-    private Label timerLabel;
+    // Timer management (delegated to GameTimerController)
+    private GameTimerController gameTimerController;
     
     // Callback for moveDown
     private Runnable moveDownCallback;
@@ -122,7 +120,7 @@ public class GameLifecycleController {
         this.gameOverPanel = gameOverPanel;
         this.rootPane = rootPane;
         this.boardStack = boardStack;
-        this.timerLabel = timerLabel;
+        this.gameTimerController = new GameTimerController(timerLabel);
     }
     
     /**
@@ -163,33 +161,22 @@ public class GameLifecycleController {
     }
     
     /**
-     * Initializes the timer.
+     * Initializes the timer by delegating to GameTimerController.
      */
     public void initializeTimer() {
-        timerTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            elapsedSeconds++;
-            updateTimerLabel();
-        }));
-        timerTimeline.setCycleCount(Timeline.INDEFINITE);
-    }
-    
-    private void updateTimerLabel() {
-        int minutes = elapsedSeconds / 60;
-        int seconds = elapsedSeconds % 60;
-        timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+        gameTimerController.initializeTimer();
     }
     
     private void startTimer() {
-        timerTimeline.play();
+        gameTimerController.startTimer();
     }
     
     private void stopTimer() {
-        timerTimeline.stop();
+        gameTimerController.stopTimer();
     }
     
     private void resetTimer() {
-        elapsedSeconds = 0;
-        updateTimerLabel();
+        gameTimerController.resetTimer();
     }
     
     /**
