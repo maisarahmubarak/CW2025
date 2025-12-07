@@ -2,8 +2,8 @@ package com.comp2042.ui;
 
 import com.comp2042.BrickColorPalette;
 import com.comp2042.ClassicBrickPalette;
+import com.comp2042.ui.effects.BackgroundEffectController;
 import com.comp2042.ui.effects.BoardAnimationController;
-import com.comp2042.ui.effects.NeonGridBackground;
 import com.comp2042.ui.effects.RetroParticleBackground;
 import com.comp2042.ui.overlay.GameOverPanel;
 import com.comp2042.ui.overlay.NotificationPanel;
@@ -84,8 +84,6 @@ public class GuiController implements Initializable {
     @FXML
     private AnchorPane contentPane;
     
-    private NeonGridBackground neonGridBackground;
-    
     @FXML
     private VBox scorePanel;
 
@@ -108,6 +106,7 @@ public class GuiController implements Initializable {
     private GameInputController gameInputController;
     private ScoreUiController scoreUiController;
     private BoardAnimationController boardAnimationController;
+    private BackgroundEffectController backgroundEffectController;
     private InputActionListener eventListener;
     private GameBoardView gameBoardView;
     private GameLoop gameLoop;
@@ -143,8 +142,9 @@ public class GuiController implements Initializable {
             System.err.println("Could not load sounds: " + e.getMessage());
         }
 
-        // Initialize the 80s neon grid animated background
-        initNeonGridBackground();
+        // Initialize BackgroundEffectController
+        backgroundEffectController = new BackgroundEffectController(rootPane);
+        backgroundEffectController.initialize();
         
         gamePanel.setFocusTraversable(true);
         gamePanel.requestFocus();
@@ -190,29 +190,7 @@ public class GuiController implements Initializable {
         }
     }
 
-    /**
-     * Initializes the animated 80s-style neon grid background.
-     * The background is added behind all other UI elements and starts animating.
-     */
-    private void initNeonGridBackground() {
-        if (rootPane == null) {
-            return;
-        }
-        
-        neonGridBackground = new NeonGridBackground();
-        
-        // Bind the background size to the root pane
-        neonGridBackground.prefWidthProperty().bind(rootPane.widthProperty());
-        neonGridBackground.prefHeightProperty().bind(rootPane.heightProperty());
-        
-        // Insert the background at position 0 so it's behind everything else
-        if (rootPane instanceof StackPane) {
-            ((StackPane) rootPane).getChildren().add(0, neonGridBackground);
-        }
-        
-        // Start the animation
-        neonGridBackground.start();
-    }
+
 
 
 
