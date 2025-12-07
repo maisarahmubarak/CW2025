@@ -1,9 +1,9 @@
 package com.comp2042.ui.menu;
 
-import com.comp2042.NeonGridBackground;
-import com.comp2042.RetroParticleBackground;
+import com.comp2042.ui.effects.NeonGridBackground;
+import com.comp2042.ui.effects.RetroParticleBackground;
 import com.comp2042.ui.overlay.GameOverPanel;
-import com.comp2042.TitleRevealAnimator;
+import com.comp2042.ui.effects.TitleRevealAnimator;
 import com.comp2042.logic.game.GameMode;
 import com.comp2042.logic.game.GameSettings;
 import com.comp2042.ui.GameController;
@@ -22,7 +22,7 @@ import java.net.URL;
 import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
 // animation imports moved to TitleRevealAnimator
-import static com.comp2042.TitleRevealAnimator.startOnce;
+import static com.comp2042.ui.effects.TitleRevealAnimator.startOnce;
 import javafx.scene.layout.Region;
 import javafx.geometry.Pos;
 import javafx.scene.media.Media;

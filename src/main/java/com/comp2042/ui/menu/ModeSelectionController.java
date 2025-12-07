@@ -1,6 +1,6 @@
 package com.comp2042.ui.menu;
 
-import com.comp2042.TitleRevealAnimator;
+import com.comp2042.ui.effects.TitleRevealAnimator;
 import com.comp2042.logic.game.GameMode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
