@@ -1,5 +1,8 @@
 package com.comp2042;
 
+import com.comp2042.input.ActionSource;
+import com.comp2042.input.InputActionListener;
+import com.comp2042.input.MoveAction;
 import com.comp2042.logic.board.Board;
 import com.comp2042.logic.board.ClearRow;
 import com.comp2042.logic.board.MatrixOperations;

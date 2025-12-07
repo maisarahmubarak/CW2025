@@ -1,5 +1,9 @@
 package com.comp2042;
 
+import com.comp2042.input.ActionSource;
+import com.comp2042.input.ActionType;
+import com.comp2042.input.InputEvent;
+import com.comp2042.input.KeyEventInputAdapter;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;

@@ -1,5 +1,9 @@
 package com.comp2042;
 
+import com.comp2042.input.ActionSource;
+import com.comp2042.input.ActionType;
+import com.comp2042.input.InputEvent;
+import com.comp2042.input.MoveAction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
