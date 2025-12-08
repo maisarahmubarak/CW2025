@@ -323,4 +323,13 @@ public class GuiController implements Initializable {
             gameViewController.setGameMode(mode);
         }
     }
+
+    /**
+     * Sets the GameViewController.
+     * Used for dependency injection, especially in tests.
+     * @param gameViewController The GameViewController to set.
+     */
+    public void setGameViewController(GameViewController gameViewController) {
+        this.gameViewController = gameViewController;
+    }
 }

@@ -4,12 +4,13 @@ import com.comp2042.logic.board.ClearRow;
 import com.comp2042.logic.board.MatrixOperations;
 import com.comp2042.ui.GameBoardView;
 import com.comp2042.ui.GuiController;
+import com.comp2042.ui.GameViewController;
+import com.comp2042.ui.effects.BoardAnimationController;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -26,14 +27,32 @@ public class GuiControllerAnimationTest {
         StackPane boardStack = new StackPane();
 
         final GuiController controller = new GuiController();
-        // Inject fields via reflection
-        setField(controller, "gamePanel", gamePanel);
-        setField(controller, "brickPanel", brickPanel);
-        setField(controller, "previewPanel", previewPanel);
-        setField(controller, "boardStack", boardStack);
-        // Initialize a JavaFxBoardView and inject
+        
+        // Initialize a JavaFxBoardView
         GameBoardView jfxView = new GameBoardView(gamePanel, brickPanel, previewPanel, 20);
-        setField(controller, "gameBoardView", jfxView);
+        
+        // Initialize BoardAnimationController
+        BoardAnimationController animationController = new BoardAnimationController(
+            boardStack, 
+            null, // groupNotification not needed for this test
+            jfxView, 
+            new ClassicBrickPalette()
+        );
+
+        // Initialize GameViewController with the animation controller
+        GameViewController gameViewController = new GameViewController(
+            gamePanel,
+            null, // groupNotification
+            null, // gameLifecycleController
+            null, // gameInputController
+            animationController,
+            null, // scoreUiController
+            jfxView
+        );
+
+        // Inject GameViewController into GuiController
+        controller.setGameViewController(gameViewController);
+
         // Setup a sample prev matrix with a full bottom row
         int rows = 28;
         int cols = 10;
@@ -76,11 +95,5 @@ public class GuiControllerAnimationTest {
         assertTrue(childrenCount[0] > 0, "Overlay should have children after animation starts");
         // We do not validate visual result, just ensure animation played and completed without exceptions.
         assertTrue(finishLatch.await(3, TimeUnit.SECONDS), "Animation should finish within 3 seconds");
-    }
-
-    private static void setField(Object target, String fieldName, Object value) throws Exception {
-        Field f = target.getClass().getDeclaredField(fieldName);
-        f.setAccessible(true);
-        f.set(target, value);
     }
 }
