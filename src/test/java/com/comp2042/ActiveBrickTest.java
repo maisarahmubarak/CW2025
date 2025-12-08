@@ -64,6 +64,39 @@ class ActiveBrickTest {
         assertTrue(collided, "Spawn overlap should report collision (used for game-over detection)");
     }
 
+    @Test
+    void testMoveRightMovesBrickOneCell() {
+        int[][] board = emptyBoard();
+        ActiveBrick activeBrick = new ActiveBrick(new CyclingBrickGenerator(singleShapeBrick()));
+        activeBrick.createNewBrick(board);
+        int startX = activeBrick.getOffsetX();
+
+        boolean moved = activeBrick.moveRight(board);
+
+        assertTrue(moved, "Moving right into empty space should succeed");
+        assertEquals(startX + 1, activeBrick.getOffsetX(), "X position should increase by 1");
+    }
+
+    @Test
+    void testMoveRightStopsAtRightBoundary() {
+        int[][] board = emptyBoard();
+        ActiveBrick activeBrick = new ActiveBrick(new CyclingBrickGenerator(singleShapeBrick()));
+        activeBrick.createNewBrick(board);
+
+        // Move right until we hit the wall
+        // Board width 10, brick width 2. Max x should be 8.
+        while (activeBrick.moveRight(board)) {
+            // keep moving
+        }
+
+        int maxX = activeBrick.getOffsetX();
+        boolean movedOutOfBounds = activeBrick.moveRight(board);
+
+        assertFalse(movedOutOfBounds, "Should not move past right boundary");
+        assertEquals(maxX, activeBrick.getOffsetX(), "Position should remain at the boundary");
+        assertEquals(BOARD_WIDTH - activeBrick.getCurrentShape().getWidth(), maxX, "Should stop exactly at the edge");
+    }
+
     private static int[][] emptyBoard() {
         return new int[BOARD_HEIGHT][BOARD_WIDTH];
     }
