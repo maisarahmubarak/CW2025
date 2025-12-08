@@ -13,6 +13,9 @@ import java.util.List;
 /**
  * Manages the state and movement of the currently falling brick in the game.
  * Handles movement (down, left, right), rotation, and collision detection with the board.
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class ActiveBrick {
 
@@ -36,15 +39,15 @@ public class ActiveBrick {
      * Creates a new ActiveBrick using the default ClassicBrickFactory.
      */
     public ActiveBrick() {
+        this(new ClassicBrickFactory().createGenerator());
+    }
+
     /**
      * Attempts to move the brick down by one row.
      *
      * @param boardMatrix the current state of the game board
      * @return true if the move was successful, false if blocked by collision
      */
-    public boolean moveDown(int[][] boardMatrix) {ator());
-    }
-
     public boolean moveDown(int[][] boardMatrix) {
         int[][] currentMatrix = MatrixOperations.copy(boardMatrix);
         Point p = new Point(currentOffset);
@@ -52,6 +55,12 @@ public class ActiveBrick {
         boolean conflict = MatrixOperations.intersect(currentMatrix, brickRotator.getCurrentShape(), (int) p.getX(), (int) p.getY());
         if (conflict) {
             return false;
+        } else {
+            currentOffset = p;
+            return true;
+        }
+    }
+
     /**
      * Attempts to move the brick left by one column.
      *
@@ -59,18 +68,18 @@ public class ActiveBrick {
      * @return true if the move was successful, false if blocked by collision
      */
     public boolean moveLeft(int[][] boardMatrix) {
-            currentOffset = p;
-            return true;
-        }
-    }
-
-    public boolean moveLeft(int[][] boardMatrix) {
         int[][] currentMatrix = MatrixOperations.copy(boardMatrix);
         Point p = new Point(currentOffset);
         p.translate(-1, 0);
         boolean conflict = MatrixOperations.intersect(currentMatrix, brickRotator.getCurrentShape(), (int) p.getX(), (int) p.getY());
         if (conflict) {
             return false;
+        } else {
+            currentOffset = p;
+            return true;
+        }
+    }
+
     /**
      * Attempts to move the brick right by one column.
      *
@@ -78,20 +87,7 @@ public class ActiveBrick {
      * @return true if the move was successful, false if blocked by collision
      */
     public boolean moveRight(int[][] boardMatrix) {
-            currentOffset = p;
-            return true;
-        }
-    }
-
-    public boolean moveRight(int[][] boardMatrix) {
-    /**
-     * Attempts to rotate the brick to the left (counter-clockwise).
-     * Tries wall kicks (shifting horizontally) if the rotation is initially blocked.
-     *
-     * @param boardMatrix the current state of the game board
-     * @return true if the rotation was successful, false if no valid position was found
-     */
-    public boolean rotateLeft(int[][] boardMatrix) {y(boardMatrix);
+        int[][] currentMatrix = MatrixOperations.copy(boardMatrix);
         Point p = new Point(currentOffset);
         p.translate(1, 0);
         boolean conflict = MatrixOperations.intersect(currentMatrix, brickRotator.getCurrentShape(), (int) p.getX(), (int) p.getY());
@@ -103,25 +99,21 @@ public class ActiveBrick {
         }
     }
 
+    /**
+     * Attempts to rotate the brick to the left (counter-clockwise).
+     * Tries wall kicks (shifting horizontally) if the rotation is initially blocked.
+     *
+     * @param boardMatrix the current state of the game board
+     * @return true if the rotation was successful, false if no valid position was found
+     */
     public boolean rotateLeft(int[][] boardMatrix) {
         int[][] currentMatrix = MatrixOperations.copy(boardMatrix);
         NextShapeInfo nextShape = brickRotator.getNextShape();
-    /**
-     * Spawns a new brick at the top center of the board.
-     *
-     * @param boardMatrix the current state of the game board
-     * @return true if the new brick immediately collides (game over condition), false otherwise
-     */
-    public boolean createNewBrick(int[][] boardMatrix) {
+        int[] horizontalOffsets = {0, 1, -1, 2, -2};
         for (int offset : horizontalOffsets) {
             Point candidate = new Point(currentOffset);
             candidate.translate(offset, 0);
-    /**
-     * Gets the current shape of the active brick.
-     *
-     * @return the current BrickShape
-     */
-    public BrickShape getCurrentShape() {ct(currentMatrix, nextShape.getShape(), (int) candidate.getX(), (int) candidate.getY())) {
+            if (!MatrixOperations.intersect(currentMatrix, nextShape.getShape(), (int) candidate.getX(), (int) candidate.getY())) {
                 currentOffset = candidate;
                 brickRotator.setCurrentShape(nextShape.getPosition());
                 return true;
@@ -130,29 +122,56 @@ public class ActiveBrick {
         return false;
     }
 
+    /**
+     * Spawns a new brick at the top center of the board.
+     *
+     * @param boardMatrix the current state of the game board
+     * @return true if the new brick immediately collides (game over condition), false otherwise
+     */
     public boolean createNewBrick(int[][] boardMatrix) {
         Brick currentBrick = preview.consumeNext();
         brickRotator.setBrick(currentBrick);
         int boardWidth = boardMatrix[0].length;
+        int brickWidth = brickRotator.getCurrentShape().getWidth();
+        int spawnX = (boardWidth - brickWidth) / 2;
+        currentOffset = new Point(spawnX, HIDDEN_ROWS);
+        return MatrixOperations.intersect(boardMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
+    }
+
     /**
-     * Gets the next preview shape.
+     * Gets the current shape of the active brick.
      *
-     * @return the BrickShape of the next brick
+     * @return the current BrickShape
      */
+    public BrickShape getCurrentShape() {
+        return brickRotator.getCurrentShape();
+    }
+
     /**
      * Gets the current X offset (column) of the brick.
      *
      * @return the x coordinate
+     */
+    public int getOffsetX() {
+        return (int) currentOffset.getX();
+    }
+
     /**
      * Gets the current Y offset (row) of the brick.
      *
      * @return the y coordinate
      */
     public int getOffsetY() {
-    public int getOffsetX() {Preview() {tCurrentShape().getWidth();
-        int spawnX = (boardWidth - brickWidth) / 2;
-        currentOffset = new Point(spawnX, HIDDEN_ROWS);
-        return MatrixOperations.intersect(boardMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
+        return (int) currentOffset.getY();
+    }
+
+    /**
+     * Gets the next preview shape.
+     *
+     * @return the BrickShape of the next brick
+     */
+    public BrickShape getNextPreview() {
+        return preview.peekNextPreview();
     }
 
     /**
@@ -161,22 +180,6 @@ public class ActiveBrick {
      * @param count the number of previews to retrieve
      * @return a list of BrickShapes
      */
-    public List<BrickShape> getNextPreviews(int count) {
-        return brickRotator.getCurrentShape();
-    }
-
-    public int getOffsetX() {
-        return (int) currentOffset.getX();
-    }
-
-    public int getOffsetY() {
-        return (int) currentOffset.getY();
-    }
-
-    public BrickShape getNextPreview() {
-        return preview.peekNextPreview();
-    }
-
     public List<BrickShape> getNextPreviews(int count) {
         return preview.peekNextPreviews(count);
     }

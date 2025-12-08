@@ -3,6 +3,9 @@ package com.comp2042.logic.bricks;
 /**
  * Leaf node in the composite. Represents a single occupied cell within a brick
  * rotation.
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public final class BrickCell implements BrickComponent {
 
@@ -41,16 +44,16 @@ public final class BrickCell implements BrickComponent {
      * Gets the y coordinate.
      *
      * @return the y coordinate
+     */
+    public int getY() {
+        return y;
+    }
+
     /**
      * Gets the cell value.
      *
      * @return the value
      */
-    public int getValue() {
-    public int getY() {
-        return y;
-    }
-
     public int getValue() {
         return value;
     }

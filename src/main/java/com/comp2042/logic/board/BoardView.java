@@ -5,6 +5,9 @@ import com.comp2042.logic.game.ViewData;
 
 /**
  * Abstraction for rendering the board and active/next bricks.
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public interface BoardView {
 
@@ -25,15 +28,15 @@ public interface BoardView {
 
     /**
      * Updates the visual representation of the active brick.
+     *
+     * @param brick the current active brick view data
+     */
+    void refreshBrick(ViewData brick);
+
     /**
      * Sets the color palette used for rendering bricks.
      *
      * @param palette the BrickColorPalette to use
      */
-    void setPalette(BrickColorPalette palette);
-     * @param brick the current active brick view data
-     */
-    void refreshBrick(ViewData brick);
-
     void setPalette(BrickColorPalette palette);
 }

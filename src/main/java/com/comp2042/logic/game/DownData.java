@@ -5,6 +5,9 @@ import com.comp2042.logic.board.ClearRow;
 /**
  * Data transfer object containing the results of a "move down" operation.
  * Includes information about cleared rows and the visual state of the brick.
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public final class DownData {
     private final ClearRow clearRow;
@@ -25,16 +28,16 @@ public final class DownData {
      * Gets the cleared row information.
      *
      * @return the ClearRow object
+     */
+    public ClearRow getClearRow() {
+        return clearRow;
+    }
+
     /**
      * Gets the view data for rendering.
      *
      * @return the ViewData object
      */
-    public ViewData getViewData() {
-    public ClearRow getClearRow() {
-        return clearRow;
-    }
-
     public ViewData getViewData() {
         return viewData;
     }

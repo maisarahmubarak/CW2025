@@ -7,6 +7,9 @@ import javafx.util.Duration;
 /**
  * Manages the game loop using a JavaFX Timeline.
  * Executes a specified task (tick) at regular intervals.
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameLoop {
 
@@ -29,31 +32,31 @@ public class GameLoop {
      * Starts the game loop.
      */
     public void play() {
+        timeline.play();
+    }
+
     /**
      * Stops the game loop.
      */
     public void stop() {
+        timeline.stop();
     }
 
-    public void stop() {
     /**
      * Checks if the game loop is currently running.
      *
      * @return true if running, false otherwise
      */
     public boolean isRunning() {
+        return timeline.getStatus() == javafx.animation.Animation.Status.RUNNING;
     }
+
     /**
      * Updates the interval between ticks.
      * If the loop is running, it restarts with the new interval.
      *
      * @param interval the new duration between ticks
      */
-    public void updateInterval(Duration interval) {
-    public boolean isRunning() {
-        return timeline.getStatus() == javafx.animation.Animation.Status.RUNNING;
-    }
-
     public void updateInterval(Duration interval) {
         boolean running = (timeline.getStatus() == javafx.animation.Animation.Status.RUNNING);
         timeline.stop();

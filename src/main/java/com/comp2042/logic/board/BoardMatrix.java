@@ -5,6 +5,9 @@ import com.comp2042.logic.bricks.BrickShape;
 /**
  * Holds the board matrix and operations that mutate it (merge, clearRows, reset).
  * Extracted from SimpleBoard to improve single responsibility.
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class BoardMatrix {
 
@@ -37,36 +40,36 @@ public class BoardMatrix {
      * Merges a brick shape into the board matrix at the specified position.
      *
      * @param brick the brick shape to merge
-    /**
-     * Checks for and clears any full rows in the matrix.
-     *
-     * @return a ClearRow object containing details about the cleared rows and the new matrix state
-     */
-    public ClearRow clearRows() {(column)
+     * @param x the x coordinate (column)
      * @param y the y coordinate (row)
      */
     public void merge(BrickShape brick, int x, int y) {
         this.matrix = MatrixOperations.merge(this.matrix, brick, x, y);
     }
 
-    public ClearRow clearRows() {
     /**
-     * Resets the board matrix to an empty state.
+     * Checks for and clears any full rows in the matrix.
+     *
+     * @return a ClearRow object containing details about the cleared rows and the new matrix state
      */
-    public void reset() { = MatrixOperations.checkRemoving(this.matrix);
+    public ClearRow clearRows() {
+        ClearRow clearRow = MatrixOperations.checkRemoving(this.matrix);
         this.matrix = clearRow.getNewMatrix();
         return clearRow;
     }
 
+    /**
+     * Resets the board matrix to an empty state.
+     */
     public void reset() {
+        this.matrix = new int[width][height];
+    }
+
     /**
      * Adds garbage lines to the bottom of the board, pushing existing blocks up.
      *
      * @param lines the number of garbage lines to add
      */
-    public void addGarbageLines(int lines) {;
-    }
-
     public void addGarbageLines(int lines) {
         if (lines <= 0) {
             return;
@@ -78,13 +81,13 @@ public class BoardMatrix {
                 for (int y = 1; y < height; y++) {
                     newMatrix[x][y - 1] = matrix[x][y];
                 }
+                // fill the bottom row with garbage (value 8 to distinguish from normal bricks)
+                newMatrix[x][height - 1] = 8;
             }
-            // bottom row filled with color code 1, leaving one random hole
-            int hole = (int) (Math.random() * width);
-            for (int x = 0; x < width; x++) {
-                newMatrix[x][height - 1] = (x == hole) ? 0 : 1;
-            }
-            matrix = newMatrix;
+            // leave a random gap in the garbage row
+            int gap = (int) (Math.random() * width);
+            newMatrix[gap][height - 1] = 0;
+            this.matrix = newMatrix;
         }
     }
 }
