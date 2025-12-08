@@ -4,11 +4,14 @@ import com.comp2042.logic.game.GameScore;
 import com.comp2042.logic.game.ViewData;
 
 /**
- * Interface representing the game board logic.
+ * Interface defining game board operations.
  * <p>
  * Defines the operations available on the board, such as moving bricks,
  * checking for cleared rows, and managing the game state.
  * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public interface Board {
 

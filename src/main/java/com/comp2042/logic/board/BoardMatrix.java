@@ -3,8 +3,11 @@ package com.comp2042.logic.board;
 import com.comp2042.logic.bricks.BrickShape;
 
 /**
+ * 2D matrix representation of the game board.
+ * <p>
  * Holds the board matrix and operations that mutate it (merge, clearRows, reset).
  * Extracted from SimpleBoard to improve single responsibility.
+ * </p>
  *
  * @author Maisarah
  * @version 1.0

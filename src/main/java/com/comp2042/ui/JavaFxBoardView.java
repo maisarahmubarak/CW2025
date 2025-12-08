@@ -17,8 +17,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
+ * JavaFX canvas-based board renderer.
+ * <p>
  * JavaFX implementation of {@link BoardView}. Keeps toolkit specifics outside
  * the controller so alternate renderers can be introduced.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class JavaFxBoardView implements BoardView {
 

@@ -21,12 +21,20 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 /**
+ * Controller managing game view components.
+ * <p>
  * GameViewController handles all game view operations and event management.
  * Responsibilities:
- * - Managing game board view updates
- * - Processing move actions and game events
- * - Coordinating animations and visual effects
- * - Delegating to specialized controllers (lifecycle, input, animation)
+ * <ul>
+ *   <li>Managing game board view updates</li>
+ *   <li>Processing move actions and game events</li>
+ *   <li>Coordinating animations and visual effects</li>
+ *   <li>Delegating to specialized controllers (lifecycle, input, animation)</li>
+ * </ul>
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameViewController {
     

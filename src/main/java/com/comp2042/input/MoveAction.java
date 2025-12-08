@@ -1,21 +1,18 @@
 package com.comp2042.input;
 
 /**
- * Represents a movement action in the game.
+ * Enumeration of movement directions.
  * <p>
  * Encapsulates the type of action (e.g., DOWN, LEFT) and the source of the action (USER or THREAD).
  * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public final class MoveAction {
     private final ActionType eventType;
     private final ActionSource eventSource;
 
-    /**
-     * Constructs a new MoveAction.
-     *
-     * @param eventType   the type of action.
-     * @param eventSource the source of the action.
-     */
     /**
      * Constructs a new MoveAction.
      *

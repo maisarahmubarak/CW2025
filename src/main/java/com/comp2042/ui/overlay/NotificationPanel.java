@@ -18,8 +18,14 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
+ * Panel for displaying in-game notifications.
+ * <p>
  * A custom pane for displaying temporary notifications to the user.
  * Used for showing messages like "Level Up" or "Game Saved" with fade animations.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class NotificationPanel extends BorderPane {
 

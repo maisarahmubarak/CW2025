@@ -11,8 +11,11 @@ import java.awt.Point;
 import java.util.List;
 
 /**
+ * Currently active/falling brick on the board.
+ * <p>
  * Manages the state and movement of the currently falling brick in the game.
  * Handles movement (down, left, right), rotation, and collision detection with the board.
+ * </p>
  *
  * @author Maisarah
  * @version 1.0

@@ -34,12 +34,20 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
+ * Main GUI controller coordinating UI elements.
+ * <p>
  * GuiController manages FXML bindings and initializes game components.
  * Responsibilities:
- * - FXML component binding and initialization
- * - Creating and wiring controllers (lifecycle, input, animation, etc.)
- * - Loading resources (fonts, sounds)
- * - Delegating game operations to GameViewController
+ * <ul>
+ *   <li>FXML component binding and initialization</li>
+ *   <li>Creating and wiring controllers (lifecycle, input, animation, etc.)</li>
+ *   <li>Loading resources (fonts, sounds)</li>
+ *   <li>Delegating game operations to GameViewController</li>
+ * </ul>
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GuiController implements Initializable {
 

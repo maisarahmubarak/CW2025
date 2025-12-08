@@ -10,12 +10,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
+ * Controller for game over overlay.
+ * <p>
  * GameOverOverlayController manages the game over overlay UI.
  * Responsibilities:
- * - Creating game over overlay with score display and action buttons
- * - Showing and hiding the game over overlay
- * - Updating the final score display
- * - Wiring game over overlay button actions to callbacks
+ * <ul>
+ *   <li>Creating game over overlay with score display and action buttons</li>
+ *   <li>Showing and hiding the game over overlay</li>
+ *   <li>Updating the final score display</li>
+ *   <li>Wiring game over overlay button actions to callbacks</li>
+ * </ul>
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameOverOverlayController {
     

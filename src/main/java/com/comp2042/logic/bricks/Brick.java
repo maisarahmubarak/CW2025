@@ -3,8 +3,14 @@ package com.comp2042.logic.bricks;
 import java.util.List;
 
 /**
- * Represents a Tetris brick (tetromino).
- * Defines the contract for retrieving the possible shapes (rotations) of the brick.
+ * Interface defining brick behavior.
+ * <p>
+ * Represents a Tetris brick (tetromino) and defines the contract for retrieving
+ * the possible shapes (rotations) of the brick.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public interface Brick {
 

@@ -8,16 +8,14 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Implementation of {@link InputSource} for JavaFX.
+ * JavaFX-specific input implementation.
  * <p>
  * Captures JavaFX KeyEvents from a Pane and translates them into game {@link InputEvent}s.
- * </p>
- */
-/**
- * Implementation of {@link InputSource} for JavaFX.
- * <p>
  * Binds key events from a JavaFX {@link Pane} to the game's input system.
  * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class JavaFxInputSource implements InputSource {
 

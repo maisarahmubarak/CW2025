@@ -10,11 +10,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
+ * Controller for pause menu overlay.
+ * <p>
  * PauseOverlayController manages the pause overlay UI.
  * Responsibilities:
- * - Creating pause overlay with Resume, Restart, and Main Menu buttons
- * - Showing and hiding the pause overlay
- * - Wiring pause overlay button actions to callbacks
+ * <ul>
+ *   <li>Creating pause overlay with Resume, Restart, and Main Menu buttons</li>
+ *   <li>Showing and hiding the pause overlay</li>
+ *   <li>Wiring pause overlay button actions to callbacks</li>
+ * </ul>
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class PauseOverlayController {
     

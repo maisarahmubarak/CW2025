@@ -5,9 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Shape definition for tetromino pieces.
+ * <p>
  * Composite that groups the occupied cells of a brick rotation. Keeps width and
  * height metadata so renderers can build overlays while callers iterate only over
  * meaningful cells.
+ * </p>
  *
  * @author Maisarah
  * @version 1.0

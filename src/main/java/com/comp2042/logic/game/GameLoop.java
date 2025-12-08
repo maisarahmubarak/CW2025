@@ -5,8 +5,11 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 /**
+ * Main game loop controlling timing and updates.
+ * <p>
  * Manages the game loop using a JavaFX Timeline.
  * Executes a specified task (tick) at regular intervals.
+ * </p>
  *
  * @author Maisarah
  * @version 1.0

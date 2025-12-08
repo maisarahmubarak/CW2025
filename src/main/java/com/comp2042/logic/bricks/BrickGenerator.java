@@ -1,8 +1,10 @@
 package com.comp2042.logic.bricks;
 
 /**
- * Factory interface for generating bricks.
+ * Interface for generating new bricks.
+ * <p>
  * Provides methods to get a random brick or the next queued brick.
+ * </p>
  *
  * @author Maisarah
  * @version 1.0

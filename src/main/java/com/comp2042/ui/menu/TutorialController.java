@@ -4,8 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
 /**
- * Controller for the tutorial screen.
+ * Controller for tutorial/help screen.
+ * <p>
  * Displays game instructions and handles navigation back to the main menu.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class TutorialController {
 

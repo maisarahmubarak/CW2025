@@ -4,8 +4,14 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 /**
+ * Manager for state transitions.
+ * <p>
  * Manages game state properties (pause, game over).
  * Provides centralized access to game state for all controllers.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameStateManager {
     

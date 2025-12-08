@@ -5,11 +5,14 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
 /**
- * Handles keyboard input events for the game.
+ * Keyboard input handler for game controls.
  * <p>
  * This class implements {@link EventHandler} for {@link KeyEvent}s and delegates the processing
  * of these events to the {@link GuiController}.
  * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameKeyHandler implements EventHandler<KeyEvent> {
 

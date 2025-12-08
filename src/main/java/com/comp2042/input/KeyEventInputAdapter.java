@@ -8,12 +8,14 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
+ * Adapter converting raw input to game actions.
+ * <p>
  * Converts JavaFX KeyEvents into domain-level input events so the controller
  * never needs to inspect framework-specific details.
- */
-/**
- * Converts JavaFX KeyEvents into domain-level input events so the controller
- * never needs to inspect framework-specific details.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class KeyEventInputAdapter implements InputAdapter<KeyEvent> {
 

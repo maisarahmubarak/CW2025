@@ -1,10 +1,13 @@
 package com.comp2042.input;
 
 /**
+ * User input event wrapper.
+ * <p>
  * Represents a translated game command coming from any input adapter.
- */
-/**
- * Represents a translated game command coming from any input adapter.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class InputEvent {
 

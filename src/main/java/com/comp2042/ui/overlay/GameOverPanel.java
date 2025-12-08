@@ -12,8 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * A custom pane that displays the Game Over screen.
+ * UI panel displaying game over screen.
  * <p>
+ * A custom pane that displays the Game Over screen.
  * This component is shown when the game ends. It displays:
  * <ul>
  *   <li>A "GAME OVER" banner.</li>
@@ -22,6 +23,9 @@ import javafx.scene.shape.Rectangle;
  * </ul>
  * It uses a semi-transparent overlay to dim the background game board.
  * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameOverPanel extends BorderPane {
 
