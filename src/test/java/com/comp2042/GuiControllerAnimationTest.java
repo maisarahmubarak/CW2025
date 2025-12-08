@@ -9,17 +9,20 @@ import com.comp2042.ui.effects.BoardAnimationController;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GuiControllerAnimationTest {
 
     @Test
-    public void animateClearedRowsRunsAndRemovesRects() throws Exception {
+    public void animateClearedRowsAddsHighlightNodesAndCleansUp() throws Exception {
         // Create a GUI context
         GridPane gamePanel = new GridPane();
         GridPane brickPanel = new GridPane();
@@ -59,7 +62,7 @@ public class GuiControllerAnimationTest {
         int[][] prevMatrix = new int[rows][cols];
         int fullRow = rows - 1; // bottom row
         for (int c = 0; c < cols; c++) {
-            prevMatrix[fullRow][c] = 1;
+            prevMatrix[fullRow][c] = 1; // Color 1 (Cyan)
         }
         int[] clearedRows = new int[]{fullRow};
         ClearRow cr = new ClearRow(1, MatrixOperations.copy(prevMatrix), 50, clearedRows);
@@ -70,30 +73,71 @@ public class GuiControllerAnimationTest {
         } catch (IllegalStateException ignored) {
             // toolkit already initialized
         }
+        
         CountDownLatch startLatch = new CountDownLatch(1);
         CountDownLatch finishLatch = new CountDownLatch(1);
-        final int[] childrenCount = new int[1];
-            Platform.runLater(() -> {
+        AtomicReference<Throwable> errorRef = new AtomicReference<>();
+
+        Platform.runLater(() -> {
             try {
                 controller.animateClearedRows(prevMatrix, cr);
+                
+                // ASSERTION 1: Verify 10 rectangles are added (one for each block in the cleared row)
+                int childCount = boardStack.getChildren().size();
+                if (childCount != 10) {
+                    throw new AssertionError("Expected 10 animation nodes, found " + childCount);
+                }
+                
+                // ASSERTION 2: Verify nodes are Rectangles with correct color
+                for (javafx.scene.Node node : boardStack.getChildren()) {
+                    if (!(node instanceof Rectangle)) {
+                        throw new AssertionError("Animation node should be a Rectangle");
+                    }
+                    Rectangle rect = (Rectangle) node;
+                    // Color 1 in ClassicBrickPalette is #00E5FF
+                    if (!rect.getFill().equals(Color.web("#00E5FF"))) {
+                         throw new AssertionError("Rectangle should be Cyan (#00E5FF) for brick type 1");
+                    }
+                }
+                
                 startLatch.countDown();
-                    // examine immediate children count on FX thread
-                    childrenCount[0] = boardStack.getChildren().size();
-                // Allow animations to complete by sleeping a bit longer than the animation
+
+                // Schedule cleanup check
                 new Thread(() -> {
                     try {
-                        Thread.sleep(1500);
-                        finishLatch.countDown();
+                        // Wait longer than animation duration (~530ms)
+                        Thread.sleep(1000);
+                        Platform.runLater(() -> {
+                            try {
+                                // ASSERTION 3: Verify nodes are removed after animation
+                                int finalCount = boardStack.getChildren().size();
+                                if (finalCount != 0) {
+                                    throw new AssertionError("Expected 0 nodes after animation, found " + finalCount);
+                                }
+                                finishLatch.countDown();
+                            } catch (Throwable t) {
+                                errorRef.set(t);
+                                finishLatch.countDown();
+                            }
+                        });
                     } catch (InterruptedException ignored) {}
                 }).start();
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            } catch (Throwable t) {
+                errorRef.set(t);
+                startLatch.countDown();
+                finishLatch.countDown();
             }
         });
 
-        assertTrue(startLatch.await(2, TimeUnit.SECONDS), "Animation should be invoked within 2 seconds");
-        assertTrue(childrenCount[0] > 0, "Overlay should have children after animation starts");
-        // We do not validate visual result, just ensure animation played and completed without exceptions.
-        assertTrue(finishLatch.await(3, TimeUnit.SECONDS), "Animation should finish within 3 seconds");
+        assertTrue(startLatch.await(2, TimeUnit.SECONDS), "Animation start timed out");
+        if (errorRef.get() != null) {
+             throw new RuntimeException("Assertion failed during animation start", errorRef.get());
+        }
+
+        assertTrue(finishLatch.await(3, TimeUnit.SECONDS), "Animation finish timed out");
+        if (errorRef.get() != null) {
+            throw new RuntimeException("Assertion failed during animation cleanup", errorRef.get());
+        }
     }
 }
