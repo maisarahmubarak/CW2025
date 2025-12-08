@@ -23,6 +23,10 @@ public class GameLoop {
         timeline.stop();
     }
 
+    public boolean isRunning() {
+        return timeline.getStatus() == javafx.animation.Animation.Status.RUNNING;
+    }
+
     public void updateInterval(Duration interval) {
         boolean running = (timeline.getStatus() == javafx.animation.Animation.Status.RUNNING);
         timeline.stop();
