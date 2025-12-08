@@ -11,8 +11,16 @@ public class GameSettings {
     public static DoubleProperty volumeProperty() { return volume; }
 
     public static double getBrightness() { return brightness.get(); }
-    public static void setBrightness(double value) { brightness.set(value); }
+    public static void setBrightness(double value) {
+        // Clamp between 0.0 and 1.0
+        double clamped = Math.max(0.0, Math.min(1.0, value));
+        brightness.set(clamped);
+    }
 
     public static double getVolume() { return volume.get(); }
-    public static void setVolume(double value) { volume.set(value); }
+    public static void setVolume(double value) {
+        // Clamp between 0.0 and 100.0
+        double clamped = Math.max(0.0, Math.min(100.0, value));
+        volume.set(clamped);
+    }
 }
