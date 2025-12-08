@@ -29,8 +29,18 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /**
- * Controller for the main menu screen.
- * Handles navigation to other screens (New Game, Settings, Tutorial) and initializes background effects.
+ * Controller for the main menu screen of the application.
+ * <p>
+ * This class manages the main entry point of the user interface, providing navigation to:
+ * <ul>
+ *   <li>New Game (Mode Selection)</li>
+ *   <li>Settings</li>
+ *   <li>Tutorial</li>
+ *   <li>High Scores (Scoreboard)</li>
+ * </ul>
+ * It also initializes and manages visual effects such as the {@link NeonGridBackground},
+ * {@link RetroParticleBackground}, and the title reveal animation.
+ * </p>
  */
 public class MainMenuController {
 
@@ -51,6 +61,19 @@ public class MainMenuController {
 	// Animation state
 	// Title reveal animation uses TitleRevealAnimator; no per-controller RNG required here
 
+	/**
+	 * Initializes the controller class.
+	 * <p>
+	 * This method is automatically called after the FXML file has been loaded. It performs the following:
+	 * <ul>
+	 *   <li>Loads the custom "Press Start 2P" font.</li>
+	 *   <li>Applies styling to the title label.</li>
+	 *   <li>Initializes the particle background effect.</li>
+	 *   <li>Starts the title reveal animation.</li>
+	 *   <li>Starts the background music.</li>
+	 * </ul>
+	 * </p>
+	 */
 	@FXML
 	private void initialize() {
 		// Ensure 'Press Start 2P' is available in this app by loading the bundled TTF file.
@@ -100,6 +123,13 @@ public class MainMenuController {
 		playBackgroundMusic();
 	}
 
+	/**
+	 * Plays the background music for the main menu.
+	 * <p>
+	 * Attempts to load "Tetris_Theme.wav" from the resources. If found, it plays the music
+	 * in an indefinite loop. The volume is bound to the global game settings.
+	 * </p>
+	 */
 	private void playBackgroundMusic() {
 		try {
 			// Try to find the music file (Tetris_Theme.wav)
@@ -138,6 +168,13 @@ public class MainMenuController {
 	 */
 	// MainMenuController now uses TitleRevealAnimator; no local animation code here.
 
+	/**
+	 * Applies the brightness setting to the scene.
+	 * <p>
+	 * Creates a {@link javafx.scene.effect.ColorAdjust} effect based on the current
+	 * brightness setting and applies it to the root of the scene.
+	 * </p>
+	 */
 	private void applyBrightness() {
 		if (animationLayer != null && animationLayer.getScene() != null) {
 			double sliderVal = GameSettings.getBrightness();
@@ -173,10 +210,22 @@ public class MainMenuController {
 		particleBackground.start();
 	}
 
+	/**
+	 * Sets the primary stage for this controller.
+	 *
+	 * @param stage The primary stage of the application.
+	 */
 	public void setPrimaryStage(Stage stage) {
 		this.primaryStage = stage;
 	}
 
+	/**
+	 * Handles the "New Game" button click.
+	 * <p>
+	 * Opens the mode selection dialog. If a mode is chosen, it starts the game with that mode.
+	 * The dialog is displayed as an overlay on top of the current menu.
+	 * </p>
+	 */
 	@FXML
 	private void onStartGame() {
 		if (primaryStage == null) {
@@ -238,6 +287,12 @@ public class MainMenuController {
 		}
 	}
 
+	/**
+	 * Handles the "Tutorial" button click.
+	 * <p>
+	 * Opens the tutorial panel as an overlay on top of the current menu.
+	 * </p>
+	 */
 	@FXML
 	private void onTutorial() {
 		if (primaryStage == null) {
@@ -285,6 +340,12 @@ public class MainMenuController {
 
 	private GameMode selectedMode = GameMode.CLASSIC;
 
+	/**
+	 * Handles the "Settings" button click.
+	 * <p>
+	 * Opens the settings panel as an overlay on top of the current menu.
+	 * </p>
+	 */
 	@FXML
 	private void onSettings() {
 		if (primaryStage == null) {
@@ -330,6 +391,12 @@ public class MainMenuController {
 		}
 	}
 
+	/**
+	 * Displays an information alert dialog.
+	 *
+	 * @param title   The title of the alert.
+	 * @param message The content message of the alert.
+	 */
 	private void showInfo(String title, String message) {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		if (primaryStage != null) {
@@ -341,6 +408,14 @@ public class MainMenuController {
 		alert.showAndWait();
 	}
 
+	/**
+	 * Starts the game with the specified game mode.
+	 * <p>
+	 * Loads the game layout, initializes the game controller, and switches the scene to the game view.
+	 * </p>
+	 *
+	 * @param selectedMode The game mode to start.
+	 */
 	private void startGameWithMode(GameMode selectedMode) {
 		// Stop music before starting game
 		if (mediaPlayer != null) {

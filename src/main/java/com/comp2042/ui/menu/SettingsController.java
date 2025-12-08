@@ -38,10 +38,23 @@ public class SettingsController {
         });
     }
 
+    /**
+     * Sets the callback to be executed when the back button is pressed.
+     *
+     * @param onBack a {@link Runnable} to execute.
+     */
     public void setOnBack(Runnable onBack) {
         this.onBack = onBack;
     }
     
+    /**
+     * Sets the parent overlay pane.
+     * <p>
+     * Also triggers an initial brightness update to ensure the overlay matches the current setting.
+     * </p>
+     *
+     * @param parentOverlay the parent {@link Pane}.
+     */
     public void setParentOverlay(Pane parentOverlay) {
         this.parentOverlay = parentOverlay;
         // Apply initial brightness when panel opens
