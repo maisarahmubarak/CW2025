@@ -11,6 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * A custom pane that displays the Game Over screen.
+ * Shows the final score and provides options to restart or return to the main menu.
+ */
 public class GameOverPanel extends BorderPane {
 
     private final Label finalScoreLabel;

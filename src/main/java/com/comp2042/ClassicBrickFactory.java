@@ -12,6 +12,12 @@ import com.comp2042.logic.bricks.RandomBrickGenerator;
 public class ClassicBrickFactory implements BrickThemeFactory {
 
     /**
+     * Creates a new ClassicBrickFactory.
+     */
+    public ClassicBrickFactory() {
+    }
+
+    /**
      * Creates a random brick generator.
      *
      * @return a new {@link RandomBrickGenerator}.

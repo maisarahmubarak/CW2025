@@ -6,6 +6,10 @@ import javafx.scene.control.Slider;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Pane;
 
+/**
+ * Controller for the settings screen.
+ * Manages application settings such as volume and brightness.
+ */
 public class SettingsController {
 
     @FXML

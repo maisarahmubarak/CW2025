@@ -28,6 +28,10 @@ import javafx.geometry.Pos;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+/**
+ * Controller for the main menu screen.
+ * Handles navigation to other screens (New Game, Settings, Tutorial) and initializes background effects.
+ */
 public class MainMenuController {
 
 	private Stage primaryStage;

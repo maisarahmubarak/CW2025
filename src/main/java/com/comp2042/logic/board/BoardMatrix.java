@@ -12,28 +12,59 @@ public class BoardMatrix {
     private final int height;
     private int[][] matrix;
 
+    /**
+     * Creates a new BoardMatrix with the specified dimensions.
+     *
+     * @param width the width of the board (number of columns)
+     * @param height the height of the board (number of rows)
+     */
     public BoardMatrix(int width, int height) {
         this.width = width;
         this.height = height;
         this.matrix = new int[width][height];
     }
 
+    /**
+     * Gets the current state of the board matrix.
+     *
+     * @return the 2D integer array representing the board
+     */
     public int[][] getBoardMatrix() {
         return matrix;
     }
 
+    /**
+     * Merges a brick shape into the board matrix at the specified position.
+     *
+     * @param brick the brick shape to merge
+    /**
+     * Checks for and clears any full rows in the matrix.
+     *
+     * @return a ClearRow object containing details about the cleared rows and the new matrix state
+     */
+    public ClearRow clearRows() {(column)
+     * @param y the y coordinate (row)
+     */
     public void merge(BrickShape brick, int x, int y) {
         this.matrix = MatrixOperations.merge(this.matrix, brick, x, y);
     }
 
     public ClearRow clearRows() {
-        ClearRow clearRow = MatrixOperations.checkRemoving(this.matrix);
+    /**
+     * Resets the board matrix to an empty state.
+     */
+    public void reset() { = MatrixOperations.checkRemoving(this.matrix);
         this.matrix = clearRow.getNewMatrix();
         return clearRow;
     }
 
     public void reset() {
-        this.matrix = new int[width][height];
+    /**
+     * Adds garbage lines to the bottom of the board, pushing existing blocks up.
+     *
+     * @param lines the number of garbage lines to add
+     */
+    public void addGarbageLines(int lines) {;
     }
 
     public void addGarbageLines(int lines) {

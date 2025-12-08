@@ -16,6 +16,12 @@ public class BrickRotator {
     private int currentShape = 0;
 
     /**
+     * Creates a new BrickRotator.
+     */
+    public BrickRotator() {
+    }
+
+    /**
      * Calculates the next rotation shape for the current brick.
      *
      * @return a {@link NextShapeInfo} object containing the next shape matrix and its index.

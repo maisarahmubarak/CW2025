@@ -21,6 +21,13 @@ public final class BrickShape implements BrickComponent {
         this.height = height;
     }
 
+    /**
+     * Creates a BrickShape from a 2D integer matrix.
+     * Non-zero values in the matrix are treated as occupied cells.
+     *
+     * @param matrix the 2D array representing the shape
+     * @return a new BrickShape instance
+     */
     public static BrickShape fromMatrix(int[][] matrix) {
         // The shape should capture the full matrix dimensions to preserve layout
         int height = matrix.length;
@@ -43,14 +50,30 @@ public final class BrickShape implements BrickComponent {
         }
     }
 
+    /**
+     * Gets the width of the shape matrix.
+     *
+     * @return the width
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Gets the height of the shape matrix.
+     *
+     * @return the height
+     */
     public int getHeight() {
         return height;
     }
-
+    /**
+     * Converts the BrickShape back to a 2D integer matrix.
+     * Useful for collision detection and matrix operations.
+     *
+     * @return a 2D integer array representing the shape
+     */
+    public int[][] toMatrix() {
     /**
      * Convenience helper for views that still expect a dense matrix. Keeps
      * responsibility localized to the view layer.

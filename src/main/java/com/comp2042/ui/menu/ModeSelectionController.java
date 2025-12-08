@@ -9,6 +9,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.function.Consumer;
 
+/**
+ * Controller for the game mode selection screen.
+ * Allows the user to choose between Classic, Speed, and Danger modes.
+ */
 public class ModeSelectionController {
 
     @FXML

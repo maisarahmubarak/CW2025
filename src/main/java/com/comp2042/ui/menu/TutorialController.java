@@ -3,6 +3,10 @@ package com.comp2042.ui.menu;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
+/**
+ * Controller for the tutorial screen.
+ * Displays game instructions and handles navigation back to the main menu.
+ */
 public class TutorialController {
 
     private Runnable onBack;

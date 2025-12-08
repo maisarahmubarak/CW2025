@@ -6,5 +6,10 @@ package com.comp2042.logic.bricks;
  */
 public interface BrickComponent {
 
+    /**
+     * Iterates over each cell in this component.
+     *
+     * @param consumer the action to perform on each cell
+     */
     void forEachCell(CellConsumer consumer);
 }

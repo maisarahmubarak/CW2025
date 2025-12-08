@@ -12,6 +12,12 @@ import javafx.scene.paint.Paint;
 public class ClassicBrickPalette implements BrickColorPalette {
 
     /**
+     * Creates a new ClassicBrickPalette.
+     */
+    public ClassicBrickPalette() {
+    }
+
+    /**
      * Returns the color associated with the given brick ID.
      *
      * @param brickId the ID of the brick.

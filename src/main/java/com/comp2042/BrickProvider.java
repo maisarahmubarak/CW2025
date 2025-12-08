@@ -73,6 +73,12 @@ public class BrickProvider {
         return next == null ? null : next.getShapes().get(0);
     }
 
+    /**
+     * Peeks at the shapes of the next few bricks in the queue.
+     *
+     * @param count the number of upcoming bricks to preview
+     * @return a list of {@link BrickShape} objects for the next bricks
+     */
     public List<BrickShape> peekNextPreviews(int count) {
         List<BrickShape> shapes = new ArrayList<>();
         int i = 0;
