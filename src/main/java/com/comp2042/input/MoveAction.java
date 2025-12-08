@@ -16,6 +16,12 @@ public final class MoveAction {
      * @param eventType   the type of action.
      * @param eventSource the source of the action.
      */
+    /**
+     * Constructs a new MoveAction.
+     *
+     * @param eventType   the type of action.
+     * @param eventSource the source of the action.
+     */
     public MoveAction(ActionType eventType, ActionSource eventSource) {
         this.eventType = eventType;
         this.eventSource = eventSource;

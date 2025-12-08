@@ -11,6 +11,10 @@ import java.util.Set;
  * Converts JavaFX KeyEvents into domain-level input events so the controller
  * never needs to inspect framework-specific details.
  */
+/**
+ * Converts JavaFX KeyEvents into domain-level input events so the controller
+ * never needs to inspect framework-specific details.
+ */
 public class KeyEventInputAdapter implements InputAdapter<KeyEvent> {
 
     private static final Set<KeyCode> LEFT = EnumSet.of(KeyCode.LEFT, KeyCode.A);
@@ -18,6 +22,12 @@ public class KeyEventInputAdapter implements InputAdapter<KeyEvent> {
     private static final Set<KeyCode> DOWN = EnumSet.of(KeyCode.DOWN, KeyCode.S);
     private static final Set<KeyCode> ROTATE = EnumSet.of(KeyCode.UP, KeyCode.W);
 
+    /**
+     * Translates a JavaFX KeyEvent into an optional InputEvent.
+     *
+     * @param event the JavaFX KeyEvent to translate.
+     * @return an {@link Optional} containing the translated {@link InputEvent}, or empty if the key is not mapped.
+     */
     @Override
     public Optional<InputEvent> translate(KeyEvent event) {
         KeyCode code = event.getCode();

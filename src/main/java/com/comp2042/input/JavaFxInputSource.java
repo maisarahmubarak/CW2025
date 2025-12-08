@@ -7,6 +7,18 @@ import javafx.scene.layout.Pane;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Implementation of {@link InputSource} for JavaFX.
+ * <p>
+ * Captures JavaFX KeyEvents from a Pane and translates them into game {@link InputEvent}s.
+ * </p>
+ */
+/**
+ * Implementation of {@link InputSource} for JavaFX.
+ * <p>
+ * Binds key events from a JavaFX {@link Pane} to the game's input system.
+ * </p>
+ */
 public class JavaFxInputSource implements InputSource {
 
     private final Pane inputPane;
@@ -14,23 +26,48 @@ public class JavaFxInputSource implements InputSource {
     private InputAdapter<KeyEvent> adapter;
     private Consumer<InputEvent> consumer;
 
+    /**
+     * Constructs a new JavaFxInputSource.
+     *
+     * @param inputPane the JavaFX Pane to listen for key events on.
+     * @param adapter the adapter to translate KeyEvents into InputEvents.
+     */
     public JavaFxInputSource(Pane inputPane, InputAdapter<KeyEvent> adapter) {
         this.inputPane = inputPane;
         this.adapter = adapter;
     }
 
+    /**
+     * Binds the input source to a consumer.
+     * <p>
+     * Starts listening for key events on the configured pane.
+     * </p>
+     *
+     * @param consumer the consumer that will receive generated InputEvents.
+     */
     @Override
     public void bind(Consumer<InputEvent> consumer) {
         this.consumer = consumer;
         inputPane.setOnKeyPressed(handler);
     }
 
+    /**
+     * Unbinds the input source.
+     * <p>
+     * Stops listening for key events.
+     * </p>
+     */
     @Override
     public void unbind() {
         consumer = null;
         inputPane.setOnKeyPressed(null);
     }
 
+    /**
+     * Sets the input adapter.
+     *
+     * @param adapter the new adapter to use for translation.
+     */
     @Override
     public void setAdapter(InputAdapter<?> adapter) {
         if (adapter instanceof InputAdapter) {
