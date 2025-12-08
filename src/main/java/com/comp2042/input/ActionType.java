@@ -1,8 +1,26 @@
 package com.comp2042.input;
 
 /**
- * Replacement enum for EventType. Use ActionType.DOWN/LEFT/RIGHT/ROTATE.
+ * Enumeration representing the type of action or movement.
+ * <p>
+ * Defines the possible moves a brick can make: DOWN, LEFT, RIGHT, or ROTATE.
+ * </p>
  */
 public enum ActionType {
-    DOWN, LEFT, RIGHT, ROTATE
+    /**
+     * Move the brick down.
+     */
+    DOWN,
+    /**
+     * Move the brick left.
+     */
+    LEFT,
+    /**
+     * Move the brick right.
+     */
+    RIGHT,
+    /**
+     * Rotate the brick.
+     */
+    ROTATE
 }

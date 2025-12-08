@@ -4,7 +4,7 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Legacy alias kept for backward compatibility. Prefer {@link JavaFxBoardView}
- * which implements the {@link BoardView} bridge abstraction directly.
+ * which implements the {@link com.comp2042.logic.board.BoardView} bridge abstraction directly.
  */
 @Deprecated
 public class GameBoardView extends JavaFxBoardView {

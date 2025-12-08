@@ -6,6 +6,12 @@ import com.comp2042.logic.game.ActiveBrick;
 import com.comp2042.logic.game.GameScore;
 import com.comp2042.logic.game.ViewData;
 
+/**
+ * A concrete implementation of the {@link Board} interface.
+ * <p>
+ * Manages the game state, including the grid (matrix), the active brick, and the score.
+ * </p>
+ */
 public class SimpleBoard implements Board {
 
     private final ActiveBrick activeBrick;
@@ -13,10 +19,23 @@ public class SimpleBoard implements Board {
     private final GameScore score;
     private boolean gameOver;
 
+    /**
+     * Constructs a new SimpleBoard with the specified dimensions and default theme.
+     *
+     * @param width  the width of the board in blocks.
+     * @param height the height of the board in blocks.
+     */
     public SimpleBoard(int width, int height) {
         this(width, height, new ClassicBrickFactory());
     }
 
+    /**
+     * Constructs a new SimpleBoard with the specified dimensions and theme factory.
+     *
+     * @param width             the width of the board.
+     * @param height            the height of the board.
+     * @param brickThemeFactory the factory to use for creating bricks.
+     */
     public SimpleBoard(int width, int height, BrickThemeFactory brickThemeFactory) {
         boardMatrix = new BoardMatrix(width, height);
         activeBrick = new ActiveBrick(brickThemeFactory.createGenerator());
@@ -24,6 +43,11 @@ public class SimpleBoard implements Board {
         gameOver = false;
     }
 
+    /**
+     * Checks if the game is over.
+     *
+     * @return true if the game is over, false otherwise.
+     */
     public boolean isGameOver() {
         return gameOver;
     }

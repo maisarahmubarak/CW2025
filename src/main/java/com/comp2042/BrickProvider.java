@@ -9,8 +9,11 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- * Owns the BrickGenerator and provides a stable preview API for the UI and ActiveBrick.
- * Renamed from BrickPreview to BrickProvider.
+ * Manages the generation and preview of bricks in the game.
+ * <p>
+ * This class owns a {@link BrickGenerator} and maintains a queue of upcoming bricks,
+ * providing a stable API for the UI to display previews and for the game logic to consume new bricks.
+ * </p>
  */
 public class BrickProvider {
 
@@ -18,6 +21,14 @@ public class BrickProvider {
     private final Deque<Brick> nextBricks = new ArrayDeque<>();
     private final int PREVIEW_COUNT = 3;
 
+    /**
+     * Constructs a new BrickProvider with the specified generator.
+     * <p>
+     * Initializes the preview queue with a set number of bricks.
+     * </p>
+     *
+     * @param generator the {@link BrickGenerator} used to create new bricks.
+     */
     public BrickProvider(BrickGenerator generator) {
         this.generator = generator;
         // fill preview queue
@@ -31,7 +42,12 @@ public class BrickProvider {
     }
 
     /**
-     * Return and consume the next Brick.
+     * Retrieves and removes the next brick from the queue.
+     * <p>
+     * This method also refills the queue to ensure a constant number of preview bricks are available.
+     * </p>
+     *
+     * @return the next {@link Brick} to be played.
      */
     public Brick consumeNext() {
         Brick current = nextBricks.poll();
@@ -45,7 +61,12 @@ public class BrickProvider {
     }
 
     /**
-     * Peek the preview shape for UI (first rotation matrix of the next brick).
+     * Peeks at the shape of the next brick in the queue without removing it.
+     * <p>
+     * This is typically used for displaying the "Next Brick" preview in the UI.
+     * </p>
+     *
+     * @return the {@link BrickShape} of the next brick (first rotation state).
      */
     public BrickShape peekNextPreview() {
         Brick next = nextBricks.peek();

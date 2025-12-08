@@ -4,10 +4,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
- * Default color palette matching the original hard-coded switch statement.
+ * A concrete implementation of {@link BrickColorPalette} providing the classic Tetris colors.
+ * <p>
+ * Maps standard brick IDs to their traditional colors (e.g., Cyan for I, Yellow for O, Purple for T).
+ * </p>
  */
 public class ClassicBrickPalette implements BrickColorPalette {
 
+    /**
+     * Returns the color associated with the given brick ID.
+     *
+     * @param brickId the ID of the brick.
+     * @return the {@link Paint} color for the brick.
+     */
     @Override
     public Paint colorFor(int brickId) {
         switch (brickId) {
