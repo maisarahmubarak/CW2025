@@ -6,8 +6,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit tests for verifying the definitions of Tetromino shapes.
+ * <p>
+ * Checks that each brick type has the correct number of rotations and cells.
+ * </p>
+ */
 class TetrominoDefinitionsTest {
 
+    /**
+     * Verifies that each Tetromino type has the expected number of rotation states.
+     */
     @Test
     void rotationCountsMatchExpectedDefinitions() {
         assertEquals(2, new IBrick().getShapes().size(), "I tetromino should have two rotations");
