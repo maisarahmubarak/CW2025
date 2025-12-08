@@ -7,8 +7,13 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Pane;
 
 /**
- * Controller for the settings screen.
+ * Controller for game settings screen.
+ * <p>
  * Manages application settings such as volume and brightness.
+ * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class SettingsController {
 
