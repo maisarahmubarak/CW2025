@@ -43,6 +43,14 @@ public class NotificationPanel extends BorderPane {
 
     }
 
+    /**
+     * Shows the notification with a float-up and fade-out animation.
+     * <p>
+     * Automatically removes the panel from the parent list when the animation completes.
+     * </p>
+     *
+     * @param list the parent's children list, used to remove this panel after animation.
+     */
     public void showScore(ObservableList<Node> list) {
         FadeTransition ft = new FadeTransition(FADE_DURATION, this);
         TranslateTransition tt = new TranslateTransition(FLOAT_DURATION, this);
@@ -59,6 +67,14 @@ public class NotificationPanel extends BorderPane {
         transition.play();
     }
 
+    /**
+     * Animates a countdown notification (e.g., "3", "2", "1").
+     * <p>
+     * Uses a scale-up effect followed by a pause, then removes the panel.
+     * </p>
+     *
+     * @param list the parent's children list, used to remove this panel after animation.
+     */
     public void animateCountdown(ObservableList<Node> list) {
         this.setScaleX(0.8);
         this.setScaleY(0.8);

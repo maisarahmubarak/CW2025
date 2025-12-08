@@ -13,7 +13,15 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * A custom pane that displays the Game Over screen.
- * Shows the final score and provides options to restart or return to the main menu.
+ * <p>
+ * This component is shown when the game ends. It displays:
+ * <ul>
+ *   <li>A "GAME OVER" banner.</li>
+ *   <li>The player's final score.</li>
+ *   <li>Buttons to restart the game or return to the main menu.</li>
+ * </ul>
+ * It uses a semi-transparent overlay to dim the background game board.
+ * </p>
  */
 public class GameOverPanel extends BorderPane {
 
@@ -23,6 +31,12 @@ public class GameOverPanel extends BorderPane {
     private Runnable onRestart;
     private Runnable onMainMenu;
 
+    /**
+     * Constructs a new GameOverPanel.
+     * <p>
+     * Initializes the layout, creates the labels and buttons, and applies styling.
+     * </p>
+     */
     public GameOverPanel() {
         // Use a StackPane to place a semi-transparent overlay behind the banner
         StackPane root = new StackPane();
@@ -70,14 +84,29 @@ public class GameOverPanel extends BorderPane {
         setCenter(root);
     }
 
+    /**
+     * Updates the displayed final score.
+     *
+     * @param score the final score to display.
+     */
     public void setFinalScore(int score) {
         finalScoreLabel.setText(String.format("SCORE: %d", score));
     }
 
+    /**
+     * Sets the callback for the restart button.
+     *
+     * @param r a {@link Runnable} to execute when restart is clicked.
+     */
     public void setOnRestart(Runnable r) {
         this.onRestart = r;
     }
 
+    /**
+     * Sets the callback for the main menu button.
+     *
+     * @param r a {@link Runnable} to execute when main menu is clicked.
+     */
     public void setOnMainMenu(Runnable r) {
         this.onMainMenu = r;
     }

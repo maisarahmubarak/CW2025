@@ -4,14 +4,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 /**
- * GameOverlayController coordinates pause and game over overlays.
- * Responsibilities:
- * - Coordinating PauseOverlayController and GameOverOverlayController
- * - Delegating visibility operations to specialized overlay controllers
- * - Managing callbacks for overlay actions
- * 
- * This is a thin coordinator that delegates to specialized overlay controllers,
- * keeping overlay management logic modular and focused.
+ * Coordinates the display and interaction of game overlays (Pause and Game Over).
+ * <p>
+ * This controller acts as a facade for managing the different overlay states in the game.
+ * It delegates specific rendering and logic to {@link PauseOverlayController} and
+ * {@link GameOverOverlayController}, ensuring a clean separation of concerns.
+ * </p>
+ * <p>
+ * Responsibilities include:
+ * <ul>
+ *   <li>Initializing and managing overlay sub-controllers.</li>
+ *   <li>Routing callbacks (e.g., resume, restart, quit) to the appropriate handlers.</li>
+ *   <li>Controlling the visibility of pause and game-over screens.</li>
+ * </ul>
+ * </p>
  */
 public class GameOverlayController {
     
@@ -19,12 +25,15 @@ public class GameOverlayController {
     private final GameOverOverlayController gameOverOverlayController;
     
     /**
-     * Constructor for GameOverlayController.
+     * Constructs a new GameOverlayController.
+     * <p>
+     * Initializes the specialized controllers for the pause menu and game over screen.
+     * </p>
      * 
-     * @param gamePanel The game panel for layout
-     * @param groupNotification The notification overlay pane
-     * @param gameOverPanel The legacy game over panel
-     * @param rootPane The root pane for overlay positioning
+     * @param gamePanel         The main game grid panel (used for layout context).
+     * @param groupNotification The anchor pane used for displaying notifications/overlays.
+     * @param gameOverPanel     The custom component representing the game over UI.
+     * @param rootPane          The root container of the scene, used for centering overlays.
      */
     public GameOverlayController(GridPane gamePanel, 
                                  AnchorPane groupNotification,
