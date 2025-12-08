@@ -38,6 +38,14 @@ public class JavaFxBoardView implements BoardView {
     private BrickColorPalette palette = new ClassicBrickPalette();
     private static final double COLUMN_HIGHLIGHT_ALPHA = 0.06; // faint overlay alpha
 
+    /**
+     * Constructs a new JavaFxBoardView.
+     *
+     * @param gamePanel the main game grid pane.
+     * @param brickPanel the pane for the active brick.
+     * @param previewPanel the pane for the next brick preview.
+     * @param brickSize the size of each brick cell in pixels.
+     */
     public JavaFxBoardView(GridPane gamePanel, GridPane brickPanel, GridPane previewPanel, int brickSize) {
         this.gamePanel = gamePanel;
         this.brickPanel = brickPanel;
@@ -45,6 +53,15 @@ public class JavaFxBoardView implements BoardView {
         this.brickSize = brickSize;
     }
 
+    /**
+     * Initializes the game view with the initial board state and active brick.
+     * <p>
+     * Creates the grid of rectangles for the board and sets up the initial brick display.
+     * </p>
+     *
+     * @param boardMatrix the initial board matrix.
+     * @param brick the initial active brick view data.
+     */
     @Override
     public void initGameView(int[][] boardMatrix, ViewData brick) {
         displayMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
@@ -79,6 +96,14 @@ public class JavaFxBoardView implements BoardView {
         renderNextPreviewList(brick.getNextBrickShapes());
     }
 
+    /**
+     * Updates the visual representation of the active brick.
+     * <p>
+     * Moves the brick panel to the new position and repaints the shape if necessary.
+     * </p>
+     *
+     * @param brick the current active brick view data.
+     */
     @Override
     public void refreshBrick(ViewData brick) {
         Point2D boardOrigin = getBoardOrigin();
@@ -91,6 +116,14 @@ public class JavaFxBoardView implements BoardView {
         renderNextPreviewList(brick.getNextBrickShapes());
     }
 
+    /**
+     * Refreshes the background grid based on the board matrix.
+     * <p>
+     * Updates the fill color of each rectangle in the grid to match the board state.
+     * </p>
+     *
+     * @param board the current board matrix.
+     */
     @Override
     public void refreshGameBackground(int[][] board) {
         for (int i = 0; i < board.length; i++) {

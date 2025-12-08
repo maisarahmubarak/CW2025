@@ -58,6 +58,17 @@ public class DangerModeController {
     /**
      * Constructor for DangerModeController.
      */
+    /**
+     * Constructs a new DangerModeController.
+     * <p>
+     * Initializes the controller with the necessary UI components and state manager.
+     * </p>
+     * 
+     * @param gamePanel The main game grid pane.
+     * @param groupNotification The overlay notification pane.
+     * @param boardStack The stack pane containing the board (used for flash overlay).
+     * @param stateManager The game state manager.
+     */
     public DangerModeController(GridPane gamePanel, AnchorPane groupNotification, 
                                 StackPane boardStack, GameStateManager stateManager) {
         this.gamePanel = gamePanel;
@@ -68,6 +79,11 @@ public class DangerModeController {
     
     /**
      * Sets the game loop for speed manipulation.
+     * <p>
+     * The game loop is required to adjust the drop interval during speed boost events.
+     * </p>
+     *
+     * @param gameLoop The GameLoop instance.
      */
     public void setGameLoop(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
@@ -75,6 +91,12 @@ public class DangerModeController {
     
     /**
      * Sets the base interval for speed calculations.
+     * <p>
+     * This value is used as the reference for calculating the boosted speed and for restoring
+     * the normal speed after a boost event ends.
+     * </p>
+     *
+     * @param intervalMs The base drop interval in milliseconds.
      */
     public void setBaseInterval(double intervalMs) {
         this.currentBaseIntervalMs = intervalMs;
@@ -82,6 +104,9 @@ public class DangerModeController {
     
     /**
      * Starts all danger mode effects.
+     * <p>
+     * Initiates the timers for random flash events, speed boosts, and control flips.
+     * </p>
      */
     public void startDangerMode() {
         startDangerFlashTimer();
@@ -91,6 +116,10 @@ public class DangerModeController {
     
     /**
      * Stops all danger mode effects.
+     * <p>
+     * Cancels all active timers and reverts any active effects (e.g., restores normal speed,
+     * unflipps controls, removes overlays).
+     * </p>
      */
     public void stopDangerMode() {
         stopDangerFlashTimer();
@@ -100,6 +129,8 @@ public class DangerModeController {
     
     /**
      * Checks if controls are currently flipped.
+     * 
+     * @return true if controls are flipped (left is right, right is left), false otherwise.
      */
     public boolean isControlsFlipped() {
         return controlsFlipped;
@@ -107,6 +138,9 @@ public class DangerModeController {
     
     // Flash effect methods
     
+    /**
+     * Starts the timer for the danger flash effect.
+     */
     private void startDangerFlashTimer() {
         if (dangerFlashTimer != null) {
             return;
@@ -130,6 +164,9 @@ public class DangerModeController {
         scheduleNextDangerFlash();
     }
 
+    /**
+     * Schedules the next danger flash event.
+     */
     private void scheduleNextDangerFlash() {
         if (dangerFlashTimer != null) {
             dangerFlashTimer.stop();
@@ -144,6 +181,9 @@ public class DangerModeController {
         dangerFlashTimer.play();
     }
 
+    /**
+     * Stops the danger flash timer and removes the overlay.
+     */
     private void stopDangerFlashTimer() {
         if (dangerFlashTimer != null) {
             dangerFlashTimer.stop();
@@ -158,6 +198,9 @@ public class DangerModeController {
         }
     }
 
+    /**
+     * Triggers the visual flash effect.
+     */
     private void flashDangerOverlay() {
         if (dangerFlashOverlay == null) {
             return;
@@ -181,6 +224,9 @@ public class DangerModeController {
     
     // Speed boost methods
     
+    /**
+     * Starts the timer for the speed boost effect.
+     */
     private void startDangerBoostTimer() {
         if (dangerBoostTimer != null) {
             return;
@@ -188,6 +234,9 @@ public class DangerModeController {
         scheduleNextDangerBoost();
     }
 
+    /**
+     * Schedules the next speed boost event.
+     */
     private void scheduleNextDangerBoost() {
         if (dangerBoostTimer != null) {
             dangerBoostTimer.stop();
@@ -205,6 +254,9 @@ public class DangerModeController {
         dangerBoostTimer.play();
     }
 
+    /**
+     * Applies the speed boost effect.
+     */
     private void applyDangerBoost() {
         if (dangerBoostActive || gameLoop == null) {
             scheduleNextDangerBoost();
@@ -227,6 +279,9 @@ public class DangerModeController {
         dangerBoostRevertTimer.play();
     }
 
+    /**
+     * Reverts the speed boost effect, restoring normal speed.
+     */
     private void revertDangerBoost() {
         if (!dangerBoostActive) {
             return;
@@ -240,6 +295,9 @@ public class DangerModeController {
         scheduleNextDangerBoost();
     }
 
+    /**
+     * Stops the speed boost timer and reverts any active boost.
+     */
     private void stopDangerBoostTimer() {
         if (dangerBoostTimer != null) {
             dangerBoostTimer.stop();
@@ -257,6 +315,9 @@ public class DangerModeController {
     
     // Control flip methods
     
+    /**
+     * Starts the timer for the control flip effect.
+     */
     private void startDangerControlTimer() {
         if (dangerControlTimer != null) {
             return;
@@ -264,6 +325,9 @@ public class DangerModeController {
         scheduleNextDangerControl();
     }
 
+    /**
+     * Schedules the next control flip event.
+     */
     private void scheduleNextDangerControl() {
         if (dangerControlTimer != null) {
             dangerControlTimer.stop();
@@ -292,6 +356,9 @@ public class DangerModeController {
         dangerControlTimer.play();
     }
 
+    /**
+     * Applies the control flip effect.
+     */
     private void applyDangerControlFlip() {
         if (controlsFlipped) {
             scheduleNextDangerControl();
@@ -311,6 +378,9 @@ public class DangerModeController {
         dangerControlRevertTimer.play();
     }
 
+    /**
+     * Reverts the control flip effect.
+     */
     private void revertDangerControlFlip() {
         if (!controlsFlipped) {
             return;
@@ -323,6 +393,9 @@ public class DangerModeController {
         scheduleNextDangerControl();
     }
 
+    /**
+     * Stops the control flip timer and reverts any active flip.
+     */
     private void stopDangerControlTimer() {
         if (dangerControlTimer != null) {
             dangerControlTimer.stop();
@@ -341,6 +414,9 @@ public class DangerModeController {
         }
     }
 
+    /**
+     * Shows a warning message for control changes.
+     */
     private void showControlWarning(String message) {
         if (stateManager.isPaused() || stateManager.isGameOver()) return;
         Label bubble = new Label(message);

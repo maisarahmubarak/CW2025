@@ -24,6 +24,16 @@ public class GamePauseController {
     /**
      * Constructor for GamePauseController.
      */
+    /**
+     * Constructs a new GamePauseController.
+     * <p>
+     * Initializes the controller with the necessary UI components and state manager.
+     * </p>
+     * 
+     * @param gamePanel The main game grid pane.
+     * @param groupNotification The overlay notification pane.
+     * @param stateManager The game state manager.
+     */
     public GamePauseController(GridPane gamePanel, AnchorPane groupNotification, GameStateManager stateManager) {
         this.gamePanel = gamePanel;
         this.groupNotification = groupNotification;
@@ -31,7 +41,12 @@ public class GamePauseController {
     }
     
     /**
-     * Sets the callback to execute when resume is complete.
+     * Sets the callback to execute when the resume countdown completes.
+     * <p>
+     * This callback is typically used to resume the game loop and timer.
+     * </p>
+     *
+     * @param callback The Runnable to execute.
      */
     public void setOnResumeComplete(Runnable callback) {
         this.onResumeComplete = callback;
@@ -39,6 +54,10 @@ public class GamePauseController {
     
     /**
      * Begins the resume countdown (3, 2, 1).
+     * <p>
+     * Starts a timeline that displays a countdown notification every second.
+     * When the countdown finishes, the game is unpaused and the onResumeComplete callback is executed.
+     * </p>
      */
     public void beginResumeCountdown() {
         final int[] remaining = {3};
@@ -58,7 +77,10 @@ public class GamePauseController {
     }
     
     /**
-     * Cancels the resume countdown if active.
+     * Cancels the resume countdown if it is currently active.
+     * <p>
+     * Stops the timeline and clears the reference.
+     * </p>
      */
     public void cancelResumeCountdown() {
         if (resumeCountdown != null) {
@@ -68,14 +90,22 @@ public class GamePauseController {
     }
     
     /**
-     * Checks if a countdown is currently active.
+     * Checks if a resume countdown is currently active.
+     * 
+     * @return true if the countdown is running, false otherwise.
      */
     public boolean isCountdownActive() {
         return resumeCountdown != null;
     }
     
     /**
-     * Shows the countdown notification.
+     * Shows a countdown notification with the specified text.
+     * <p>
+     * Creates a NotificationPanel, centers it on the game board, adds it to the overlay,
+     * and triggers its animation.
+     * </p>
+     *
+     * @param text The text to display (e.g., "3", "2", "1").
      */
     private void showCountdown(String text) {
         NotificationPanel panel = new NotificationPanel(text);
@@ -86,6 +116,12 @@ public class GamePauseController {
     
     /**
      * Centers an overlay panel on the game board.
+     * <p>
+     * Calculates the center coordinates of the game panel relative to the notification pane
+     * and positions the panel accordingly.
+     * </p>
+     *
+     * @param panel The NotificationPanel to center.
      */
     private void centerOverlay(NotificationPanel panel) {
         if (gamePanel == null || groupNotification == null) return;

@@ -25,14 +25,24 @@ public class GameTimerController {
      * 
      * @param timerLabel The label to display the timer in MM:SS format
      */
+    /**
+     * Constructs a new GameTimerController.
+     * <p>
+     * Initializes the controller with the label used to display the timer.
+     * </p>
+     * 
+     * @param timerLabel The label to display the timer in MM:SS format.
+     */
     public GameTimerController(Label timerLabel) {
         this.timerLabel = timerLabel;
     }
     
     /**
      * Initializes the timer timeline.
-     * Creates a timeline that increments elapsed seconds every second
-     * and updates the timer label display.
+     * <p>
+     * Creates a timeline that increments the elapsed seconds counter every second
+     * and updates the timer label display. The timeline is set to run indefinitely.
+     * </p>
      */
     public void initializeTimer() {
         timerTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -44,7 +54,9 @@ public class GameTimerController {
     
     /**
      * Starts the timer.
-     * The timer will begin counting seconds and updating the display.
+     * <p>
+     * Begins or resumes the timeline execution, causing the timer to count up.
+     * </p>
      */
     public void startTimer() {
         if (timerTimeline != null) {
@@ -54,7 +66,9 @@ public class GameTimerController {
     
     /**
      * Stops the timer.
-     * The timer will pause at the current elapsed time.
+     * <p>
+     * Pauses the timeline execution. The elapsed time is preserved.
+     * </p>
      */
     public void stopTimer() {
         if (timerTimeline != null) {
@@ -64,7 +78,9 @@ public class GameTimerController {
     
     /**
      * Resets the timer.
-     * Sets elapsed seconds back to zero and updates the display to 00:00.
+     * <p>
+     * Sets the elapsed seconds counter back to zero and updates the display to "00:00".
+     * </p>
      */
     public void resetTimer() {
         elapsedSeconds = 0;
@@ -73,7 +89,9 @@ public class GameTimerController {
     
     /**
      * Updates the timer label with the current elapsed time.
-     * Formats the time as MM:SS (e.g., "03:45" for 3 minutes 45 seconds).
+     * <p>
+     * Formats the elapsed seconds into a "MM:SS" string (e.g., "03:45") and sets it on the label.
+     * </p>
      */
     private void updateTimerLabel() {
         int minutes = elapsedSeconds / 60;

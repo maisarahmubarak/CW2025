@@ -57,6 +57,20 @@ public class GameLifecycleController {
     /**
      * Constructor for GameLifecycleController.
      */
+    /**
+     * Constructs a new GameLifecycleController.
+     * <p>
+     * Initializes the controller and its delegated sub-controllers (state, pause, danger, timer, overlay).
+     * Sets up callbacks for pause/resume and overlay interactions.
+     * </p>
+     * 
+     * @param gamePanel The main game grid pane.
+     * @param groupNotification The overlay notification pane.
+     * @param gameOverPanel The game over panel component.
+     * @param rootPane The root pane of the scene.
+     * @param boardStack The stack pane containing the board.
+     * @param timerLabel The label for displaying the game timer.
+     */
     public GameLifecycleController(GridPane gamePanel, AnchorPane groupNotification, 
                                    GameOverPanel gameOverPanel, javafx.scene.layout.Pane rootPane,
                                    StackPane boardStack, Label timerLabel) {
@@ -84,6 +98,11 @@ public class GameLifecycleController {
     
     /**
      * Sets the game board view.
+     * <p>
+     * Updates the reference to the view component used for rendering the game.
+     * </p>
+     *
+     * @param gameBoardView The GameBoardView to set.
      */
     public void setGameBoardView(GameBoardView gameBoardView) {
         this.gameBoardView = gameBoardView;
@@ -91,6 +110,11 @@ public class GameLifecycleController {
     
     /**
      * Sets the game loop.
+     * <p>
+     * Updates the game loop reference and propagates it to the DangerModeController.
+     * </p>
+     *
+     * @param gameLoop The GameLoop to set.
      */
     public void setGameLoop(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
@@ -98,61 +122,102 @@ public class GameLifecycleController {
     }
     
     /**
-     * Sets the game over sound.
+     * Sets the game over sound effect.
+     * <p>
+     * Updates the audio clip played when the game ends.
+     * </p>
+     *
+     * @param gameOverSound The AudioClip to set.
      */
     public void setGameOverSound(AudioClip gameOverSound) {
         this.gameOverSound = gameOverSound;
     }
     
     /**
-     * Sets the move down callback.
+     * Sets the callback for the move down action.
+     * <p>
+     * Updates the runnable executed when the game loop ticks or soft drop is triggered.
+     * </p>
+     *
+     * @param callback The Runnable to set.
      */
     public void setMoveDownCallback(Runnable callback) {
         this.moveDownCallback = callback;
     }
     
     /**
-     * Gets the state manager for external access.
+     * Gets the state manager.
+     * <p>
+     * Provides access to the GameStateManager for checking game state properties.
+     * </p>
+     *
+     * @return The GameStateManager instance.
      */
     public GameStateManager getStateManager() {
         return stateManager;
     }
     
     /**
-     * Gets the danger mode controller for external access.
+     * Gets the danger mode controller.
+     * <p>
+     * Provides access to the DangerModeController for managing danger mode effects.
+     * </p>
+     *
+     * @return The DangerModeController instance.
      */
     public DangerModeController getDangerModeController() {
         return dangerModeController;
     }
     
     /**
-     * Initializes the pause and game over overlays by delegating to GameOverlayController.
+     * Initializes the game overlays.
+     * <p>
+     * Delegates to the GameOverlayController to set up the pause and game over screens.
+     * </p>
      */
     public void initializeOverlays() {
         gameOverlayController.initializeOverlays();
     }
     
     /**
-     * Initializes the timer by delegating to GameTimerController.
+     * Initializes the game timer.
+     * <p>
+     * Delegates to the GameTimerController to reset and prepare the timer.
+     * </p>
      */
     public void initializeTimer() {
         gameTimerController.initializeTimer();
     }
     
+    /**
+     * Starts the game timer.
+     */
     private void startTimer() {
         gameTimerController.startTimer();
     }
     
+    /**
+     * Stops the game timer.
+     */
     private void stopTimer() {
         gameTimerController.stopTimer();
     }
     
+    /**
+     * Resets the game timer to zero.
+     */
     private void resetTimer() {
         gameTimerController.resetTimer();
     }
     
     /**
-     * Initializes the game view with the given board matrix and brick data.
+     * Initializes the game view and starts the game.
+     * <p>
+     * Sets up the board view with the initial state, starts the game loop, and starts the timer.
+     * </p>
+     *
+     * @param boardMatrix The initial board matrix.
+     * @param brick The initial active brick view data.
      */
     public void initGameView(int[][] boardMatrix, ViewData brick) {
         gameBoardView.initGameView(boardMatrix, brick);
@@ -162,7 +227,13 @@ public class GameLifecycleController {
     }
     
     /**
-     * Starts a new game.
+     * Starts a new game session.
+     * <p>
+     * Resets the game state, stops current loops and timers, clears overlays,
+     * triggers the new game event, and restarts the game loop and timer.
+     * </p>
+     *
+     * @param actionEvent The event triggering the new game (can be null).
      */
     public void newGame(ActionEvent actionEvent) {
         gameLoop.stop();
@@ -180,7 +251,11 @@ public class GameLifecycleController {
     }
     
     /**
-     * Handles game over state.
+     * Handles the game over state.
+     * <p>
+     * Stops the game loop and timer, plays the game over sound, shows the game over overlay,
+     * and updates the game state to "game over".
+     * </p>
      */
     public void gameOver() {
         gameLoop.stop();
@@ -200,21 +275,36 @@ public class GameLifecycleController {
     }
     
     /**
-     * Sets the final score for the game over screen.
+     * Sets the final score to be displayed on the game over screen.
+     * <p>
+     * Delegates to the GameOverlayController.
+     * </p>
+     *
+     * @param score The final score achieved.
      */
     public void setFinalScore(int score) {
         gameOverlayController.setFinalScore(score);
     }
     
     /**
-     * Pauses the game.
+     * Pauses the game via an action event.
+     * <p>
+     * Delegates to {@link #togglePause()}.
+     * </p>
+     *
+     * @param actionEvent The event triggering the pause.
      */
     public void pauseGame(ActionEvent actionEvent) {
         togglePause();
     }
     
     /**
-     * Toggles pause state.
+     * Toggles the pause state of the game.
+     * <p>
+     * If the game is running, it pauses the game loop and timer and shows the pause overlay.
+     * If the game is paused, it starts the resume countdown (or cancels it if already counting down).
+     * Does nothing if the game is over.
+     * </p>
      */
     public void togglePause() {
         if (stateManager.isGameOver()) {
@@ -238,7 +328,13 @@ public class GameLifecycleController {
     }
     
     /**
-     * Sets the game mode.
+     * Sets the game mode and configures the game loop.
+     * <p>
+     * Updates the game loop with the drop interval defined by the game mode.
+     * Also handles starting/stopping Danger mode effects.
+     * </p>
+     *
+     * @param mode The GameMode to set.
      */
     public void setGameMode(GameMode mode) {
         if (mode == null) {
@@ -271,6 +367,11 @@ public class GameLifecycleController {
     
     /**
      * Sets the input event listener.
+     * <p>
+     * Updates the listener used to trigger game actions like creating a new game.
+     * </p>
+     *
+     * @param eventListener The InputActionListener to set.
      */
     public void setEventListener(InputActionListener eventListener) {
         this.eventListener = eventListener;
@@ -278,6 +379,11 @@ public class GameLifecycleController {
     
     /**
      * Sets the callback for returning to the main menu.
+     * <p>
+     * Delegates to the GameOverlayController.
+     * </p>
+     *
+     * @param r The Runnable to execute.
      */
     public void setOnReturnToMainMenu(Runnable r) {
         if (gameOverlayController != null) {
@@ -287,18 +393,38 @@ public class GameLifecycleController {
     
     // Getter methods for state (delegate to state manager and controllers)
     
+    /**
+     * Gets the pause property.
+     * 
+     * @return The BooleanProperty representing the pause state.
+     */
     public BooleanProperty isPauseProperty() {
         return stateManager.isPauseProperty();
     }
     
+    /**
+     * Gets the game over property.
+     * 
+     * @return The BooleanProperty representing the game over state.
+     */
     public BooleanProperty isGameOverProperty() {
         return stateManager.isGameOverProperty();
     }
     
+    /**
+     * Checks if controls are currently flipped (e.g., in Danger mode).
+     * 
+     * @return true if controls are flipped, false otherwise.
+     */
     public boolean isControlsFlipped() {
         return dangerModeController.isControlsFlipped();
     }
     
+    /**
+     * Gets the current game loop.
+     * 
+     * @return The GameLoop instance.
+     */
     public GameLoop getGameLoop() {
         return gameLoop;
     }
