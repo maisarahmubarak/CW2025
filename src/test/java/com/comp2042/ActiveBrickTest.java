@@ -14,6 +14,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link ActiveBrick} class.
+ * <p>
+ * Verifies movement, spawning, and interaction with the game board.
+ * </p>
+ */
 class ActiveBrickTest {
 
     private static final int BOARD_HEIGHT = 24;

@@ -6,8 +6,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link RandomBrickGenerator} class.
+ * <p>
+ * Verifies that the generator produces valid bricks and maintains a consistent preview state.
+ * </p>
+ */
 class RandomBrickGeneratorTest {
 
+    /**
+     * Verifies that the next brick preview matches the brick returned by the subsequent getBrick call.
+     */
     @Test
     void nextBrickMatchesUpcomingGetBrick() {
         RandomBrickGenerator generator = new RandomBrickGenerator();

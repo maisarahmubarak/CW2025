@@ -4,8 +4,17 @@ import com.comp2042.logic.board.SimpleBoard;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the logic of {@link SimpleBoard}.
+ * <p>
+ * Verifies game over detection, state resetting, and other board logic.
+ * </p>
+ */
 class SimpleBoardLogicTest {
 
+    /**
+     * Verifies that the game over state is detected when a new brick cannot be spawned.
+     */
     @Test
     void testGameOverDetectedOnSpawn() {
         // 1. Create board (height 20, width 10)

@@ -12,11 +12,20 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for verifying the rotation logic of {@link ActiveBrick}.
+ * <p>
+ * Focuses on wall kicks, boundary checks, and collision detection during rotation.
+ * </p>
+ */
 class ActiveBrickRotationTest {
 
     private static final int BOARD_WIDTH = 10;
     private static final int BOARD_HEIGHT = 20;
 
+    /**
+     * Tests that a brick near the right wall performs a wall kick to rotate successfully.
+     */
     @Test
     void testRotateNearRightWallPerformsWallKick() {
         int[][] board = new int[BOARD_HEIGHT][BOARD_WIDTH];

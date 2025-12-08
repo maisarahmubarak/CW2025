@@ -15,6 +15,12 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link KeyEventInputAdapter} class.
+ * <p>
+ * Verifies that JavaFX KeyEvents are correctly translated into game {@link InputEvent}s.
+ * </p>
+ */
 class KeyEventInputAdapterTest {
 
     @BeforeAll

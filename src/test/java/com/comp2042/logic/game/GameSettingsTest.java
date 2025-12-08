@@ -3,8 +3,17 @@ package com.comp2042.logic.game;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link GameSettings} class.
+ * <p>
+ * Verifies that settings like volume and brightness are correctly clamped and stored.
+ * </p>
+ */
 class GameSettingsTest {
 
+    /**
+     * Verifies that the volume setting is clamped between 0 and 100.
+     */
     @Test
     void testVolumeClampedBetween0And100() {
         // Test lower bound

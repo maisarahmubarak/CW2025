@@ -5,8 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link ClearRow} class.
+ * <p>
+ * Verifies that cleared row data (lines removed, score bonus, new matrix) is correctly stored and retrieved.
+ * </p>
+ */
 class ClearRowTest {
 
+    /**
+     * Verifies that the class correctly exposes the number of lines removed and the score bonus.
+     */
     @Test
     void exposesClearedLinesAndScoreBonus() {
         int[][] matrix = new int[][]{

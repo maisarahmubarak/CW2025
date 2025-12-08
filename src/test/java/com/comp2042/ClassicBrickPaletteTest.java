@@ -5,8 +5,17 @@ import javafx.scene.paint.Paint;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link ClassicBrickPalette} class.
+ * <p>
+ * Verifies that the palette returns valid colors for standard brick IDs.
+ * </p>
+ */
 class ClassicBrickPaletteTest {
 
+    /**
+     * Verifies that the palette returns a color for at least one standard brick ID.
+     */
     @Test
     void testPaletteReturnsNonEmptyArray() {
         // Note: ClassicBrickPalette does not expose a getColors() array method.

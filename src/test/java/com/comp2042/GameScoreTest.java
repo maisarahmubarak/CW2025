@@ -7,8 +7,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+/**
+ * Unit tests for the {@link GameScore} class.
+ * <p>
+ * Verifies score accumulation, resetting, and property binding support.
+ * </p>
+ */
 class GameScoreTest {
 
+    /**
+     * Verifies that adding points correctly updates the score property.
+     */
     @Test
     void addAccumulatesScore() {
         GameScore gameScore = new GameScore();

@@ -7,8 +7,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link BrickShape} class.
+ * <p>
+ * Verifies matrix conversion, dimension calculation, and cell iteration.
+ * </p>
+ */
 class BrickShapeTest {
 
+    /**
+     * Verifies that creating a shape from a matrix correctly captures its dimensions.
+     */
     @Test
     void fromMatrixCapturesDimensions() {
         int[][] matrix = {

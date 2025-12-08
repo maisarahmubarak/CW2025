@@ -11,8 +11,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link SimpleBoard} class.
+ * <p>
+ * Verifies board operations such as merging bricks, resetting the game, and movement logic.
+ * </p>
+ */
 class SimpleBoardTest {
 
+    /**
+     * Verifies that merging the active brick into the background locks its shape into the board matrix.
+     */
     @Test
     void mergeBrickToBackgroundLocksActiveShape() {
         SimpleBoard board = new SimpleBoard(20, 10, new TestThemeFactory(TestBricks.square()));

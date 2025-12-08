@@ -10,8 +10,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link BrickRotator} class.
+ * <p>
+ * Tests the rotation state management and shape cycling logic.
+ * </p>
+ */
 class BrickRotatorTest {
 
+    /**
+     * Verifies that getting the next shape cycles through the available rotations and wraps around.
+     */
     @Test
     void getNextShapeCyclesAndWraps() {
         BrickShape shapeA = BrickShape.fromMatrix(new int[][]{{1}});

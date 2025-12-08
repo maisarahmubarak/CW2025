@@ -13,6 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Unit tests for the {@link GameLoop} class.
+ * <p>
+ * Verifies the game loop's start/stop mechanics and tick execution.
+ * Requires JavaFX runtime initialization.
+ * </p>
+ */
 class GameLoopTest {
 
     @BeforeAll

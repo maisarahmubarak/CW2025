@@ -12,8 +12,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link BrickProvider} class.
+ * <p>
+ * Verifies the queue management and preview functionality for upcoming bricks.
+ * </p>
+ */
 class BrickProviderTest {
 
+    /**
+     * Tests that consuming the next brick advances the preview queue.
+     */
     @Test
     void consumeNextAdvancesPreviewQueue() {
         Brick first = TestBrick.ofValue(1);

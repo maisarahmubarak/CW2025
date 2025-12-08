@@ -7,8 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link MatrixOperations} utility class.
+ * <p>
+ * Verifies collision detection, boundary checks, and matrix merging logic.
+ * </p>
+ */
 class MatrixOperationsTest {
 
+    /**
+     * Verifies that intersection detection correctly identifies collisions with occupied cells.
+     */
     @Test
     void intersectDetectsOccupiedCellCollision() {
         int[][] board = {

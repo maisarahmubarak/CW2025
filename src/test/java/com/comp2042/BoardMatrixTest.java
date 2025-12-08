@@ -7,8 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link BoardMatrix} class.
+ * <p>
+ * Tests matrix operations such as merging shapes and checking boundaries.
+ * </p>
+ */
 class BoardMatrixTest {
 
+    /**
+     * Verifies that merging a shape into the board matrix correctly updates the matrix cells.
+     */
     @Test
     void mergePersistsShapeIntoInternalMatrix() {
         BoardMatrix boardMatrix = new BoardMatrix(4, 4);

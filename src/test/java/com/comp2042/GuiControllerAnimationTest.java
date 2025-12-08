@@ -19,8 +19,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the {@link GuiController} animation logic.
+ * <p>
+ * Verifies that animation controllers are correctly initialized and invoked.
+ * </p>
+ */
 public class GuiControllerAnimationTest {
 
+    /**
+     * Verifies that the animation for cleared rows correctly adds highlight nodes and cleans them up.
+     *
+     * @throws Exception if an error occurs during the test execution.
+     */
     @Test
     public void animateClearedRowsAddsHighlightNodesAndCleansUp() throws Exception {
         // Create a GUI context
