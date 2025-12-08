@@ -74,7 +74,12 @@ public class SimpleBoard implements Board {
 
     @Override
     public ClearRow clearRows() {
-        return boardMatrix.clearRows();
+        ClearRow clearRow = boardMatrix.clearRows();
+        if (clearRow.getLinesRemoved() > 0) {
+            score.add(clearRow.getScoreBonus());
+            score.add(clearRow.getLinesRemoved());
+        }
+        return clearRow;
     }
 
     @Override

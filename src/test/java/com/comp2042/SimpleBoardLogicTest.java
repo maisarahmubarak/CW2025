@@ -8,12 +8,10 @@ class SimpleBoardLogicTest {
 
     @Test
     void testGameOverDetectedOnSpawn() {
-        // 1. Create board
-        SimpleBoard board = new SimpleBoard(10, 20);
+        // 1. Create board (height 20, width 10)
+        SimpleBoard board = new SimpleBoard(20, 10);
         
         // 2. Fill the top rows (where spawn happens)
-        // Spawn usually happens at (width-brickWidth)/2, y=1 (HIDDEN_ROWS=1 in ActiveBrick)
-        // Let's fill the entire board to be sure.
         int[][] matrix = board.getBoardMatrix();
         for (int y = 0; y < matrix.length; y++) {
             for (int x = 0; x < matrix[y].length; x++) {
@@ -31,7 +29,7 @@ class SimpleBoardLogicTest {
 
     @Test
     void testNewGameResetsGameOverState() {
-        SimpleBoard board = new SimpleBoard(10, 20);
+        SimpleBoard board = new SimpleBoard(20, 10);
         
         // Force game over
         int[][] matrix = board.getBoardMatrix();
@@ -48,5 +46,46 @@ class SimpleBoardLogicTest {
 
         // Assert
         assertFalse(board.isGameOver(), "New game should reset Game Over state");
+    }
+
+    @Test
+    void testLineClearUpdatesScore() {
+        // Height 20, Width 10
+        SimpleBoard board = new SimpleBoard(20, 10);
+        int[][] matrix = board.getBoardMatrix();
+        
+        // Fill bottom row (index 19)
+        for (int x = 0; x < 10; x++) {
+            matrix[19][x] = 1;
+        }
+        
+        // Verify initial score
+        assertEquals(0, board.getScore().scoreProperty().get());
+        
+        // Trigger clear
+        board.clearRows();
+        
+        // Expected: 50 * 1^2 + 1 = 51
+        assertEquals(51, board.getScore().scoreProperty().get(), "Score should update after single line clear");
+    }
+
+    @Test
+    void testMultiLineClearBonus() {
+        // Height 20, Width 10
+        SimpleBoard board = new SimpleBoard(20, 10);
+        int[][] matrix = board.getBoardMatrix();
+        
+        // Fill bottom 4 rows (indices 16, 17, 18, 19)
+        for (int y = 16; y < 20; y++) {
+            for (int x = 0; x < 10; x++) {
+                matrix[y][x] = 1;
+            }
+        }
+        
+        // Trigger clear
+        board.clearRows();
+        
+        // Expected: 50 * 4^2 + 4 = 50 * 16 + 4 = 800 + 4 = 804
+        assertEquals(804, board.getScore().scoreProperty().get(), "Score should include bonus for multi-line clear");
     }
 }
