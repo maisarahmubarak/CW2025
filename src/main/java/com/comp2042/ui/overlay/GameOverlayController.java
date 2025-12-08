@@ -17,7 +17,9 @@ import javafx.scene.layout.GridPane;
  *   <li>Routing callbacks (e.g., resume, restart, quit) to the appropriate handlers.</li>
  *   <li>Controlling the visibility of pause and game-over screens.</li>
  * </ul>
- * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class GameOverlayController {
     

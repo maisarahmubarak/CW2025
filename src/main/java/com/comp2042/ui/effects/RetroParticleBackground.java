@@ -26,7 +26,9 @@ import java.util.Random;
  * </ul>
  * The background manages its own particle lifecycle, spawning new particles as old ones
  * drift off-screen or fade out.
- * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class RetroParticleBackground extends Pane {
 

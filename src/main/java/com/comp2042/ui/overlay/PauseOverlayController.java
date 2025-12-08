@@ -19,7 +19,6 @@ import javafx.scene.shape.Rectangle;
  *   <li>Showing and hiding the pause overlay</li>
  *   <li>Wiring pause overlay button actions to callbacks</li>
  * </ul>
- * </p>
  *
  * @author Maisarah
  * @version 1.0

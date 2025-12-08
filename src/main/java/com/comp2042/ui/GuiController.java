@@ -44,7 +44,6 @@ import java.util.ResourceBundle;
  *   <li>Loading resources (fonts, sounds)</li>
  *   <li>Delegating game operations to GameViewController</li>
  * </ul>
- * </p>
  *
  * @author Maisarah
  * @version 1.0

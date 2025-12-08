@@ -31,7 +31,6 @@ import javafx.util.Duration;
  *   <li>Coordinating animations and visual effects</li>
  *   <li>Delegating to specialized controllers (lifecycle, input, animation)</li>
  * </ul>
- * </p>
  *
  * @author Maisarah
  * @version 1.0

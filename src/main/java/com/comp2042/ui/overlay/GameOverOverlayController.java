@@ -20,7 +20,6 @@ import javafx.scene.shape.Rectangle;
  *   <li>Updating the final score display</li>
  *   <li>Wiring game over overlay button actions to callbacks</li>
  * </ul>
- * </p>
  *
  * @author Maisarah
  * @version 1.0

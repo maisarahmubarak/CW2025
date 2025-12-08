@@ -23,7 +23,9 @@ import javafx.scene.paint.Stop;
  * </ul>
  * The animation is driven by an {@link AnimationTimer} which updates the grid offset
  * to create the illusion of forward movement.
- * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class NeonGridBackground extends Pane {
 

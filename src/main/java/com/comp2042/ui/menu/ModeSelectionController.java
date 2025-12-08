@@ -19,7 +19,9 @@ import java.util.function.Consumer;
  *   <li>Cancel the selection and return to the main menu.</li>
  * </ul>
  * It supports being displayed as an overlay within the main menu scene.
- * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class ModeSelectionController {
 

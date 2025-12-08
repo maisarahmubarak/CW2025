@@ -22,7 +22,6 @@ import javafx.scene.shape.Rectangle;
  *   <li>Buttons to restart the game or return to the main menu.</li>
  * </ul>
  * It uses a semi-transparent overlay to dim the background game board.
- * </p>
  *
  * @author Maisarah
  * @version 1.0

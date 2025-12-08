@@ -40,7 +40,9 @@ import javafx.scene.media.MediaPlayer;
  * </ul>
  * It also initializes and manages visual effects such as the {@link NeonGridBackground},
  * {@link RetroParticleBackground}, and the title reveal animation.
- * </p>
+ *
+ * @author Maisarah
+ * @version 1.0
  */
 public class MainMenuController {
 
