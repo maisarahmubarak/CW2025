@@ -1,5 +1,6 @@
-.root {
-    -fx-background-image: url("background_image.png");
+﻿.root {
+    -fx-background-image: none;
+    -fx-background-color: #000612;
 }
 
 .nextBrick {
@@ -9,18 +10,23 @@
 }
 
 .gameBoard {
-    -fx-border-color: linear-gradient(#00f0ff, #0066ff);
-    -fx-border-width: 14px;
-    -fx-border-radius: 20px;
-    -fx-background-color: rgba(0, 10, 30, 0.85);
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.35), 30, 0.4, 0, 0);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 100% 100%, #0ff3ff, #7f00ff),
+            linear-gradient(from 0% 0% to 100% 100%, #00e6ff, #eb00ff);
+    -fx-border-width: 3px;
+    -fx-border-radius: 0;
+    -fx-background-color: rgba(1, 6, 20, 0.9);
+    -fx-background-insets: 0, 1;
+    -fx-border-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 25, 0.4, 0, 0);
 }
 
 .nextBrickLabel {
-    -fx-font-family: "Let's go Digital";
-    -fx-padding: 20px 0 0 0;
+    -fx-font-family: "Press Start 2P";
+    -fx-padding: 0 0 5 0;
     -fx-font-size: 16px;
     -fx-text-fill: yellow;
+    -fx-alignment: center;
 }
 
 .ipad-dark-grey {
@@ -33,7 +39,7 @@
     -fx-background-radius: 9, 8, 5, 4, 3;
     -fx-padding: 8;
     /*-fx-font-family: "Helvetica";*/
-    -fx-font-family: "Let's go Digital";
+    -fx-font-family: "Press Start 2P";
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
@@ -61,97 +67,174 @@
 }
 
 .gameOverStyle {
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 48;
-    -fx-background-color: red;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 56px; /* reduced to fit board while maintaining size */
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, yellow, red, black);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.9), 30, 0.4, 0, 0), dropshadow(gaussian, rgba(127, 0, 255, 0.85), 8, 0.5, 0, 0);
+    -fx-background-color: transparent;
 }
 
 .scoreClass{
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 38;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 18;
     -fx-fill: yellow;
     -fx-text-fill: yellow;
 }
 
 .game-root {
     -fx-background-color:
-            radial-gradient(center 50% 40%, radius 70%, rgba(20, 40, 80, 0.8), rgba(2, 5, 20, 0.95)),
-            linear-gradient(#01010b 0%, #030c2e 100%);
-    -fx-background-image:
-            linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px),
-            url("background_image.png");
-    -fx-background-size: 32px 32px, 32px 32px, cover;
-    -fx-background-blend-mode: screen, screen, overlay;
+            linear-gradient(#020617, #000b28 40%, #0f163c 100%);
 }
 
 .active-brick-overlay {
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.25), 15, 0.2, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.45), 18, 0.3, 0, 0);
 }
 
 .preview-panel {
     -fx-pref-width: 140;
-    -fx-pref-height: 140;
+    /* accommodate three 4x4 preview grids stacked vertically (4 rows each) */
+    -fx-pref-height: 220;
     -fx-padding: 10;
-    -fx-background-color: rgba(5, 12, 32, 0.85);
+    -fx-background-color: rgba(1, 6, 20, 0.9);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 100% 100%, #0ff3ff, #7f00ff),
+            linear-gradient(from 0% 0% to 100% 100%, #00e6ff, #eb00ff);
+    -fx-border-width: 3px;
+    -fx-border-radius: 0;
+    -fx-background-insets: 0, 1;
+    -fx-border-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 25, 0.4, 0, 0);
+}
+
+.info-panel {
+    -fx-pref-width: 190;
+    -fx-padding: 10;
+    -fx-background-color: rgba(1, 6, 20, 0.9);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 100% 100%, #0ff3ff, #7f00ff),
+            linear-gradient(from 0% 0% to 100% 100%, #00e6ff, #eb00ff);
+    -fx-border-width: 3px;
+    -fx-border-radius: 0;
+    -fx-background-insets: 0, 1;
+    -fx-border-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 25, 0.4, 0, 0);
 }
 
 .menu-root {
     -fx-background-color:
-            radial-gradient(center 50% 40%, radius 70%, rgba(20, 40, 80, 0.8), rgba(2, 5, 20, 0.95)),
-            linear-gradient(#01010b 0%, #030c2e 100%);
-    -fx-background-image:
-            linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px),
-            url("background_image.png");
-    -fx-background-size: 32px 32px, 32px 32px, cover;
-    -fx-background-blend-mode: screen, screen, overlay;
+            radial-gradient(center 50% 40%, radius 60%, rgba(0, 255, 255, 0.4), rgba(128, 0, 255, 0.4)),
+            linear-gradient(#00000a 0%, #050a22 100%);
     -fx-padding: 40;
 }
 
 .menu-panel {
-    -fx-background-color: rgba(4, 12, 32, 0.85);
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
-    -fx-border-color: linear-gradient(#00f0ff, #0066ff);
-    -fx-border-width: 3px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.4), 20, 0.3, 0, 0);
+    /* Background set to transparent so particle animations show through. */
+    -fx-background-color: transparent;
     -fx-padding: 30;
     -fx-spacing: 24;
 }
 
 .menu-title {
-    -fx-font-family: "Let's go Digital";
-    -fx-text-fill: linear-gradient(#f9ff7a, #ff68f0);
-    -fx-font-size: 72;
+    -fx-font-family: "Press Start 2P";
+    -fx-text-fill: linear-gradient(#ffea00, #ff4500);
+    -fx-font-size: 80; /* Adjusted to fit within window width */
     -fx-letter-spacing: 6px;
-    -fx-effect: dropshadow(gaussian, rgba(255, 0, 255, 0.7), 18, 0.4, 0, 0);
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255, 69, 0, 0.7), 18, 0.4, 0, 0);
+    -fx-padding: 6 0 18 0;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.big-menu-title {
+    -fx-font-size: 120; /* very large title (tamed) */
+    -fx-letter-spacing: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#ffffff, #ffde59);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.45), 30, 0.4, 0, 3), dropshadow(gaussian, rgba(255, 0, 255, 0.9), 22, 0.3, 0, 0);
+    -fx-padding: 10 0 20 0;
+    -fx-opacity: 1.0;
 }
 
 .menu-button {
-    -fx-pref-width: 260;
+    -fx-pref-width: 350;
     -fx-pref-height: 50;
-    -fx-background-color:
-            linear-gradient(#071437, #0f2c68),
-            linear-gradient(#19e6ff, #0074ff);
-    -fx-background-insets: 0, 3;
+    -fx-background-insets: 0;
     -fx-background-radius: 16;
     -fx-border-radius: 16;
     -fx-border-color: rgba(255,255,255,0.35);
     -fx-border-width: 2px;
-    -fx-text-fill: #f8f8ff;
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 22;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.6), 15, 0.3, 0, 0);
+    -fx-text-fill: linear-gradient(#ffffff, #ffff00);
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.6), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
     -fx-cursor: hand;
     -fx-padding: 6 20 6 20;
+    -fx-transition: all 0.3s;
+}
+
+.start-button {
+    -fx-background-color: #0000FF; /* Pure Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 15, 0.6, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.tutorial-button {
+    -fx-background-color: #0000FF; /* Pure Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 15, 0.6, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.settings-button {
+    -fx-background-color: #0000FF; /* Pure Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 15, 0.6, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.classic-mode-button {
+    -fx-background-color: #0000FF; /* Pure Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 15, 0.6, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.speed-mode-button {
+    -fx-background-color: #0000FF; /* Pure Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 15, 0.6, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.danger-mode-button {
+    -fx-background-color: #0000FF; /* Pure Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 15, 0.6, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.cancel-button {
+    -fx-background-color: #ff0000; /* Red */
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.restart-button {
+    -fx-background-color: #00ff00; /* Green */
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 0, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.main-menu-button {
+    -fx-background-color: #0044ff; /* Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 68, 255, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.resume-button {
+    -fx-background-color: #0044ff; /* Blue */
+    -fx-effect: dropshadow(gaussian, rgba(0, 68, 255, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}
+
+.quit-button {
+    -fx-background-color: #ff0000; /* Red */
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.8), 15, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
 }
 
 .menu-button:hover {
-    -fx-background-color:
-            linear-gradient(#0b2558, #143f90),
-            linear-gradient(#ffd966, #ff5de6);
-    -fx-border-color: rgba(255,255,255,0.6);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-border-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.8), 20, 0.5, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.7), 15, 0, 0, 0);
 }
 
 .menu-button:pressed {
@@ -160,4 +243,128 @@
             linear-gradient(#00c0ff, #0066ff);
     -fx-translate-y: 1px;
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.3), 8, 0.2, 0, 0);
+}
+
+.control-warning {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 30;
+    -fx-padding: 20 30 20 30;
+    -fx-text-fill: #000000;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 15, 0.5, 0, 5);
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-border-color: #000000;
+    -fx-border-width: 4px;
+    -fx-border-radius: 30;
+}
+
+.game-over-overlay {
+    /* dark semi-transparent full-screen overlay color */
+    -fx-fill: rgba(0, 0, 0, 0.65);
+}
+
+.pauseLabel {
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 36px;
+    -fx-text-fill: linear-gradient(#ffffff, #f9ff7a);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.9), 20, 0.4, 0, 0);
+}
+
+.pause-button {
+    -fx-pref-width: 220;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15 10 15;
+}
+
+.finalScoreBox {
+    -fx-background-color: rgba(0,0,0,0.45);
+    -fx-background-radius: 12;
+    -fx-padding: 8 16 8 16;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 26px;
+    -fx-text-fill: linear-gradient(#f9ff7a, #ff68f0);
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.2), 8, 0.3, 0, 0);
+}
+
+.game-over-btn {
+    -fx-pref-width: 220;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15 10 15;
+}
+
+.mode-selection-title {
+    -fx-font-family: "Press Start 2P";
+    -fx-text-fill: linear-gradient(#ffea00, #ff4500);
+    -fx-font-size: 30;
+    -fx-letter-spacing: 2px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255, 69, 0, 0.7), 18, 0.4, 0, 0);
+    -fx-padding: 6 0 18 0;
+}
+
+.settings-label {
+    -fx-font-family: "Press Start 2P";
+    -fx-text-fill: linear-gradient(#ffea00, #ff4500);
+    -fx-font-size: 14px;
+    -fx-letter-spacing: 1px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255, 69, 0, 0.7), 8, 0.4, 0, 0);
+    -fx-padding: 5 0 5 0;
+}
+
+.mode-selection-button {
+    -fx-pref-width: 110;
+    -fx-pref-height: 40;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(255,255,255,0.35);
+    -fx-border-width: 2px;
+    -fx-text-fill: linear-gradient(#ffffff, #ffff00);
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.6), 10, 0.3, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.5), 5, 0, 0, 0);
+    -fx-cursor: hand;
+    -fx-padding: 4 8 4 8;
+    -fx-transition: all 0.3s;
+}
+
+.mode-selection-button:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-border-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.8), 15, 0.5, 0, 0), inner-shadow(gaussian, rgba(255, 255, 255, 0.7), 10, 0, 0, 0);
+}
+
+.mode-selection-button:pressed {
+    -fx-background-color:
+            linear-gradient(#020a1f, #0e1f47),
+            linear-gradient(#00c0ff, #0066ff);
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.3), 5, 0.2, 0, 0);
+}
+
+.key-cap {
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 12px;
+    -fx-padding: 12 18 12 18;
+    -fx-background-radius: 8;
+    -fx-border-color: #666;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,255,255,0.3), 8, 0, 0, 0), inner-shadow(gaussian, rgba(255,255,255,0.2), 5, 0, 0, 0);
+    -fx-min-width: 80;
+    -fx-alignment: center;
+}
+
+.key-label {
+    -fx-text-fill: #aaa;
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 10px;
+    -fx-padding: 8 0 0 0;
 }

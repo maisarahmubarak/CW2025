@@ -1,0 +1,26 @@
+package com.comp2042.logic.game;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
+public class GameSettings {
+    private static final DoubleProperty brightness = new SimpleDoubleProperty(1.0);
+    private static final DoubleProperty volume = new SimpleDoubleProperty(50.0);
+
+    public static DoubleProperty brightnessProperty() { return brightness; }
+    public static DoubleProperty volumeProperty() { return volume; }
+
+    public static double getBrightness() { return brightness.get(); }
+    public static void setBrightness(double value) {
+        // Clamp between 0.0 and 1.0
+        double clamped = Math.max(0.0, Math.min(1.0, value));
+        brightness.set(clamped);
+    }
+
+    public static double getVolume() { return volume.get(); }
+    public static void setVolume(double value) {
+        // Clamp between 0.0 and 100.0
+        double clamped = Math.max(0.0, Math.min(100.0, value));
+        volume.set(clamped);
+    }
+}

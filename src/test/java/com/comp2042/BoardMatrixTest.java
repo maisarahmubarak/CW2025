@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import com.comp2042.logic.board.BoardMatrix;
+import com.comp2042.logic.board.ClearRow;
 import com.comp2042.logic.bricks.BrickShape;
 import org.junit.jupiter.api.Test;
 

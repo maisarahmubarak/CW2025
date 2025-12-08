@@ -22,16 +22,17 @@ public final class BrickShape implements BrickComponent {
     }
 
     public static BrickShape fromMatrix(int[][] matrix) {
+        // The shape should capture the full matrix dimensions to preserve layout
+        int height = matrix.length;
+        int width = (height > 0) ? matrix[0].length : 0;
         List<BrickComponent> children = new ArrayList<>();
-        for (int y = 0; y < matrix.length; y++) {
-            for (int x = 0; x < matrix[y].length; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 if (matrix[y][x] != 0) {
                     children.add(new BrickCell(x, y, matrix[y][x]));
                 }
             }
         }
-        int width = matrix.length == 0 ? 0 : matrix[0].length;
-        int height = matrix.length;
         return new BrickShape(children, width, height);
     }
 
