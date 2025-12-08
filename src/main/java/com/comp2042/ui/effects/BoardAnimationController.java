@@ -44,6 +44,17 @@ public class BoardAnimationController {
      * @param gameBoardView The game board view for position calculations
      * @param palette The color palette for rendering brick colors
      */
+    /**
+     * Constructs a new BoardAnimationController.
+     * <p>
+     * Initializes the controller with the necessary UI components for rendering animations.
+     * </p>
+     * 
+     * @param boardStack The stack pane containing the game board.
+     * @param groupNotification The notification overlay pane.
+     * @param gameBoardView The game board view for position calculations.
+     * @param palette The color palette for rendering brick colors.
+     */
     public BoardAnimationController(StackPane boardStack, 
                                     AnchorPane groupNotification,
                                     GameBoardView gameBoardView, 
@@ -56,8 +67,11 @@ public class BoardAnimationController {
     
     /**
      * Sets the row clear sound effect.
+     * <p>
+     * Updates the audio clip that is played when rows are cleared.
+     * </p>
      * 
-     * @param rowClearSound The audio clip to play when rows are cleared
+     * @param rowClearSound The audio clip to play.
      */
     public void setRowClearSound(AudioClip rowClearSound) {
         this.rowClearSound = rowClearSound;
@@ -65,11 +79,14 @@ public class BoardAnimationController {
     
     /**
      * Animates cleared rows with visual effects and plays sound.
-     * This is a visual-only animation that turns cleared row blocks into falling and vanishing rectangles.
-     * This does not alter game state; it only animates an overlay based on the previous board snapshot.
+     * <p>
+     * Creates a visual overlay of the cleared blocks and animates them falling and fading out.
+     * Also triggers a board shake effect for multi-row clears and plays the clear sound.
+     * This method is purely visual and does not affect the game state.
+     * </p>
      * 
-     * @param prevMatrix The board matrix before rows were cleared
-     * @param clearRow Information about which rows were cleared
+     * @param prevMatrix The board matrix before rows were cleared.
+     * @param clearRow Information about which rows were cleared.
      */
     public void animateClearedRows(int[][] prevMatrix, ClearRow clearRow) {
         if (prevMatrix == null || clearRow == null || clearRow.getLinesRemoved() <= 0) return;
@@ -106,8 +123,12 @@ public class BoardAnimationController {
     
     /**
      * Animates a shake effect on the board for multi-row clears.
+     * <p>
+     * Creates a timeline that rapidly moves the board up and down to simulate an impact.
+     * The amplitude of the shake increases with the number of lines removed.
+     * </p>
      * 
-     * @param linesRemoved The number of lines removed (determines shake amplitude)
+     * @param linesRemoved The number of lines removed (determines shake amplitude).
      */
     private void animateBoardShake(int linesRemoved) {
         // Make a small amplitude based on lines removed: 2 -> 6px, 3 -> 8px, 4 -> 10px
@@ -128,11 +149,16 @@ public class BoardAnimationController {
     
     /**
      * Animates a single cleared block with falling, fading, and rotation effects.
+     * <p>
+     * Creates a temporary rectangle representing the block, positions it over the game board,
+     * and applies a parallel transition of translation, fade, and rotation.
+     * The animation is staggered based on column and row to create a wave-like effect.
+     * </p>
      * 
-     * @param jfxView The JavaFX board view for position calculations
-     * @param row The row index of the block
-     * @param col The column index of the block
-     * @param color The color index of the block
+     * @param jfxView The JavaFX board view for position calculations.
+     * @param row The row index of the block.
+     * @param col The column index of the block.
+     * @param color The color index of the block.
      */
     private void animateSingleBlock(JavaFxBoardView jfxView, int row, int col, int color) {
         Rectangle rect = new Rectangle(BRICK_SIZE, BRICK_SIZE);

@@ -13,7 +13,17 @@ import javafx.scene.paint.Stop;
 
 /**
  * Creates an animated 80s-style neon grid background using a Canvas.
- * The grid lines scroll vertically to create a retro synthwave effect.
+ * <p>
+ * This class renders a "Synthwave" aesthetic background featuring:
+ * <ul>
+ *   <li>A scrolling perspective grid (the "floor") moving towards the viewer.</li>
+ *   <li>A retro-style sun on the horizon with horizontal stripe cutouts.</li>
+ *   <li>A starry sky with gradient background.</li>
+ *   <li>Neon colors (Cyan/Magenta) with Glow and Bloom effects.</li>
+ * </ul>
+ * The animation is driven by an {@link AnimationTimer} which updates the grid offset
+ * to create the illusion of forward movement.
+ * </p>
  */
 public class NeonGridBackground extends Pane {
 
@@ -31,6 +41,13 @@ public class NeonGridBackground extends Pane {
     private final Color neonMagenta = Color.rgb(255, 0, 255, 0.5);
     private final Color horizonGlow = Color.rgb(255, 100, 200, 0.8);
 
+    /**
+     * Constructs a new NeonGridBackground.
+     * <p>
+     * Initializes the canvas, binds its size to the pane, applies neon glow effects,
+     * and sets up the animation loop for the scrolling grid effect.
+     * </p>
+     */
     public NeonGridBackground() {
         canvas = new Canvas();
         getChildren().add(canvas);
@@ -64,6 +81,10 @@ public class NeonGridBackground extends Pane {
 
     /**
      * Starts the background animation.
+     * <p>
+     * This method activates the {@link AnimationTimer}, causing the grid to scroll
+     * and the scene to be redrawn on every frame.
+     * </p>
      */
     public void start() {
         animationTimer.start();
@@ -71,11 +92,21 @@ public class NeonGridBackground extends Pane {
 
     /**
      * Stops the background animation.
+     * <p>
+     * This method halts the {@link AnimationTimer}, freezing the background in its current state.
+     * </p>
      */
     public void stop() {
         animationTimer.stop();
     }
 
+    /**
+     * Main drawing method that orchestrates the rendering of the scene.
+     * <p>
+     * Clears the canvas and draws the background gradient, perspective grid,
+     * sky lines, and the sun/horizon elements in order.
+     * </p>
+     */
     private void draw() {
         double width = canvas.getWidth();
         double height = canvas.getHeight();
@@ -100,6 +131,13 @@ public class NeonGridBackground extends Pane {
         drawHorizonSun(gc, width, height);
     }
 
+    /**
+     * Draws the background gradient representing the deep space/sky.
+     *
+     * @param gc     The graphics context to draw on.
+     * @param width  The width of the canvas.
+     * @param height The height of the canvas.
+     */
     private void drawBackground(GraphicsContext gc, double width, double height) {
         // Dark gradient from top to bottom
         LinearGradient bgGradient = new LinearGradient(
@@ -114,6 +152,17 @@ public class NeonGridBackground extends Pane {
         gc.fillRect(0, 0, width, height);
     }
 
+    /**
+     * Draws the perspective grid (the "floor") with scrolling effect.
+     * <p>
+     * Renders vertical lines converging to a vanishing point and horizontal lines
+     * that move downwards to create the illusion of forward motion.
+     * </p>
+     *
+     * @param gc     The graphics context to draw on.
+     * @param width  The width of the canvas.
+     * @param height The height of the canvas.
+     */
     private void drawPerspectiveGrid(GraphicsContext gc, double width, double height) {
         double horizonY = height * HORIZON_Y_RATIO;
         double floorHeight = height - horizonY;
@@ -156,6 +205,13 @@ public class NeonGridBackground extends Pane {
         }
     }
 
+    /**
+     * Draws faint horizontal lines in the sky area to add texture.
+     *
+     * @param gc     The graphics context to draw on.
+     * @param width  The width of the canvas.
+     * @param height The height of the canvas.
+     */
     private void drawSkyLines(GraphicsContext gc, double width, double height) {
         double horizonY = height * HORIZON_Y_RATIO;
 
@@ -171,6 +227,17 @@ public class NeonGridBackground extends Pane {
         }
     }
 
+    /**
+     * Draws the retro sun and the horizon glow.
+     * <p>
+     * The sun is rendered with a gradient and horizontal stripe cutouts, typical of
+     * 80s synthwave aesthetics.
+     * </p>
+     *
+     * @param gc     The graphics context to draw on.
+     * @param width  The width of the canvas.
+     * @param height The height of the canvas.
+     */
     private void drawHorizonSun(GraphicsContext gc, double width, double height) {
         double horizonY = height * HORIZON_Y_RATIO;
         double sunRadius = Math.min(width, height) * 0.15;

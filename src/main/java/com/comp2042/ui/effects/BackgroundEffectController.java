@@ -22,13 +22,24 @@ public class BackgroundEffectController {
      * 
      * @param rootPane The root pane where background effects will be rendered
      */
+    /**
+     * Constructs a new BackgroundEffectController.
+     * <p>
+     * Initializes the controller with the root pane where background effects will be rendered.
+     * </p>
+     * 
+     * @param rootPane The root pane of the scene.
+     */
     public BackgroundEffectController(Pane rootPane) {
         this.rootPane = rootPane;
     }
     
     /**
      * Initializes all background visual effects.
-     * Should be called during UI initialization.
+     * <p>
+     * Sets up and starts the neon grid background animation.
+     * This method should be called during the application's UI initialization phase.
+     * </p>
      */
     public void initialize() {
         initNeonGridBackground();
@@ -36,7 +47,11 @@ public class BackgroundEffectController {
     
     /**
      * Initializes the animated 80s-style neon grid background.
-     * The background is added behind all other UI elements and starts animating.
+     * <p>
+     * Creates the NeonGridBackground component, binds its size to the root pane,
+     * inserts it at the bottom of the view stack (index 0) so it appears behind other elements,
+     * and starts the animation loop.
+     * </p>
      */
     private void initNeonGridBackground() {
         if (rootPane == null) {
@@ -61,7 +76,7 @@ public class BackgroundEffectController {
     /**
      * Gets the neon grid background instance.
      * 
-     * @return The NeonGridBackground instance, or null if not initialized
+     * @return The NeonGridBackground instance, or null if not initialized.
      */
     public NeonGridBackground getNeonGridBackground() {
         return neonGridBackground;
@@ -69,7 +84,10 @@ public class BackgroundEffectController {
     
     /**
      * Stops all background animations.
-     * Should be called when the UI is being disposed.
+     * <p>
+     * Halts the animation loop of the neon grid background.
+     * This should be called when the controller is being disposed or the application is closing.
+     * </p>
      */
     public void stop() {
         if (neonGridBackground != null) {

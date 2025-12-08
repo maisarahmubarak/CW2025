@@ -23,10 +23,27 @@ public final class TitleRevealAnimator {
         // utility class
     }
 
+    /**
+     * Starts the title reveal animation on the given label with default settings.
+     *
+     * @param label the label to animate.
+     */
     public static void startOnce(Label label) {
         startOnce(label, DEFAULT_STEP_MS, DEFAULT_FLICKER_OFFSET, DEFAULT_FLICKER_PROB);
     }
 
+    /**
+     * Starts the title reveal animation on the given label with custom settings.
+     * <p>
+     * The animation reveals the text character by character, with a random flicker effect.
+     * It ensures the animation is only played once per label instance.
+     * </p>
+     *
+     * @param label the label to animate.
+     * @param stepMs the time in milliseconds between each character reveal.
+     * @param flickerOffsetMs the time in milliseconds before the reveal to start flickering.
+     * @param flickerProb the probability (0.0 to 1.0) of a flicker occurring.
+     */
     public static void startOnce(Label label, int stepMs, int flickerOffsetMs, double flickerProb) {
         if (label == null) return;
         Object played = label.getProperties().get(PLAYED_PROPERTY);

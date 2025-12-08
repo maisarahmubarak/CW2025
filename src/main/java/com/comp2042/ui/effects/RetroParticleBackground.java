@@ -13,8 +13,20 @@ import javafx.util.Duration;
 import java.util.Random;
 
 /**
- * Creates an animated retro particle background with small glowing pixel-like circles
- * that drift upward or downward. Perfect for a main menu aesthetic.
+ * Creates an animated retro particle background with small glowing pixel-like squares
+ * that drift upward or downward.
+ * <p>
+ * This component is designed to provide a visually interesting but non-distracting
+ * background for menus or game screens. It features:
+ * <ul>
+ *   <li>Randomly generated square particles (pixels) of varying sizes.</li>
+ *   <li>Neon color palette (Cyan, Magenta, Yellow, etc.) with glow effects.</li>
+ *   <li>Vertical drift with slight horizontal movement for an organic feel.</li>
+ *   <li>Fade-in and fade-out transitions for smooth appearance/disappearance.</li>
+ * </ul>
+ * The background manages its own particle lifecycle, spawning new particles as old ones
+ * drift off-screen or fade out.
+ * </p>
  */
 public class RetroParticleBackground extends Pane {
 
@@ -39,6 +51,13 @@ public class RetroParticleBackground extends Pane {
             Color.rgb(255, 128, 0, 0.6),    // Orange
     };
 
+    /**
+     * Constructs a new RetroParticleBackground.
+     * <p>
+     * Initializes the pane as transparent and non-interactive (mouse transparent).
+     * Sets up listeners to spawn particles once the component has a valid size.
+     * </p>
+     */
     public RetroParticleBackground() {
         // Make the pane transparent and non-interactive
         setPickOnBounds(false);
@@ -59,6 +78,9 @@ public class RetroParticleBackground extends Pane {
 
     /**
      * Starts the particle animation.
+     * <p>
+     * Sets the running state to true and ensures the initial batch of particles is spawned.
+     * </p>
      */
     public void start() {
         running = true;
@@ -67,6 +89,10 @@ public class RetroParticleBackground extends Pane {
 
     /**
      * Stops the particle animation and clears all particles.
+     * <p>
+     * Sets the running state to false, stops any active timelines, and removes all
+     * particle nodes from the scene graph.
+     * </p>
      */
     public void stop() {
         running = false;
@@ -76,6 +102,13 @@ public class RetroParticleBackground extends Pane {
         getChildren().clear();
     }
 
+    /**
+     * Ensures that the background has the target number of particles.
+     * <p>
+     * If the current particle count is less than {@link #PARTICLE_COUNT}, new particles
+     * are spawned until the limit is reached.
+     * </p>
+     */
     private void ensureParticleCount() {
         double width = getWidth();
         double height = getHeight();
@@ -91,6 +124,19 @@ public class RetroParticleBackground extends Pane {
         }
     }
 
+    /**
+     * Spawns a single particle with random properties and animation.
+     * <p>
+     * The particle is a small rectangle with a random neon color and glow effect.
+     * Its movement is animated using {@link TranslateTransition} and {@link FadeTransition}.
+     * When the animation finishes, the particle is removed and a new one is spawned
+     * to maintain the particle count.
+     * </p>
+     *
+     * @param randomStartY If true, the particle starts at a random Y position within the bounds
+     *                     (used for initial population). If false, it starts just outside the
+     *                     top or bottom edge (used for continuous spawning).
+     */
     private void spawnParticle(boolean randomStartY) {
         double width = getWidth();
         double height = getHeight();
